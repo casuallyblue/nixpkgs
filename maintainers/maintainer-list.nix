@@ -18301,6 +18301,12 @@
     githubId = 4522995;
     matrix = "@sielicki:matrix.org";
   };
+  sierra = {
+    email = "sierra@casuallyblue.dev";
+    github = "casuallyblue";
+    githubId = 73141854;
+    name =  "Sierra";
+  };
   siers = {
     email = "veinbahs+nixpkgs@gmail.com";
     github = "siers";
