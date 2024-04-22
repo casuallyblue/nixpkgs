@@ -1,25 +1,29 @@
-{ lib, stdenv, fetchFromGitHub }:
+{ lib, stdenv, fetchgit, mirth }:
 
 stdenv.mkDerivation {
-  pname = "mirth";
+  pname = "mirth-build";
   version = "0.0.1";
 
-  src = fetchFromGitHub {
-    owner = "mirth-lang";
-    repo = "mirth";
-    rev = "7405d46038ae881e602e0d7c4802a4ad1abfc759";
-    hash = "sha256-PWEUYf5ppQi15yfFawZ9yOTHjoZs0GrOj1j0DkAcbdw=";
+    name = "mirth-build";
+
+  src = fetchgit {
+    url = "https://git.casuallyblue.dev/mirth/mirth-build";
+    rev = "9083f5ecbb330dedf9a791827f1ed29a74b4f25c";
+    hash = "sha256-3F1ovu0P4Zz6zepUPxYJfY5hrJXdmyLRL0lH4aEOeCc=";
+    fetchSubmodules = true;
   };
+
+  nativeBuildInputs = [ mirth ];
 
   hardeningDisable = [ "fortify" ];
 
   installPhase = ''
     mkdir -p $out/bin
-    mv bin/mirth2 $out/bin/mirth
+    mv bin/mirth-build $out/bin/mirth-build
   '';
 
   meta = with lib; {
-    description = " Compiler for the Mirth programming language";
+    description = "Build system for the mirth programming language";
     longDescription = ''
       Mirth is a strongly-typed concatenative programming language
       inspired by Forth, Joy, Haskell, Lisp, and monoidal category theory.
@@ -29,7 +33,7 @@ stdenv.mkDerivation {
 
     license = licenses.bsd0;
     maintainers = [ maintainers.sierra ];
-    mainProgram  = "mirth";
+    mainProgram  = "mirth-build";
     platforms = platforms.linux ++ platforms.darwin;
   };
 }
