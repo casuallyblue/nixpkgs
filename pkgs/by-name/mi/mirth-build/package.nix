@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchgit, mirth }:
+{ lib, stdenv, fetchgit, mirth, gcc }:
 
 stdenv.mkDerivation {
   pname = "mirth-build";
@@ -13,7 +13,7 @@ stdenv.mkDerivation {
     fetchSubmodules = true;
   };
 
-  nativeBuildInputs = [ mirth ];
+  nativeBuildInputs = [ mirth gcc ];
 
   hardeningDisable = [ "fortify" ];
 

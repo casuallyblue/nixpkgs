@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchFromGitHub }:
+{ lib, stdenv, fetchFromGitHub, gcc }:
 
 stdenv.mkDerivation {
   pname = "mirth";
@@ -10,6 +10,10 @@ stdenv.mkDerivation {
     rev = "7405d46038ae881e602e0d7c4802a4ad1abfc759";
     hash = "sha256-PWEUYf5ppQi15yfFawZ9yOTHjoZs0GrOj1j0DkAcbdw=";
   };
+
+  nativeBuildInputs = [
+    gcc
+  ];
 
   hardeningDisable = [ "fortify" ];
 
