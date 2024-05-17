@@ -7,8 +7,8 @@ stdenv.mkDerivation {
   src = fetchFromGitHub {
     owner = "mirth-lang";
     repo = "mirth";
-    rev = "d4a0f748bff24f8cb4ca608d543c54bcbb1a16d7";
-    hash = "sha256-CymBOJvi2i/gY0B5ZIcMgtPesofPllpTQxewvBYa2bY=";
+    rev = "2c9b7f0d05709b7144666a3a4f16a4f7234fba8b";
+    hash = "sha256-gr3mjLTBnArq55iSI9+lh8Z7Zom6x5B/tpOlZ+ZeesI=";
   };
 
   nativeBuildInputs = [
