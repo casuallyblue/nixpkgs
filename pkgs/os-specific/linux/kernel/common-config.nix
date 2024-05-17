@@ -871,11 +871,14 @@ let
     };
 
     zram = {
-      ZRAM           = module;
-      ZRAM_WRITEBACK = option yes;
-      ZSWAP          = option yes;
-      ZPOOL          = yes;
-      ZBUD           = option yes;
+      ZRAM                          = module;
+      ZRAM_WRITEBACK                = option yes;
+      ZRAM_MULTI_COMP               = whenAtLeast "6.2" yes;
+      ZRAM_DEF_COMP_ZSTD            = whenAtLeast "5.11" yes;
+      ZSWAP                         = option yes;
+      ZSWAP_COMPRESSOR_DEFAULT_ZSTD = whenAtLeast "5.7" (mkOptionDefault yes);
+      ZPOOL                         = yes;
+      ZSMALLOC                      = option yes;
     };
 
     brcmfmac = {
@@ -947,8 +950,8 @@ let
       THRUSTMASTER_FF    = yes;
       ZEROPLUS_FF        = yes;
 
-      MODULE_COMPRESS    = whenOlder "5.13" yes;
-      MODULE_COMPRESS_XZ = yes;
+      MODULE_COMPRESS      = whenOlder "5.13" yes;
+      MODULE_COMPRESS_XZ   = yes;
 
       SYSVIPC            = yes;  # System-V IPC
 
@@ -1052,6 +1055,21 @@ let
 
       NVME_MULTIPATH = yes;
 
+      NVME_AUTH = mkMerge [
+        (whenBetween "6.0" "6.7" yes)
+        (whenAtLeast "6.7" module)
+      ];
+
+      NVME_HOST_AUTH = whenAtLeast "6.7" yes;
+      NVME_TCP_TLS = whenAtLeast "6.7" yes;
+
+      NVME_TARGET = module;
+      NVME_TARGET_PASSTHRU = whenAtLeast "5.9" yes;
+      NVME_TARGET_AUTH = whenAtLeast "6.0" yes;
+      NVME_TARGET_TCP_TLS = whenAtLeast "6.7" yes;
+
+      PCI_P2PDMA = mkIf (stdenv.hostPlatform.is64bit && versionAtLeast version "4.20") yes;
+
       PSI = whenAtLeast "4.20" yes;
 
       MOUSE_ELAN_I2C_SMBUS = yes;
@@ -1108,6 +1126,7 @@ let
       FW_LOADER_USER_HELPER_FALLBACK = option no;
 
       FW_LOADER_COMPRESS = whenAtLeast "5.3" yes;
+      FW_LOADER_COMPRESS_ZSTD = whenAtLeast "5.19" yes;
 
       HOTPLUG_PCI_ACPI = yes; # PCI hotplug using ACPI
       HOTPLUG_PCI_PCIE = yes; # PCI-Expresscard hotplug support

@@ -24,14 +24,14 @@
 
 buildPythonPackage rec {
   pname = "pywbem";
-  version = "1.6.3";
+  version = "1.7.2";
   format = "setuptools";
 
   disabled = pythonOlder "3.7";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-eN8w3umMUIYgtZm4lR8yKoHGwKnXt4/+XgF7lBfNl7k=";
+    hash = "sha256-3Dt4WEABf1/LY4HFZoJZjOu/yEUYUXaPheIxioTga2g=";
   };
 
   propagatedBuildInputs = [

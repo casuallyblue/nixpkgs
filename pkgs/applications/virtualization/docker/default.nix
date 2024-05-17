@@ -280,23 +280,37 @@ rec {
   # Get revisions from
   # https://github.com/moby/moby/tree/${version}/hack/dockerfile/install/*
   docker_24 = callPackage dockerGen rec {
-    version = "24.0.5";
+    version = "24.0.9";
     cliRev = "v${version}";
-    cliHash = "sha256-u1quVGTx/p8BDyRn33vYyyuE5BOhWMnGQ5uVX0PZ5mg=";
+    cliHash = "sha256-nXIZtE0X1OoQT908IGuRhVHb0tiLbqQLP0Md3YWt0/Q=";
     mobyRev = "v${version}";
-    mobyHash = "sha256-JQjRz1fHZlQRkNw/R8WWLV8caN3/U3mrKKQXbZt2crU=";
-    runcRev = "v1.1.8";
-    runcHash = "sha256-rDJYEc64KW4Qa3Eg2oUjJqIKrg6THb5hxQFFbvb9Zp4=";
-    containerdRev = "v1.7.1";
-    containerdHash = "sha256-WwedtcsrDQwMQcKFO5nnPiHyGJpl5hXZlmpbBe1/ftY=";
+    mobyHash = "sha256-KRS99heyMAPBnjjr7If8TOlJf6v6866S7J3YGkOhFiA=";
+    runcRev = "v1.1.12";
+    runcHash = "sha256-N77CU5XiGYIdwQNPFyluXjseTeaYuNJ//OsEUS0g/v0=";
+    containerdRev = "v1.7.13";
+    containerdHash = "sha256-y3CYDZbA2QjIn1vyq/p1F1pAVxQHi/0a6hGWZCRWzyk=";
     tiniRev = "v0.19.0";
     tiniHash = "sha256-ZDKu/8yE5G0RYFJdhgmCdN3obJNyRWv6K/Gd17zc1sI=";
   };
 
   docker_25 = callPackage dockerGen rec {
-    version = "25.0.3";
+    version = "25.0.5";
     cliRev = "v${version}";
-    cliHash = "sha256-Jvb0plV1O/UzrcpzN4zH5OulmTVF+p9UQQQ9xqkiObQ=";
+    cliHash = "sha256-CACMi3bXUN6oGc2f/Z+lNQqMgQ4llRWPRKgijdpiPGg=";
+    mobyRev = "v${version}";
+    mobyHash = "sha256-4QGz22fXxyAD77pyUWb2lF3VKqxmPIrGqcJGoyrEHew=";
+    runcRev = "v1.1.12";
+    runcHash = "sha256-N77CU5XiGYIdwQNPFyluXjseTeaYuNJ//OsEUS0g/v0=";
+    containerdRev = "v1.7.13";
+    containerdHash = "sha256-y3CYDZbA2QjIn1vyq/p1F1pAVxQHi/0a6hGWZCRWzyk=";
+    tiniRev = "v0.19.0";
+    tiniHash = "sha256-ZDKu/8yE5G0RYFJdhgmCdN3obJNyRWv6K/Gd17zc1sI=";
+  };
+
+  docker_26 = callPackage dockerGen rec {
+    version = "26.0.0";
+    cliRev = "v${version}";
+    cliHash = "sha256-jGg/AVnIzI8e+DdF0uKlSZApRxcwuOjCQpfnBaCY4fI=";
     mobyRev = "v${version}";
     mobyHash = "sha256-cDlRVdQNzH/X2SJUYHK1QLUHlKQtSyRYCVbz3wPx1ZM=";
     runcRev = "v1.1.12";
@@ -306,4 +320,5 @@ rec {
     tiniRev = "v0.19.0";
     tiniHash = "sha256-ZDKu/8yE5G0RYFJdhgmCdN3obJNyRWv6K/Gd17zc1sI=";
   };
+
 }

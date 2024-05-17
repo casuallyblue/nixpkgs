@@ -10,13 +10,13 @@ let
 
 in {
   options.services.stalwart-mail = {
-    enable = mkEnableOption (mdDoc "the Stalwart all-in-one email server");
+    enable = mkEnableOption "the Stalwart all-in-one email server";
     package = mkPackageOption pkgs "stalwart-mail" { };
 
     settings = mkOption {
       inherit (configFormat) type;
       default = { };
-      description = mdDoc ''
+      description = ''
         Configuration options for the Stalwart email server.
         See <https://stalw.art/docs/category/configuration> for available options.
 
@@ -38,6 +38,7 @@ in {
       store.blob.path = mkDefault "${dataDir}/data/blobs";
       storage.data = mkDefault "db";
       storage.fts = mkDefault "db";
+      storage.lookup = mkDefault "db";
       storage.blob = mkDefault "blob";
       resolver.type = mkDefault "system";
       resolver.public-suffix = mkDefault ["https://publicsuffix.org/list/public_suffix_list.dat"];

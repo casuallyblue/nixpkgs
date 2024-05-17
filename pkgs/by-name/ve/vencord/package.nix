@@ -5,8 +5,8 @@
 , buildWebExtension ? false
 }:
 let
-  version = "1.7.4";
-  gitHash = "bdef47e";
+  version = "1.8.4";
+  gitHash = "a5eb55e";
 in
 buildNpmPackage rec {
   pname = "vencord";
@@ -16,7 +16,7 @@ buildNpmPackage rec {
     owner = "Vendicated";
     repo = "Vencord";
     rev = "v${version}";
-    hash = "sha256-Ub8VzeTkka0oq0CYN/UHjOIH2y3F7Oy9QZpTi6glehI=";
+    hash = "sha256-FbU1Zsz/84oSOCOSWunA5nn5qFGLQ4W3uqsbYytF/7c=";
   };
 
   ESBUILD_BINARY_PATH = lib.getExe (esbuild.overrideAttrs (final: _: {
@@ -34,7 +34,7 @@ buildNpmPackage rec {
   npmRebuildFlags = [ "|| true" ];
 
   makeCacheWritable = true;
-  npmDepsHash = "sha256-/iUNvTk51aoh0TmDXgFG425I37xFuIddkrceF0pNBcE=";
+  npmDepsHash = "sha256-yb9Dbu9Rb1+xV/XiDP49uaQdBP9uM+oimzkeznpGrKw=";
   npmFlags = [ "--legacy-peer-deps" ];
   npmBuildScript = if buildWebExtension then "buildWeb" else "build";
   npmBuildFlags = [ "--" "--standalone" "--disable-updater" ];
@@ -60,6 +60,6 @@ buildNpmPackage rec {
     description = "Vencord web extension";
     homepage = "https://github.com/Vendicated/Vencord";
     license = licenses.gpl3Only;
-    maintainers = with maintainers; [ FlafyDev fwam NotAShelf Scrumplex ];
+    maintainers = with maintainers; [ FlafyDev NotAShelf Scrumplex ];
   };
 }

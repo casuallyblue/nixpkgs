@@ -12,13 +12,13 @@
 
 stdenv.mkDerivation rec {
   pname = "conmon";
-  version = "2.1.10";
+  version = "2.1.12";
 
   src = fetchFromGitHub {
     owner = "containers";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-WUXyx5OWIJDamzHUahN+0/rcn2pxQgCgYAE/d0mxk2A=";
+    hash = "sha256-iSC1Q7fdf+4YH4vLFPOscRWxNv/xygYx872u8msmMmc=";
   };
 
   nativeBuildInputs = [ pkg-config ];
@@ -26,7 +26,7 @@ stdenv.mkDerivation rec {
     ++ lib.optionals (!stdenv.hostPlatform.isMusl) [ glibc glibc.static ];
 
   # manpage requires building the vendored go-md2man
-  makeFlags = [ "bin/conmon" ];
+  makeFlags = [ "bin/conmon" "VERSION=${version}" ];
 
   installPhase = ''
     runHook preInstall

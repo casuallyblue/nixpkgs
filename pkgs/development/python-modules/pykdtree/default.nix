@@ -3,7 +3,7 @@
 , fetchPypi
 
 # build-system
-, cython_3
+, cython
 , numpy
 , setuptools
 
@@ -16,16 +16,21 @@
 
 buildPythonPackage rec {
   pname = "pykdtree";
-  version = "1.3.11";
+  version = "1.3.12";
   pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-bBI8e65SE68iPFKai0FhwH64VKb+QDizaVK62iEx68s=";
+    hash = "sha256-zCCypnxkBWSFoxTSwrbbo1SvfuHI+42uG+byk2o3Q0E=";
   };
 
+  postPatch = ''
+    substituteInPlace pyproject.toml \
+      --replace-warn "numpy>=2.0.0rc1,<3" "numpy"
+  '';
+
   nativeBuildInputs = [
-    cython_3
+    cython
     numpy
     setuptools
   ];

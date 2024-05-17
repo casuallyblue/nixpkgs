@@ -1,34 +1,38 @@
 {
     "testing": {
-        "version": "6.9-rc3",
-        "hash": "sha256:0xavyh3xg23il3bm2x6fjji3s26z05cyv1lry6h5yd7jjj3qm7cc"
+        "version": "6.9-rc6",
+        "hash": "sha256:075l5vhk8zmwln4jks7gr5n5k67s65qvs07l2rpbc7a75fdp6c14"
     },
     "6.1": {
-        "version": "6.1.85",
-        "hash": "sha256:0x32p1c04q5d0yd4qncrmc064m3g1x7cvfia5cd04q3wb769pzik"
+        "version": "6.1.91",
+        "hash": "sha256:1v2d5syxwwqlhvjzxk003qz9sr18r0n8dgg976vbi492r9iww2l8"
     },
     "5.15": {
-        "version": "5.15.154",
-        "hash": "sha256:16067mhf173kgs4mvlzix9qscwq5wy8817dyfyjx5g7jkykmxy0p"
+        "version": "5.15.159",
+        "hash": "sha256:1ia1nfci2wkx4nhnldfczpcq47mp7y7g657ikkh8i72y498gwy1l"
     },
     "5.10": {
-        "version": "5.10.214",
-        "hash": "sha256:0n7m82hw2rkw5mhdqw0vvmq7kq0s43jalr53sbv09wl17vai9w20"
+        "version": "5.10.217",
+        "hash": "sha256:0qhzqrjci45vcbzjch7vq75i6hpyap6yb7jw6g71phcnqgzw2ay5"
     },
     "5.4": {
-        "version": "5.4.273",
-        "hash": "sha256:0hs7af3mcnk5mmp3c5vjl187nva2kzsdx487nd12a8m7zb9wz84b"
+        "version": "5.4.276",
+        "hash": "sha256:01vfx19n8rv9fgjjzvi78125md71zgn5jrinbarabzr18jyjwwg2"
     },
     "4.19": {
-        "version": "4.19.311",
-        "hash": "sha256:10dww3cyazcf3wjzh8igpa0frb8gvl6amnksh42zfkji4mskh2r6"
+        "version": "4.19.314",
+        "hash": "sha256:0nvrpg5aj2q4h2drmczprqaprcc2zhcrijfri77b830ms8rg4y2a"
     },
     "6.6": {
-        "version": "6.6.26",
-        "hash": "sha256:1nan0h95dkqpb55jr5mxfi8yks09fd518im3vblbi4zvyi4v8m5g"
+        "version": "6.6.31",
+        "hash": "sha256:080wwrc231fbf43hvvygddmdxdspyw23jc5vnd6fr5ccdybgzv6n"
     },
     "6.8": {
-        "version": "6.8.5",
-        "hash": "sha256:12gsxxiwkildj8i94fkm2v69zb6z6s7hnnlvpsyv8j1pszjj728k"
+        "version": "6.8.10",
+        "hash": "sha256:0xjirg2w5fc2w2q6wr702akszq32m31lk4q5nbjq10zqhbcr5fxh"
+    },
+    "6.9": {
+        "version": "6.9.1",
+        "hash": "sha256:0jn0qp22vx7xf2mgaj7cwf8agqhahvrwlda4ak6rw67xk2x19d01"
     }
 }

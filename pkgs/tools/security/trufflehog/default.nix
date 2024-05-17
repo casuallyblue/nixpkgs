@@ -8,16 +8,17 @@
 
 buildGoModule rec {
   pname = "trufflehog";
-  version = "3.72.0";
+  version = "3.76.0";
 
   src = fetchFromGitHub {
     owner = "trufflesecurity";
     repo = "trufflehog";
     rev = "refs/tags/v${version}";
-    hash = "sha256-2xgvXHeltoODr5Rok7yaUqdVcO2crtdPvvRrN+DDGr4=";
+    hash = "sha256-c3zQaIZmVjU4TyvidTnJlUwU9Xg4h0i/Sr8lBvBt5kA=";
   };
 
-  vendorHash = "sha256-zpHrwQ1egD2juWkQicHl2HVzXGr3DCmAyRdUgm5jdGg=";
+  vendorHash = "sha256-4pmemOKnXIQKWqg6NWL8G5zWfjneQngT56whu/f9aJc=";
+
   proxyVendor = true;
 
   ldflags = [

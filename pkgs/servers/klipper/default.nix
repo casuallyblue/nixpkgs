@@ -8,13 +8,13 @@
 
 stdenv.mkDerivation rec {
   pname = "klipper";
-  version = "unstable-2024-04-05";
+  version = "0.12.0-unstable-2024-05-14";
 
   src = fetchFromGitHub {
     owner = "KevinOConnor";
     repo = "klipper";
-    rev = "01c7befacb5b71643130433f2afb3f22ece68d71";
-    sha256 = "sha256-zFGFhO5EYyJ0qwQN+NOaKDlEu2LIbc9JAJVxFbMDJOU=";
+    rev = "e0cbd7b5fc1ce6d1dfbc8daf8e59f57bf3c5e5b9";
+    sha256 = "sha256-fPeFul9BLWuw6T4IdRROCd9BY0e6sxr82Q3orDZnye8=";
   };
 
   sourceRoot = "${src.name}/klippy";
@@ -63,7 +63,10 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
-  passthru.updateScript = unstableGitUpdater { url = meta.homepage; };
+  passthru.updateScript = unstableGitUpdater {
+    url = meta.homepage;
+    tagPrefix = "v";
+  };
 
   meta = with lib; {
     description = "The Klipper 3D printer firmware";

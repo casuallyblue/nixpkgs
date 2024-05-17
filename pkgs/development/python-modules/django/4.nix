@@ -1,7 +1,7 @@
 { lib
 , stdenv
 , buildPythonPackage
-, fetchPypi
+, fetchFromGitHub
 , pythonAtLeast
 , pythonOlder
 , substituteAll
@@ -43,15 +43,16 @@
 
 buildPythonPackage rec {
   pname = "django";
-  version = "4.2.11";
+  version = "4.2.12";
   format = "pyproject";
 
   disabled = pythonOlder "3.8";
 
-  src = fetchPypi {
-    pname = "Django";
-    inherit version;
-    hash = "sha256-bm/z2y2N0MmGtO7IVUyOT5GbXB/2KltDkMF6/y7W5cQ=";
+  src = fetchFromGitHub {
+    owner = "django";
+    repo = "django";
+    rev = "refs/tags/${version}";
+    hash = "sha256-n6esWUpZpCP4J4bNckNKJ9E61qFjTPS7XF+WgxNS2JE=";
   };
 
   patches = [
