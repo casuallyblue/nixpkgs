@@ -8,8 +8,8 @@ stdenv.mkDerivation {
 
   src = fetchgit {
     url = "https://git.casuallyblue.dev/mirth/mirth-build";
-    rev = "9dbb9a7aa447d61e05f697e0e3621265039253d1";
-    hash = "sha256-00VJjLMBB2yDamZyOa2t8Ff549E2eNgcHwOTosJRfnk=";
+    rev = "04c47c304f2903ac6b98163d0de69ecfc0c29f1e";
+    hash = "sha256-5BKwaH5+4oo/FS9TFgqoH7WcjW6XHah7r3efAWc/aGE=";
     fetchSubmodules = true;
   };
 
