@@ -6,7 +6,6 @@
 
   # build-system
   poetry-core,
-  pythonRelaxDepsHook,
 
   # dependencies
   bitarray,
@@ -18,7 +17,7 @@
 
 buildPythonPackage rec {
   pname = "airtouch5py";
-  version = "0.2.8";
+  version = "0.2.11";
   pyproject = true;
 
   disabled = pythonOlder "3.10";
@@ -26,12 +25,11 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "danzel";
     repo = "airtouch5py";
-    rev = "refs/tags/${version}";
-    hash = "sha256-MpwppyAWDiA3CZXCIUQ/vidzcxKXZJSlrFRhmrPMgCE=";
+    tag = version;
+    hash = "sha256-qJSqgdT1G26JOEjmsQv07IdWvApFvtHIdRGi9TFaKZ8=";
   };
 
   build-system = [ poetry-core ];
-  nativeBuildInputs = [ pythonRelaxDepsHook ];
   pythonRelaxDeps = [ "crc" ];
 
   dependencies = [

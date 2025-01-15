@@ -1,6 +1,7 @@
-{ lib
-, fetchCrate
-, rustPlatform
+{
+  lib,
+  fetchCrate,
+  rustPlatform,
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -16,7 +17,7 @@ rustPlatform.buildRustPackage rec {
   cargoDepsName = pname;
 
   meta = with lib; {
-    description = "A tool to sync Wifi passwords with macos on ARM Macs";
+    description = "Tool to sync Wifi passwords with macos on ARM Macs";
     homepage = "https://crates.io/crates/asahi-wifisync";
     license = licenses.mit;
     maintainers = with maintainers; [ lukaslihotzki ];

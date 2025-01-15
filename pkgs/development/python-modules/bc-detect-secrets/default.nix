@@ -17,7 +17,7 @@
 
 buildPythonPackage rec {
   pname = "bc-detect-secrets";
-  version = "1.5.10";
+  version = "1.5.33";
   pyproject = true;
 
   disabled = pythonOlder "3.8";
@@ -25,8 +25,8 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "bridgecrewio";
     repo = "detect-secrets";
-    rev = "refs/tags/${version}";
-    hash = "sha256-b0t5xv4fWiErQsYvDKTJuweiGLqS2WpR9ECGo/cpvQ8=";
+    tag = version;
+    hash = "sha256-z/mjZcC1ZXebDWXlYvcdxDk+HoZ0gctfJSpQSkIbQmA=";
   };
 
   build-system = [ setuptools ];
@@ -37,7 +37,7 @@ buildPythonPackage rec {
     unidiff
   ];
 
-  passthru.optional-dependencies = {
+  optional-dependencies = {
     word_list = [ pyahocorasick ];
     gibberish = [ gibberish-detector ];
   };
@@ -47,7 +47,7 @@ buildPythonPackage rec {
     pkgs.gitMinimal
     pytestCheckHook
     responses
-  ] ++ lib.flatten (builtins.attrValues passthru.optional-dependencies);
+  ] ++ lib.flatten (builtins.attrValues optional-dependencies);
 
   preCheck = ''
     export HOME=$(mktemp -d);

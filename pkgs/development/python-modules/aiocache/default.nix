@@ -1,71 +1,73 @@
-{ lib
-, aiohttp
-, aiomcache
-, buildPythonPackage
-, fetchFromGitHub
-, marshmallow
-, msgpack
-, pkgs
-, pythonOlder
-, pytest-asyncio
-, pytest-mock
-, pytestCheckHook
-, redis
-, setuptools
+{
+  lib,
+  aiohttp,
+  aiomcache,
+  buildPythonPackage,
+  fetchFromGitHub,
+  marshmallow,
+  msgpack,
+  pkgs,
+  pytest-asyncio,
+  pytest-cov-stub,
+  pytest-mock,
+  pytestCheckHook,
+  pythonAtLeast,
+  pythonOlder,
+  redis,
+  setuptools,
 }:
 
 buildPythonPackage rec {
   pname = "aiocache";
-  version = "0.12.2";
+  version = "0.12.3";
   pyproject = true;
 
-  disabled = pythonOlder "3.7";
+  disabled = pythonOlder "3.8";
 
   src = fetchFromGitHub {
     owner = "aio-libs";
     repo = "aiocache";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-yvXDNJL8uxReaU81klVWudJwh1hmvg5GeeILcNpm/YA=";
+    tag = "v${version}";
+    hash = "sha256-4QYCRXMWlt9fsiWgUTc2pKzXG7AG/zGmd4HT5ggIZNM=";
   };
 
-  postPatch = ''
-    substituteInPlace setup.cfg \
-      --replace-fail "--cov=aiocache --cov=tests/ --cov-report term" ""
-  '';
-
-  build-system = [
-    setuptools
-  ];
+  build-system = [ setuptools ];
 
   optional-dependencies = {
-    redis = [
-      redis
-    ];
-    memcached = [
-      aiomcache
-    ];
-    msgpack = [
-      msgpack
-    ];
+    redis = [ redis ];
+    memcached = [ aiomcache ];
+    msgpack = [ msgpack ];
   };
 
   nativeCheckInputs = [
     aiohttp
     marshmallow
     pytest-asyncio
+    pytest-cov-stub
     pytest-mock
     pytestCheckHook
   ] ++ lib.flatten (lib.attrValues optional-dependencies);
 
   pytestFlagsArray = [
-    "-W" "ignore::DeprecationWarning"
+    "-W"
+    "ignore::DeprecationWarning"
     # TypeError: object MagicMock can't be used in 'await' expression
     "--deselect=tests/ut/backends/test_redis.py::TestRedisBackend::test_close"
   ];
 
-  disabledTests = [
-    # calls apache benchmark and fails, no usable output
-    "test_concurrency_error_rates"
+  disabledTests =
+    [
+      # Test calls apache benchmark and fails, no usable output
+      "test_concurrency_error_rates"
+    ]
+    ++ lib.optionals (pythonAtLeast "3.13") [
+      # https://github.com/aio-libs/aiocache/issues/863
+      "test_cache_write_doesnt_wait_for_future"
+    ];
+
+  disabledTestPaths = [
+    # Benchmark and performance tests are not relevant for Nixpkgs
+    "tests/performance/"
   ];
 
   preCheck = ''
@@ -83,15 +85,13 @@ buildPythonPackage rec {
 
   __darwinAllowLocalNetworking = true;
 
-  pythonImportsCheck = [
-    "aiocache"
-  ];
+  pythonImportsCheck = [ "aiocache" ];
 
   meta = with lib; {
     description = "Python API Rate Limit Decorator";
     homepage = "https://github.com/aio-libs/aiocache";
     changelog = "https://github.com/aio-libs/aiocache/releases/tag/v${version}";
-    license = with licenses; [ bsd3 ];
+    license = licenses.bsd3;
     maintainers = with maintainers; [ fab ];
   };
 }

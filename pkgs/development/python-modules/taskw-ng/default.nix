@@ -8,9 +8,8 @@
   poetry-dynamic-versioning,
   python-dateutil,
   pythonOlder,
-  pythonRelaxDepsHook,
   pytz,
-  taskwarrior,
+  taskwarrior2,
 }:
 
 buildPythonPackage rec {
@@ -23,7 +22,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "bergercookie";
     repo = "taskw-ng";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-tlidTt0TzWnvfajYiIfvRv7OfakHY6zWAicmAwq/Z8w=";
   };
 
@@ -37,8 +36,6 @@ buildPythonPackage rec {
     poetry-dynamic-versioning
   ];
 
-  nativeBuildInputs = [ pythonRelaxDepsHook ];
-
   propagatedBuildInputs = [
     kitchen
     packaging
@@ -46,7 +43,7 @@ buildPythonPackage rec {
     pytz
   ];
 
-  checkInputs = [ taskwarrior ];
+  checkInputs = [ taskwarrior2 ];
 
   # TODO: doesn't pass because `can_use` fails and `task --version` seems not to be answering.
   # pythonImportsCheck = [ "taskw_ng" ];

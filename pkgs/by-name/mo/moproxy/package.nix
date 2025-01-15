@@ -1,10 +1,11 @@
-{ fetchFromGitHub
-, rustPlatform
-, fetchurl
-, lib
+{
+  fetchFromGitHub,
+  rustPlatform,
+  fetchurl,
+  lib,
 }:
 
-rustPlatform.buildRustPackage rec{
+rustPlatform.buildRustPackage rec {
   pname = "moproxy";
   version = "0.5.1";
 
@@ -26,12 +27,14 @@ rustPlatform.buildRustPackage rec{
     in
     ''
       # build script try to download from network
-      sed -i '15s/.*/let zip_path = PathBuf::from("${lib.escape ["/"]  (toString webBundle)}");/' build.rs
+      sed -i '15s/.*/let zip_path = PathBuf::from("${
+        lib.escape [ "/" ] (toString webBundle)
+      }");/' build.rs
     '';
 
   meta = with lib; {
     homepage = "https://github.com/sorz/moproxy";
-    description = "A transparent TCP to SOCKSv5/HTTP proxy on Linux written in Rust";
+    description = "Transparent TCP to SOCKSv5/HTTP proxy on Linux written in Rust";
     license = licenses.mit;
     mainProgram = "moproxy";
     maintainers = with maintainers; [ oluceps ];

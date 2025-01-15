@@ -1,11 +1,11 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, poetry-core
-, pythonRelaxDepsHook
-, rapidfuzz
-, click
-, pythonOlder
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  poetry-core,
+  rapidfuzz,
+  click,
+  pythonOlder,
 }:
 
 buildPythonPackage rec {
@@ -18,13 +18,12 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "jitsi";
     repo = "jiwer";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-2LzAOgABK00Pz3v5WWYUAcZOYcTbRKfgw7U5DOohB/Q=";
   };
 
   build-system = [
     poetry-core
-    pythonRelaxDepsHook
   ];
 
   dependencies = [
@@ -32,16 +31,12 @@ buildPythonPackage rec {
     click
   ];
 
-  pythonRelaxDeps = [
-    "rapidfuzz"
-  ];
+  pythonRelaxDeps = [ "rapidfuzz" ];
 
-  pythonImportsCheck = [
-    "jiwer"
-  ];
+  pythonImportsCheck = [ "jiwer" ];
 
   meta = with lib; {
-    description = "A simple and fast python package to evaluate an automatic speech recognition system";
+    description = "Simple and fast python package to evaluate an automatic speech recognition system";
     mainProgram = "jiwer";
     homepage = "https://github.com/jitsi/jiwer";
     changelog = "https://github.com/jitsi/jiwer/releases/tag/v${version}";

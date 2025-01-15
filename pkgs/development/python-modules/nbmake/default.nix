@@ -1,25 +1,25 @@
-{ lib
-, buildPythonPackage
-, pythonOlder
-, fetchFromGitHub
-, poetry-core
-, pythonRelaxDepsHook
-, setuptools
-, wheel
-, ipykernel
-, nbclient
-, nbformat
-, pygments
-, pytest
-, pyyaml
-, pytest-xdist
-, pytestCheckHook
-, typing-extensions
+{
+  lib,
+  buildPythonPackage,
+  pythonOlder,
+  fetchFromGitHub,
+  poetry-core,
+  setuptools,
+  wheel,
+  ipykernel,
+  nbclient,
+  nbformat,
+  pygments,
+  pytest,
+  pyyaml,
+  pytest-xdist,
+  pytestCheckHook,
+  typing-extensions,
 }:
 
 buildPythonPackage rec {
   pname = "nbmake";
-  version = "1.5.3";
+  version = "1.5.4";
   pyproject = true;
 
   disabled = pythonOlder "3.8";
@@ -27,13 +27,12 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "treebeardtech";
     repo = "nbmake";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-sX0YqyBchLlo0QPIpLvl11/gwoiZknG5rBDzmQKiXhs=";
+    tag = "v${version}";
+    hash = "sha256-OzjqpipFb5COhqc//Sg6OU65ShPrYe/KtxifToEXveg=";
   };
 
   build-system = [
     poetry-core
-    pythonRelaxDepsHook
     setuptools
     wheel
   ];
@@ -47,13 +46,13 @@ buildPythonPackage rec {
     pyyaml
   ];
 
-  pythonRelaxDeps = [
-    "nbclient"
-  ];
+  pythonRelaxDeps = [ "nbclient" ];
 
-  pythonImportsCheck = [
-    "nbmake"
-  ];
+  pythonImportsCheck = [ "nbmake" ];
+
+  # tests are prone to race conditions under high parallelism
+  # https://github.com/treebeardtech/nbmake/issues/129
+  pytestFlagsArray = [ "--maxprocesses=4" ];
 
   nativeCheckInputs = [
     pytest-xdist
@@ -61,14 +60,17 @@ buildPythonPackage rec {
     typing-extensions
   ];
 
+  preCheck = ''
+    export HOME=$(mktemp -d)
+  '';
+
   __darwinAllowLocalNetworking = true;
 
-
-  meta = with lib; {
+  meta = {
     description = "Pytest plugin for testing notebooks";
     homepage = "https://github.com/treebeardtech/nbmake";
     changelog = "https://github.com/treebeardtech/nbmake/releases/tag/v${version}";
-    license = licenses.asl20;
-    maintainers = with maintainers; [ GaetanLepage ];
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [ GaetanLepage ];
   };
 }

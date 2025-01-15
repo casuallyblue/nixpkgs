@@ -12,7 +12,7 @@ python3.pkgs.buildPythonApplication rec {
   pname = "chipsec";
   version = "1.10.6";
 
-  disabled = !stdenv.isLinux;
+  disabled = !stdenv.hostPlatform.isLinux;
 
   src = fetchFromGitHub {
     owner = "chipsec";
@@ -22,6 +22,11 @@ python3.pkgs.buildPythonApplication rec {
   };
 
   patches = lib.optionals withDriver [ ./ko-path.diff ./compile-ko.diff ];
+
+  postPatch = ''
+    substituteInPlace tests/software/util.py \
+      --replace-fail "assertRegexpMatches" "assertRegex"
+  '';
 
   KSRC = lib.optionalString withDriver "${kernel.dev}/lib/modules/${kernel.modDirVersion}/build";
 
@@ -39,6 +44,7 @@ python3.pkgs.buildPythonApplication rec {
   preBuild = lib.optionalString withDriver ''
     export CHIPSEC_BUILD_LIB=$(mktemp -d)
     mkdir -p $CHIPSEC_BUILD_LIB/chipsec/helper/linux
+    appendToVar setupPyBuildFlags "--build-lib=$CHIPSEC_BUILD_LIB"
   '';
 
   env.NIX_CFLAGS_COMPILE = toString [
@@ -52,9 +58,7 @@ python3.pkgs.buildPythonApplication rec {
       $out/${python3.pkgs.python.sitePackages}/drivers/linux/chipsec.ko
   '';
 
-  setupPyBuildFlags = [
-    "--build-lib=$CHIPSEC_BUILD_LIB"
-  ] ++ lib.optionals (!withDriver) [
+  setupPyBuildFlags = lib.optionals (!withDriver) [
     "--skip-driver"
   ];
 

@@ -1,11 +1,12 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pytest-mock
-, pytestCheckHook
-, pythonOlder
-, requests
-, requests-mock
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pytest-mock,
+  pytestCheckHook,
+  pythonOlder,
+  requests,
+  requests-mock,
 }:
 
 buildPythonPackage rec {
@@ -18,13 +19,11 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "pydiscourse";
     repo = pname;
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-KqJ6ag4owG7US5Q4Ygjq263ds1o/JhEJ3bNa8YecYtE=";
   };
 
-  propagatedBuildInputs = [
-    requests
-  ];
+  propagatedBuildInputs = [ requests ];
 
   nativeCheckInputs = [
     pytest-mock
@@ -32,12 +31,10 @@ buildPythonPackage rec {
     requests-mock
   ];
 
-  pythonImportsCheck = [
-    "pydiscourse"
-  ];
+  pythonImportsCheck = [ "pydiscourse" ];
 
   meta = with lib; {
-    description = "A Python library for working with Discourse";
+    description = "Python library for working with Discourse";
     mainProgram = "pydiscoursecli";
     homepage = "https://github.com/pydiscourse/pydiscourse";
     changelog = "https://github.com/pydiscourse/pydiscourse/releases/tag/v${version}";

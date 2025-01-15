@@ -45,6 +45,11 @@ stdenv.mkDerivation rec {
     "--sbindir=${placeholder "out"}/bin" # for wrapGAppsHook3 to wrap automatically
   ];
 
+  postPatch = ''
+    # https://github.com/Xubuntu/lightdm-gtk-greeter/pull/178
+    cp data/badges/xfce{,-wayland}_badge-symbolic.svg
+  '';
+
   preConfigure = ''
     configureFlagsArray+=( --enable-at-spi-command="${at-spi2-core}/libexec/at-spi-bus-launcher --launch-immediately" )
   '';
@@ -66,7 +71,7 @@ stdenv.mkDerivation rec {
 
   meta = with lib; {
     homepage = "https://github.com/Xubuntu/lightdm-gtk-greeter";
-    description = "A GTK greeter for LightDM";
+    description = "GTK greeter for LightDM";
     mainProgram = "lightdm-gtk-greeter";
     platforms = platforms.linux;
     license = licenses.gpl3Plus;

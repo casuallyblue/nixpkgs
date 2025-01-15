@@ -1,15 +1,16 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, fsspec
-, funcy
-, pytest-asyncio
-, pytest-mock
-, pytestCheckHook
-, pythonOlder
-, reflink
-, setuptools-scm
-, shortuuid
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  fsspec,
+  funcy,
+  pytest-asyncio,
+  pytest-mock,
+  pytestCheckHook,
+  pythonOlder,
+  reflink,
+  setuptools-scm,
+  shortuuid,
 }:
 
 buildPythonPackage rec {
@@ -22,7 +23,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "iterative";
     repo = "dvc-objects";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-CXZKya22i2PhHk/CYd10AlzkiOBo5xZfR9l4rnkaV5Y=";
   };
 
@@ -31,15 +32,9 @@ buildPythonPackage rec {
       --replace " --benchmark-skip" ""
   '';
 
-  nativeBuildInputs = [
-    setuptools-scm
-  ];
+  nativeBuildInputs = [ setuptools-scm ];
 
-  propagatedBuildInputs = [
-    fsspec
-  ]  ++ lib.optionals (pythonOlder "3.12") [
-    funcy
-  ];
+  propagatedBuildInputs = [ fsspec ] ++ lib.optionals (pythonOlder "3.12") [ funcy ];
 
   nativeCheckInputs = [
     pytest-asyncio
@@ -49,9 +44,7 @@ buildPythonPackage rec {
     shortuuid
   ];
 
-  pythonImportsCheck = [
-    "dvc_objects"
-  ];
+  pythonImportsCheck = [ "dvc_objects" ];
 
   disabledTestPaths = [
     # Disable benchmarking

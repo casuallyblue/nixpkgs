@@ -6,17 +6,19 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "robotframework-tidy";
-  version = "4.11.0";
+  version = "4.15.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "MarketSquare";
     repo = "robotframework-tidy";
-    rev = version;
-    hash = "sha256-pWW7Ex184WgnPfqHg5qQjfE+9UPvCmE5pwkY8jrp9bI=";
+    tag = version;
+    hash = "sha256-PNf0K1+kjijvJ53UCKkC2LyjBJOroDPdtYjcXbRU1VI=";
   };
 
   build-system = with python3.pkgs; [ setuptools ];
+
+  pythonRelaxDeps = [ "rich-click" ];
 
   dependencies = with python3.pkgs; [
     robotframework

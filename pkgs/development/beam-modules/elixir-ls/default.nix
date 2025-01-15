@@ -1,27 +1,38 @@
-{ lib, elixir, fetchFromGitHub, fetchMixDeps, mixRelease, nix-update-script }:
+{
+  lib,
+  elixir,
+  fetchFromGitHub,
+  fetchMixDeps,
+  mixRelease,
+  nix-update-script,
+}:
 # Based on the work of Hauleth
 # None of this would have happened without him
 
 let
   pname = "elixir-ls";
-  version = "0.20.0";
+  version = "0.26.2";
   src = fetchFromGitHub {
     owner = "elixir-lsp";
     repo = "elixir-ls";
     rev = "v${version}";
-    hash = "sha256-LVMwDoGR516rwNhhvibu7g4EsaG2O8WOb+Ja+nCQA+k=";
-    fetchSubmodules = true;
+    hash = "sha256-ELjZFGzUQ14iUj2/WD55a6Yf8EMOEjb7MnCx0Nyg/vQ=";
   };
 in
 mixRelease {
-  inherit pname version src elixir;
+  inherit
+    pname
+    version
+    src
+    elixir
+    ;
 
   stripDebug = true;
 
   mixFodDeps = fetchMixDeps {
     pname = "mix-deps-${pname}";
     inherit src version elixir;
-    hash = "sha256-yq2shufOZsTyg8iBGsRrAs6bC3iAa9vtUeS96c5xJl0=";
+    hash = "sha256-I0u3eovTYNm0ncBCTEztg5fhLiLk+WNqcKfj3Za12zc=";
   };
 
   # elixir-ls is an umbrella app
@@ -53,10 +64,13 @@ mixRelease {
     substitute release/debug_adapter.sh $out/bin/elixir-debug-adapter \
       --replace 'exec "''${dir}/launch.sh"' "exec $out/lib/launch.sh"
     chmod +x $out/bin/elixir-debug-adapter
-    # prepare the launcher
+    # prepare the launchers
     substituteInPlace $out/lib/launch.sh \
       --replace "ERL_LIBS=\"\$SCRIPTPATH:\$ERL_LIBS\"" \
                 "ERL_LIBS=$out/lib:\$ERL_LIBS" \
+      --replace "exec elixir" "exec ${elixir}/bin/elixir" \
+      --replace 'echo "" | elixir' "echo \"\" | ${elixir}/bin/elixir"
+    substituteInPlace $out/lib/exec.zsh \
       --replace "exec elixir" "exec ${elixir}/bin/elixir"
     runHook postInstall
   '';

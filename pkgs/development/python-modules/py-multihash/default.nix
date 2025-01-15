@@ -1,11 +1,12 @@
-{ lib
-, base58
-, buildPythonPackage
-, fetchFromGitHub
-, morphys
-, pytestCheckHook
-, six
-, varint
+{
+  lib,
+  base58,
+  buildPythonPackage,
+  fetchFromGitHub,
+  morphys,
+  pytestCheckHook,
+  six,
+  varint,
 }:
 
 buildPythonPackage rec {
@@ -16,7 +17,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "multiformats";
     repo = pname;
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-z1lmSypGCMFWJNzNgV9hx/IStyXbpd5jvrptFpewuOA=";
   };
 
@@ -32,13 +33,9 @@ buildPythonPackage rec {
     varint
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
-  pythonImportsCheck = [
-    "multihash"
-  ];
+  pythonImportsCheck = [ "multihash" ];
 
   meta = with lib; {
     description = "Self describing hashes - for future proofing";

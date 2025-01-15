@@ -1,27 +1,28 @@
-{ lib
-, stdenv
-, callPackage
-, fetchFromGitHub
-, fetchpatch
-, fetchurl
-, rocmUpdateScript
-, makeWrapper
-, cmake
-, perl
-, clang
-, hip-common
-, hipcc
-, rocm-device-libs
-, rocm-comgr
-, rocm-runtime
-, roctracer
-, rocminfo
-, rocm-smi
-, numactl
-, libGL
-, libxml2
-, libX11
-, python3Packages
+{
+  lib,
+  stdenv,
+  callPackage,
+  fetchFromGitHub,
+  fetchpatch,
+  fetchurl,
+  rocmUpdateScript,
+  makeWrapper,
+  cmake,
+  perl,
+  clang,
+  hip-common,
+  hipcc,
+  rocm-device-libs,
+  rocm-comgr,
+  rocm-runtime,
+  roctracer,
+  rocminfo,
+  rocm-smi,
+  numactl,
+  libGL,
+  libxml2,
+  libX11,
+  python3Packages,
 }:
 
 let
@@ -38,14 +39,15 @@ let
 
   # https://github.com/NixOS/nixpkgs/issues/305641
   # Not needed when 3.29.2 is in unstable
-  cmake' = cmake.overrideAttrs(old: rec {
+  cmake' = cmake.overrideAttrs (old: rec {
     version = "3.29.2";
     src = fetchurl {
       url = "https://cmake.org/files/v${lib.versions.majorMinor version}/cmake-${version}.tar.gz";
       hash = "sha256-NttLaSaqt0G6bksuotmckZMiITIwi03IJNQSPLcwNS4=";
     };
   });
-in stdenv.mkDerivation (finalAttrs: {
+in
+stdenv.mkDerivation (finalAttrs: {
   pname = "clr";
   version = "6.0.2";
 
@@ -138,6 +140,10 @@ in stdenv.mkDerivation (finalAttrs: {
     # https://lists.debian.org/debian-ai/2024/02/msg00178.html
     substituteInPlace rocclr/utils/flags.hpp \
       --replace-fail "HIP_USE_RUNTIME_UNBUNDLER, false" "HIP_USE_RUNTIME_UNBUNDLER, true"
+
+    substituteInPlace opencl/khronos/icd/loader/icd_platform.h \
+      --replace-fail '#define ICD_VENDOR_PATH "/etc/OpenCL/vendors/";' \
+                     '#define ICD_VENDOR_PATH "/run/opengl-driver/etc/OpenCL/vendors/";'
   '';
 
   postInstall = ''
@@ -209,6 +215,8 @@ in stdenv.mkDerivation (finalAttrs: {
     license = with licenses; [ mit ];
     maintainers = with maintainers; [ lovesegfault ] ++ teams.rocm.members;
     platforms = platforms.linux;
-    broken = versions.minor finalAttrs.version != versions.minor stdenv.cc.version || versionAtLeast finalAttrs.version "7.0.0";
+    broken =
+      versions.minor finalAttrs.version != versions.minor stdenv.cc.version
+      || versionAtLeast finalAttrs.version "7.0.0";
   };
 })

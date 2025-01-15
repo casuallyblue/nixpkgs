@@ -20,7 +20,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "mbr";
     repo = "simplekv";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-seUGDj2q84+AjDFM1pxMLlHbe9uBgEhmqA96UHjnCmo=";
   };
 
@@ -41,7 +41,7 @@ buildPythonPackage rec {
   ];
 
   meta = with lib; {
-    description = "A simple key-value store for binary data";
+    description = "Simple key-value store for binary data";
     homepage = "https://github.com/mbr/simplekv";
     changelog = "https://github.com/mbr/simplekv/releases/tag/${version}";
     license = licenses.mit;

@@ -1,6 +1,7 @@
-{ lib
-, python3Packages
-, fetchFromGitHub
+{
+  lib,
+  python3Packages,
+  fetchFromGitHub,
 }:
 
 python3Packages.buildPythonApplication rec {
@@ -17,7 +18,10 @@ python3Packages.buildPythonApplication rec {
 
   nativeBuildInputs = with python3Packages; [
     setuptools
-    pythonRelaxDepsHook
+  ];
+
+  pythonRelaxDeps = [
+    "wyoming"
   ];
 
   pythonRemoveDeps = [
@@ -25,7 +29,7 @@ python3Packages.buildPythonApplication rec {
   ];
 
   propagatedBuildInputs = with python3Packages; [
-    tensorflow
+    tensorflow-bin
     wyoming
   ];
 
@@ -35,7 +39,7 @@ python3Packages.buildPythonApplication rec {
 
   meta = with lib; {
     changelog = "https://github.com/rhasspy/wyoming-openwakeword/blob/v${version}/CHANGELOG.md";
-    description = "An open source voice assistant toolkit for many human languages";
+    description = "Open source voice assistant toolkit for many human languages";
     homepage = "https://github.com/rhasspy/wyoming-openwakeword";
     license = licenses.mit;
     maintainers = with maintainers; [ hexa ];

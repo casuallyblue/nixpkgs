@@ -1,9 +1,9 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, poetry-core
-, asynctest
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  poetry-core,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -14,7 +14,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "steinnes";
     repo = "timing-asgi";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-oEDesmy9t2m51Zd6Zg87qoYbfbDnejfrbjyBkZ3hF58=";
   };
 
@@ -24,9 +24,7 @@ buildPythonPackage rec {
     --replace-fail "poetry>=" "poetry-core>="
   '';
 
-  build-system = [
-    poetry-core
-  ];
+  build-system = [ poetry-core ];
 
   pythonImportsCheck = [ "timing_asgi" ];
 

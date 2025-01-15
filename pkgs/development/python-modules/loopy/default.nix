@@ -29,7 +29,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "inducer";
     repo = "loopy";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-mU8vXEPR88QpJpzXZlZdDhMtlwIx5YpeYhXU8Vw2T9g=";
     fetchSubmodules = true; # submodule at `loopy/target/c/compyte`
   };
@@ -62,7 +62,7 @@ buildPythonPackage rec {
   doCheck = false;
 
   meta = {
-    description = "A code generator for array-based code on CPUs and GPUs";
+    description = "Code generator for array-based code on CPUs and GPUs";
     homepage = "https://github.com/inducer/loopy";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ tomasajt ];

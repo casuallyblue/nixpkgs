@@ -4,15 +4,15 @@ rec {
   amber = fetchFromGitHub {
     owner = "google";
     repo = "amber";
-    rev = "8e90b2d2f532bcd4a80069e3f37a9698209a21bc";
-    hash = "sha256-LuNCND/NXoNbbTWv7RYQUkq2QXL1qXR27uHwFIz0DXg=";
+    rev = "67fea651b886460d7b72295e680528c059bbbe40";
+    hash = "sha256-oDN7UdyfNMG4r36nnRJmYdbd0wyd1titGQQNa9e/3tU=";
   };
 
   glslang = fetchFromGitHub {
     owner = "KhronosGroup";
     repo = "glslang";
-    rev = "bada5c87ec6db4441db129d8506742c4a72bd610";
-    hash = "sha256-GayYjvJ935arbe4GUg8l6KhfImBCpqWRe8xSqlxXLYQ=";
+    rev = "c5b76b78c9dec95251e9c1840a671e19bf61abe3";
+    hash = "sha256-N7vGPqQieWnr+mbrmdbvzz7n9q3bbRKLxkYt6OiaJvU=";
   };
 
   jsoncpp = fetchFromGitHub {
@@ -32,27 +32,33 @@ rec {
   spirv-headers = fetchFromGitHub {
     owner = "KhronosGroup";
     repo = "SPIRV-Headers";
-    rev = "d3c2a6fa95ad463ca8044d7fc45557db381a6a64";
-    hash = "sha256-POd/TnbVzq/Xyi0O4hU24Qk4LDD5Af2kHJgQ+wPVDsg=";
+    rev = "2a9b6f951c7d6b04b6c21fe1bf3f475b68b84801";
+    hash = "sha256-o1yRTvP7a+XVwendTKBJKNnelVGWLD0gH258GGeUDhQ=";
   };
 
   spirv-tools = fetchFromGitHub {
     owner = "KhronosGroup";
     repo = "SPIRV-Tools";
-    rev = "f9184c6501f7e349e0664d281ac93b1db9c1e5ad";
-    hash = "sha256-BDnKOUIWZVGPPwmQsMqF1yWy80dl75kdaoztUMnlrqc=";
+    rev = "44936c4a9d42f1c67e34babb5792adf5bce7f76b";
+    hash = "sha256-kSiP94hMlblFod2mQhlAQDAENGOvBh7v8bCxxaiYWq4=";
   };
 
   vulkan-docs = fetchFromGitHub {
     owner = "KhronosGroup";
     repo = "Vulkan-Docs";
-    rev = "d99193d3fcc4b2a0dacc0a9d7e4951ea611a3e96";
-    hash = "sha256-pfPErjZ4jSxEg+OgFcELyvqrS0Hm3QWQ3WhQ9T3rJbQ=";
+    rev = "486e4b289053a7d64784e7ce791711843c60c235";
+    hash = "sha256-LGAHUeWF9X6Li1HcdD14pgnBUquWxA+bQpAL09JmwLQ=";
   };
 
+  vulkan-validationlayers = fetchFromGitHub {
+    owner = "KhronosGroup";
+    repo = "Vulkan-ValidationLayers";
+    rev = "9a46ae006fa5c92e2d2af7944187f7794210844b";
+    hash = "sha256-qVQy3kKkZRWHjtj2YxJTZqKg1kwnmLa3bgVathisfOc=";
+  };
 
   prePatch = ''
-    mkdir -p external/amber external/glslang external/jsoncpp external/nvidia-video-samples external/spirv-headers external/spirv-tools external/vulkan-docs
+    mkdir -p external/amber external/glslang external/jsoncpp external/nvidia-video-samples external/spirv-headers external/spirv-tools external/vulkan-docs external/vulkan-validationlayers
 
     cp -r ${amber} external/amber/src
     cp -r ${glslang} external/glslang/src
@@ -61,5 +67,6 @@ rec {
     cp -r ${spirv-headers} external/spirv-headers/src
     cp -r ${spirv-tools} external/spirv-tools/src
     cp -r ${vulkan-docs} external/vulkan-docs/src
+    cp -r ${vulkan-validationlayers} external/vulkan-validationlayers/src
   '';
 }

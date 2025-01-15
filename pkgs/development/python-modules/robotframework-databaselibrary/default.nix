@@ -1,10 +1,11 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, setuptools
-, robotframework
-, robotframework-excellib
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  setuptools,
+  robotframework,
+  robotframework-excellib,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -15,7 +16,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "MarketSquare";
     repo = "Robotframework-Database-Library";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-WTcB1jEfBm8tOuQgsGUhYD4FDqpEEKA4UOmbHS/hac0=";
   };
 
@@ -31,9 +32,7 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "DatabaseLibrary" ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
   meta = with lib; {
     description = "Database Library contains utilities meant for Robot Framework";
@@ -41,5 +40,4 @@ buildPythonPackage rec {
     license = licenses.asl20;
     maintainers = with maintainers; [ talkara ];
   };
-
 }

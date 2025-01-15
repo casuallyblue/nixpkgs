@@ -1,4 +1,14 @@
-{ lib, stdenv, fetchFromGitHub, fetchpatch, ant, jdk, xmlstarlet, axis2, dbus_java }:
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  fetchpatch,
+  ant,
+  jdk,
+  xmlstarlet,
+  axis2,
+  dbus_java,
+}:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "DisnixWebService";
@@ -51,11 +61,11 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
     ant install
-    runHook postIntall
+    runHook postInstall
   '';
 
   meta = {
-    description = "A SOAP interface and client for Disnix";
+    description = "SOAP interface and client for Disnix";
     mainProgram = "disnix-soap-client";
     homepage = "https://github.com/svanderburg/DisnixWebService";
     changelog = "https://github.com/svanderburg/DisnixWebService/blob/${finalAttrs.src.rev}/NEWS.txt";

@@ -1,13 +1,14 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pkgconfig
-, psutil
-, pytestCheckHook
-, python
-, pythonOlder
-, setuptools
-, setuptools-scm
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pkgconfig,
+  psutil,
+  pytestCheckHook,
+  python,
+  pythonOlder,
+  setuptools,
+  setuptools-scm,
 }:
 
 buildPythonPackage rec {
@@ -21,7 +22,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "python-lz4";
     repo = "python-lz4";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-ZvGUkb9DoheYY2/sejUhxgh2lS5eoBrFCXR4E0IcFcs=";
   };
 
@@ -61,6 +62,6 @@ buildPythonPackage rec {
     homepage = "https://github.com/python-lz4/python-lz4";
     changelog = "https://github.com/python-lz4/python-lz4/releases/tag/v${version}";
     license = licenses.bsd3;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
   };
 }

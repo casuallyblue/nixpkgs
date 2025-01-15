@@ -1,12 +1,15 @@
-{ lib, mkDerivation, fetchFromGitHub
-, libkiwix
-, pkg-config
-, qmake
-, qtbase
-, qtwebengine
-, qtsvg
-, qtimageformats
-, aria2
+{
+  lib,
+  mkDerivation,
+  fetchFromGitHub,
+  libkiwix,
+  pkg-config,
+  qmake,
+  qtbase,
+  qtwebengine,
+  qtsvg,
+  qtimageformats,
+  aria2,
 }:
 
 mkDerivation {
@@ -38,11 +41,11 @@ mkDerivation {
   ];
 
   meta = with lib; {
-    description = "An offline reader for Web content";
+    description = "Offline reader for Web content";
     mainProgram = "kiwix-desktop";
     homepage = "https://kiwix.org";
     license = licenses.gpl3Plus;
     platforms = platforms.linux;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
   };
 }

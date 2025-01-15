@@ -1,8 +1,10 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, setuptools
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  fetchpatch2,
+  setuptools,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -15,17 +17,20 @@ buildPythonPackage rec {
     hash = "sha256-Pj4HmkH+taG2T5eLXqT0YECpTxHw6Lu4Jh49u+ymTUQ=";
   };
 
-  nativeBuildInputs = [
-    setuptools
+  patches = [
+    (fetchpatch2 {
+      name = "python313-compat.patch";
+      url = "https://github.com/borntyping/python-colorlog/commit/607485def2d60b60c40c0d682574324b47fc30ba.patch";
+      hash = "sha256-oO0efAOq7XIwt40Nq5pn2eXen1+p5FiUMDihn8fYAFg=";
+      includes = [ "colorlog/wrappers.py" ];
+    })
   ];
 
-  pythonImportsCheck = [
-    "colorlog"
-  ];
+  nativeBuildInputs = [ setuptools ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  pythonImportsCheck = [ "colorlog" ];
+
+  nativeCheckInputs = [ pytestCheckHook ];
 
   meta = with lib; {
     description = "Log formatting with colors";

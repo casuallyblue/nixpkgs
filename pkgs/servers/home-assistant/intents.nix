@@ -1,27 +1,28 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonOlder
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonOlder,
 
-# build-system
-, setuptools
+  # build-system
+  setuptools,
 
-# codegen
-, hassil
-, python
-, pyyaml
-, voluptuous
-, regex
-, jinja2
+  # codegen
+  hassil,
+  python,
+  pyyaml,
+  voluptuous,
+  regex,
+  jinja2,
 
-# tests
-, pytest-xdist
-, pytestCheckHook
+  # tests
+  pytest-xdist,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
   pname = "home-assistant-intents";
-  version = "2024.4.24";
+  version = "2025.1.1";
   pyproject = true;
 
   disabled = pythonOlder "3.9";
@@ -29,17 +30,10 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "home-assistant";
     repo = "intents-package";
-    # https://github.com/home-assistant/intents-package/issues/3
-    rev = "a68176a189c3def87cb11ad39baacea2440ce668";
-    hash = "sha256-SUIJWoA0ltg+bjYn4J5kvAk4Eh23uxEcdxonkTSV0m0=";
+    rev = "refs/tags/${version}";
     fetchSubmodules = true;
+    hash = "sha256-OeGupmeZ2KLpQHc0d50itTvlrA5XziKU8cAz9i6ztSw=";
   };
-
-  postPatch = ''
-    substituteInPlace pyproject.toml \
-      --replace-fail "setuptools~=62.3" "setuptools" \
-      --replace-fail "wheel~=0.37.1" "wheel"
-  '';
 
   build-system = [
     setuptools
@@ -69,6 +63,7 @@ buildPythonPackage rec {
   ];
 
   meta = with lib; {
+    changelog = "https://github.com/home-assistant/intents/releases/tag/${version}";
     description = "Intents to be used with Home Assistant";
     homepage = "https://github.com/home-assistant/intents";
     license = licenses.cc-by-40;

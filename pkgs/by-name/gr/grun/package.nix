@@ -1,9 +1,10 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, gtk2
-, pkg-config
-, autoreconfHook
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  gtk2,
+  pkg-config,
+  autoreconfHook,
 }:
 
 stdenv.mkDerivation {
@@ -31,7 +32,7 @@ stdenv.mkDerivation {
   ];
 
   meta = {
-    description = "An application launcher written in C and using GTK for the interface";
+    description = "Application launcher written in C and using GTK for the interface";
     mainProgram = "grun";
     homepage = "https://github.com/lrgc/grun";
     platforms = lib.platforms.linux;
@@ -39,4 +40,3 @@ stdenv.mkDerivation {
     maintainers = with lib.maintainers; [ _3JlOy-PYCCKUi ];
   };
 }
-

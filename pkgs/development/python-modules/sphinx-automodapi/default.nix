@@ -1,28 +1,29 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, fetchurl
-, pythonOlder
-, setuptools-scm
-, git
-, sphinx
-, pytestCheckHook
-, cython
-, gcc
-, graphviz
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  fetchurl,
+  pythonOlder,
+  setuptools-scm,
+  git,
+  sphinx,
+  pytestCheckHook,
+  cython,
+  gcc,
+  graphviz,
 }:
 
 buildPythonPackage rec {
   pname = "sphinx-automodapi";
-  version = "0.17.0";
+  version = "0.18.0";
   pyproject = true;
   disabled = pythonOlder "3.7";
 
   src = fetchFromGitHub {
     owner = "astropy";
     repo = pname;
-    rev = "refs/tags/v${version}";
-    hash = "sha256-Suu81pWUIwIgp/iTaYambuYRTkC7njP6n5RWZscugnk=";
+    tag = "v${version}";
+    hash = "sha256-YTaoGBYQvuUbMYe4FKmtgxcAxeesU/ruVXPOjZXGLGU=";
     leaveDotGit = true;
   };
 

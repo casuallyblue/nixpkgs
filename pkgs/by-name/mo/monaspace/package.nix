@@ -1,6 +1,7 @@
-{ lib
-, stdenvNoCC
-, fetchzip
+{
+  lib,
+  stdenvNoCC,
+  fetchzip,
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
@@ -13,7 +14,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     hash = "sha256-o5s4XBuwqA4sJ5KhEn5oYttBj4ojekr/LO6Ww9oQRGw=";
   };
 
-  outputs = [ "out" "woff" ];
+  outputs = [
+    "out"
+    "woff"
+  ];
 
   installPhase = ''
     runHook preInstall
@@ -28,7 +32,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   meta = {
-    description = "An innovative superfamily of fonts for code";
+    description = "Innovative superfamily of fonts for code";
     longDescription = ''
       Since the earliest days of the teletype machine, code has been set in
       monospaced type — letters, on a grid. Monaspace is a new type system that

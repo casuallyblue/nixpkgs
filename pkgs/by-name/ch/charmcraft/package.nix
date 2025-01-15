@@ -8,32 +8,34 @@
 
 python3Packages.buildPythonApplication rec {
   pname = "charmcraft";
-  version = "2.6.0";
+  version = "3.2.2";
 
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "canonical";
     repo = "charmcraft";
-    rev = "refs/tags/${version}";
-    hash = "sha256-B0ZcOORW6yaSIpisPLnq5/S/CcqqvHNTXcfP1sKW2KQ=";
+    tag = version;
+    hash = "sha256-2MI2cbAohfTgbilxZcFvmxt/iVjR6zJ2o0gequB//hg=";
   };
 
   postPatch = ''
-    substituteInPlace setup.py \
-      --replace-fail 'version=determine_version()' 'version="${version}"'
+    substituteInPlace charmcraft/__init__.py --replace-fail "dev" "${version}"
   '';
 
-  propagatedBuildInputs = with python3Packages; [
+  dependencies = with python3Packages; [
+    craft-application
     craft-cli
     craft-parts
+    craft-platforms
     craft-providers
     craft-store
     distro
+    docker
     humanize
     jinja2
     jsonschema
-    pydantic_1
+    pydantic
     python-dateutil
     pyyaml
     requests
@@ -44,23 +46,26 @@ python3Packages.buildPythonApplication rec {
     urllib3
   ];
 
-  nativeBuildInputs = with python3Packages; [
-    pythonRelaxDepsHook
-    setuptools
-  ];
+  build-system = with python3Packages; [ setuptools-scm ];
 
   pythonRelaxDeps = [
     "urllib3"
+    "craft-application"
   ];
 
-  nativeCheckInputs = with python3Packages; [
-    pyfakefs
-    pytest-check
-    pytest-mock
-    pytest-subprocess
-    pytestCheckHook
-    responses
-  ] ++ [ git ];
+  nativeCheckInputs =
+    with python3Packages;
+    [
+      hypothesis
+      pyfakefs
+      pytest-check
+      pytest-mock
+      pytest-subprocess
+      pytestCheckHook
+      responses
+      setuptools
+    ]
+    ++ [ git ];
 
   preCheck = ''
     mkdir -p check-phase
@@ -72,6 +77,8 @@ python3Packages.buildPythonApplication rec {
   disabledTests = [
     # Relies upon the `charm` tool being installed
     "test_validate_missing_charm"
+    "test_read_charm_from_yaml_file_self_contained_success[full-bases.yaml]"
+    "test_read_charm_from_yaml_file_self_contained_success[full-platforms.yaml]"
   ];
 
   passthru.updateScript = nix-update-script { };

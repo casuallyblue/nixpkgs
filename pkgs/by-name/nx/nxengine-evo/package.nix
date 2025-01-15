@@ -8,7 +8,6 @@
   ninja,
   fetchFromGitHub,
   fetchpatch,
-  fetchurl,
   libpng,
   stdenv,
 }:
@@ -62,18 +61,21 @@ stdenv.mkDerivation (finalAttrs: {
     sed -i -e "s,/usr/share/,$out/share/," src/ResourceManager.cpp
   '';
 
-  installPhase = ''
-    runHook preInstall
+  installPhase =
+    ''
+      runHook preInstall
 
-    cd ..
-    mkdir -p $out/bin/ $out/share/nxengine/
-    install bin/* $out/bin/
-  '' + ''
-    cp -r ${finalAttrs.finalPackage.assets}/share/nxengine/data $out/share/nxengine/data
-    chmod -R a=r,a+X $out/share/nxengine/data
-  '' + ''
-    runHook postInstall
-  '';
+      cd ..
+      mkdir -p $out/bin/ $out/share/nxengine/
+      install bin/* $out/bin/
+    ''
+    + ''
+      cp -r ${finalAttrs.finalPackage.assets}/share/nxengine/data $out/share/nxengine/data
+      chmod -R a=r,a+X $out/share/nxengine/data
+    ''
+    + ''
+      runHook postInstall
+    '';
 
   passthru = {
     assets = callPackage ./assets.nix { };
@@ -81,7 +83,8 @@ stdenv.mkDerivation (finalAttrs: {
 
   meta = {
     homepage = "https://github.com/nxengine/nxengine-evo";
-    description = "A complete open-source clone/rewrite of the masterpiece jump-and-run platformer Doukutsu Monogatari (also known as Cave Story)";
+    changelog = "https://github.com/nxengine/nxengine-evo/releases/tag/${finalAttrs.src.rev}";
+    description = "Complete open-source clone/rewrite of the masterpiece jump-and-run platformer Doukutsu Monogatari (also known as Cave Story)";
     license = with lib.licenses; [
       gpl3Plus
     ];

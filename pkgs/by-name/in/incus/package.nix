@@ -1,6 +1,9 @@
 import ./generic.nix {
-  hash = "sha256-BFB4bdfh3hI7D1m7a20ckPPyP9CYXW7mjqeTZ/21Gqs=";
-  version = "6.1.0";
-  vendorHash = "sha256-a8ZPhzs7sNIJLjQ9Y87Zf9SXAsmbdVn250Q0OQwy69A=";
-  patches = [ ];
+  hash = "sha256-Ir+cT+2xA+L4kBXhwA0XXE/D8zjMPGYiwW0VrEdobZ4=";
+  version = "6.8.0";
+  vendorHash = "sha256-CDLq41AB2Y9nYlTuXZaAOgwXIin9CbqSXCFoigsc14A=";
+  patches = [
+    # qemu 9.2 support
+    ./1531.diff
+  ];
 }

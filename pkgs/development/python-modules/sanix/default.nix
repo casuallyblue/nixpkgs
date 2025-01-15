@@ -1,9 +1,10 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonOlder
-, requests
-, setuptools
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonOlder,
+  requests,
+  setuptools,
 }:
 
 buildPythonPackage rec {
@@ -16,17 +17,13 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "tomaszsluszniak";
     repo = "sanix_py";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-D2w3hmL8ym63liWOYdZS4ry3lJ0utbbYGagWoOTT1TQ=";
   };
 
-  build-system = [
-    setuptools
-  ];
+  build-system = [ setuptools ];
 
-  dependencies = [
-    requests
-  ];
+  dependencies = [ requests ];
 
   # Module has no tests
   doCheck = false;

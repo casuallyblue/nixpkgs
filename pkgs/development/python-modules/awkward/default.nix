@@ -1,39 +1,43 @@
-{ lib
-, fsspec
-, stdenv
-, buildPythonPackage
-, pythonOlder
-, fetchFromGitHub
-, hatch-fancy-pypi-readme
-, hatchling
-, awkward-cpp
-, importlib-metadata
-, numpy
-, packaging
-, typing-extensions
-, jax
-, jaxlib
-, numba
-, setuptools
-, numexpr
-, pandas
-, pyarrow
-, pytest-xdist
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  pythonOlder,
+  fetchFromGitHub,
+
+  # build-system
+  hatch-fancy-pypi-readme,
+  hatchling,
+
+  # dependencies
+  awkward-cpp,
+  fsspec,
+  numpy,
+  packaging,
+  typing-extensions,
+  importlib-metadata,
+
+  # checks
+  numba,
+  setuptools,
+  numexpr,
+  pandas,
+  pyarrow,
+  pytest-xdist,
+  pytestCheckHook,
+
+  stdenv,
 }:
 
 buildPythonPackage rec {
   pname = "awkward";
-  version = "2.6.4";
+  version = "2.7.2";
   pyproject = true;
-
-  disabled = pythonOlder "3.8";
 
   src = fetchFromGitHub {
     owner = "scikit-hep";
     repo = "awkward";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-hoNxNxWfoSlBg6CsKvgEknM4vd+rN/9EFD5nC2y45OA=";
+    tag = "v${version}";
+    hash = "sha256-nOKMwAQ5t8tc64bEKz0j8JxxoVQQu39Iu8Zr9cqSx7A=";
   };
 
   build-system = [
@@ -41,17 +45,15 @@ buildPythonPackage rec {
     hatchling
   ];
 
-  dependencies = [
-    awkward-cpp
-    fsspec
-    importlib-metadata
-    numpy
-    packaging
-  ] ++ lib.optionals (pythonOlder "3.11") [
-    typing-extensions
-  ] ++ lib.optionals (pythonOlder "3.12") [
-    importlib-metadata
-  ];
+  dependencies =
+    [
+      awkward-cpp
+      fsspec
+      numpy
+      packaging
+    ]
+    ++ lib.optionals (pythonOlder "3.11") [ typing-extensions ]
+    ++ lib.optionals (pythonOlder "3.12") [ importlib-metadata ];
 
   dontUseCmakeConfigure = true;
 
@@ -66,25 +68,26 @@ buildPythonPackage rec {
     pyarrow
     pytest-xdist
     pytestCheckHook
-  ] ++ lib.optionals (!stdenv.isDarwin) [
-    # no support for darwin
-    jax
-    jaxlib
   ];
 
-  # The following tests have been disabled because they need to be run on a GPU platform.
   disabledTestPaths = [
+    # Need to be run on a GPU platform.
     "tests-cuda"
-  # Disable tests dependending on jax on darwin
-  ] ++ lib.optionals stdenv.isDarwin [
+    # JAX is broken
     "tests/test_2603_custom_behaviors_with_jax.py"
   ];
 
-  meta = with lib; {
+  disabledTests = [
+    # AssertionError: Regex pattern did not match.
+    "test_serialise_with_nonserialisable_attrs"
+    "test_serialise_with_nonserialisable_attrs"
+  ];
+
+  meta = {
     description = "Manipulate JSON-like data with NumPy-like idioms";
     homepage = "https://github.com/scikit-hep/awkward";
     changelog = "https://github.com/scikit-hep/awkward/releases/tag/v${version}";
-    license = licenses.bsd3;
-    maintainers = with maintainers; [ veprbl ];
+    license = lib.licenses.bsd3;
+    maintainers = with lib.maintainers; [ veprbl ];
   };
 }

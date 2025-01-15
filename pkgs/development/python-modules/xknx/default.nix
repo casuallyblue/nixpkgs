@@ -1,52 +1,45 @@
-{ lib
-, async-timeout
-, buildPythonPackage
-, fetchFromGitHub
-, cryptography
-, ifaddr
-, pytest-asyncio_0_21
-, pytestCheckHook
-, pythonOlder
-, setuptools
+{
+  lib,
+  async-timeout,
+  buildPythonPackage,
+  fetchFromGitHub,
+  cryptography,
+  ifaddr,
+  freezegun,
+  pytest-asyncio,
+  pytestCheckHook,
+  pythonOlder,
+  setuptools,
 }:
 
 buildPythonPackage rec {
   pname = "xknx";
-  version = "2.12.2";
+  version = "3.4.0";
   pyproject = true;
 
-  disabled = pythonOlder "3.8";
+  disabled = pythonOlder "3.10";
 
   src = fetchFromGitHub {
     owner = "XKNX";
     repo = "xknx";
-    rev = "refs/tags/${version}";
-    hash = "sha256-gajxXIR3lmHsW7258v4z20RilzGfm5KGVrXZwRm74Mk=";
+    tag = version;
+    hash = "sha256-nCFIP4ZeO4pRmyh2BdE86Dg/0zKYR3izcc2MOzVC4/g=";
   };
 
-  patches = [
-    ./pytest-asyncio-0.22-compat.patch
-  ];
+  build-system = [ setuptools ];
 
-  nativeBuildInputs = [
-    setuptools
-  ];
-
-  propagatedBuildInputs = [
+  dependencies = [
     cryptography
     ifaddr
-  ] ++ lib.optionals (pythonOlder "3.11") [
-    async-timeout
-  ];
+  ] ++ lib.optionals (pythonOlder "3.11") [ async-timeout ];
 
   nativeCheckInputs = [
-    pytest-asyncio_0_21
+    freezegun
+    pytest-asyncio
     pytestCheckHook
   ];
 
-  pythonImportsCheck = [
-    "xknx"
-  ];
+  pythonImportsCheck = [ "xknx" ];
 
   disabledTests = [
     # Test requires network access

@@ -1,10 +1,11 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, taglib
-, cython
-, pytestCheckHook
-, pythonOlder
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  taglib,
+  cython,
+  pytestCheckHook,
+  pythonOlder,
 }:
 
 buildPythonPackage rec {
@@ -17,7 +18,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "supermihi";
     repo = pname;
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-b3ODsG5rdSJ1Tq/0DARf99gHgWWGaArBFAjqeK3mvsY=";
   };
 
@@ -26,13 +27,9 @@ buildPythonPackage rec {
     taglib
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
-  pythonImportsCheck = [
-    "taglib"
-  ];
+  pythonImportsCheck = [ "taglib" ];
 
   meta = with lib; {
     description = "Python bindings for the Taglib audio metadata library";

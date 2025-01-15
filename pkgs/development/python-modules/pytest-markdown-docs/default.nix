@@ -1,11 +1,12 @@
-{ lib
-, buildPythonPackage
-, pythonOlder
-, fetchFromGitHub
-, poetry-core
-, markdown-it-py
-, pytest
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  pythonOlder,
+  fetchFromGitHub,
+  poetry-core,
+  markdown-it-py,
+  pytest,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -18,26 +19,20 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "modal-com";
     repo = "pytest-markdown-docs";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-mclN28tfPcoFxswECjbrkeOI51XXSqUXfbvuSHrd7Sw=";
   };
 
-  build-system = [
-    poetry-core
-  ];
+  build-system = [ poetry-core ];
 
   dependencies = [
     markdown-it-py
     pytest
   ];
 
-  pythonImportsCheck = [
-    "pytest_markdown_docs"
-  ];
+  pythonImportsCheck = [ "pytest_markdown_docs" ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
   meta = with lib; {
     description = "Run pytest on markdown code fence blocks";

@@ -6,9 +6,9 @@ let
   unsupported = throw "Unsupported system ${stdenv.hostPlatform.system} for ${pname}";
 
   os =
-    if stdenv.isDarwin then
+    if stdenv.hostPlatform.isDarwin then
       "osx"
-    else if stdenv.isLinux then
+    else if stdenv.hostPlatform.isLinux then
       "linux"
     else
       unsupported;
@@ -21,15 +21,15 @@ let
   }.${stdenv.hostPlatform.system} or unsupported;
 
   hash = {
-    aarch64-darwin = "sha256-aa9mkFRdvAi/A6OQnxDOiQ5yDXBbPbQxet8+XqHxrtE=";
-    aarch64-linux = "sha256-neTIMWdx1UX9REZkLZtXpmyPb+NrbkMnXNrTn9bsECE=";
-    x86_64-darwin = "sha256-JM0VhAbA72ZmZGZ8ke2MtB4Fi5//hr+Etk5UiMpq1LA=";
-    x86_64-linux = "sha256-bYIavvea6Nwbn22CFiWXpzPGAI13oJYAIZr2FdLkyb8=";
+    aarch64-darwin = "sha256-N5BDsx9iunG5qUau6gJvdSFscPkNe5/35zMMfsvM+eE=";
+    aarch64-linux = "sha256-cqSakzwokb4ym8852MYsoyAV3vS9eSyU4/xhHPtsD4o=";
+    x86_64-darwin = "sha256-2x4k5c1HdNFzDmoEsrrQ3+s41+3wukSMJPHZJJKd/eE=";
+    x86_64-linux = "sha256-OqZo+kFMTSklwPlj2hr7sAOXCh0HvqbeXWzfmScWXKU=";
   }.${stdenv.hostPlatform.system} or unsupported;
 
 in stdenv.mkDerivation rec {
   inherit pname;
-  version = "1.17.2.4511";
+  version = "1.29.2.4915";
 
   src = fetchurl {
     url = "https://github.com/Prowlarr/Prowlarr/releases/download/v${version}/Prowlarr.master.${version}.${os}-core-${arch}.tar.gz";
@@ -58,11 +58,11 @@ in stdenv.mkDerivation rec {
   };
 
   meta = with lib; {
-    description = "An indexer manager/proxy built on the popular arr .net/reactjs base stack";
+    description = "Indexer manager/proxy built on the popular arr .net/reactjs base stack";
     homepage = "https://wiki.servarr.com/prowlarr";
     changelog = "https://github.com/Prowlarr/Prowlarr/releases/tag/v${version}";
     license = licenses.gpl3Only;
-    maintainers = with maintainers; [ jdreaver ];
+    maintainers = with maintainers; [ pizzapim ];
     mainProgram = "Prowlarr";
     platforms = [
       "aarch64-darwin"

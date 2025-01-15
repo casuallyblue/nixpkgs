@@ -1,8 +1,9 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, hatchling
-, pythonOlder
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  hatchling,
+  pythonOlder,
 }:
 
 buildPythonPackage rec {
@@ -15,17 +16,13 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "mboot-github";
     repo = "WhoisDomain";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-nRj/WkYjMZuQoYF+QFIHABlek4DxvvEnOTeFYLHYvZc=";
   };
 
-  nativeBuildInputs = [
-    hatchling
-  ];
+  nativeBuildInputs = [ hatchling ];
 
-  pythonImportsCheck = [
-    "whoisdomain"
-  ];
+  pythonImportsCheck = [ "whoisdomain" ];
 
   # Tests require network access
   doCheck = false;

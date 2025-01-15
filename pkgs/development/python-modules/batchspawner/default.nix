@@ -1,13 +1,15 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, setuptools
-, wheel
-, jinja2
-, jupyterhub
-, pythonOlder
-, pytest-asyncio
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  setuptools,
+  wheel,
+  jinja2,
+  jupyterhub,
+  pythonOlder,
+  pytest-asyncio,
+  pytest-cov-stub,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -20,7 +22,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "jupyterhub";
     repo = "batchspawner";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-Z7kB8b7s11wokTachLI/N+bdUV+FfCRTemL1KYQpzio=";
   };
 
@@ -34,26 +36,20 @@ buildPythonPackage rec {
     jupyterhub
   ];
 
-  preCheck = ''
-    substituteInPlace pyproject.toml \
-      --replace-fail "--cov=batchspawner" ""
-  '';
-
   nativeCheckInputs = [
     pytest-asyncio
+    pytest-cov-stub
     pytestCheckHook
   ];
 
-  pythonImportsCheck = [
-    "batchspawner"
-  ];
+  pythonImportsCheck = [ "batchspawner" ];
 
   meta = with lib; {
-    description = "A spawner for Jupyterhub to spawn notebooks using batch resource managers";
+    description = "Spawner for Jupyterhub to spawn notebooks using batch resource managers";
     mainProgram = "batchspawner-singleuser";
     homepage = "https://github.com/jupyterhub/batchspawner";
     changelog = "https://github.com/jupyterhub/batchspawner/blob/v${version}/CHANGELOG.md";
     license = licenses.bsd3;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
   };
 }

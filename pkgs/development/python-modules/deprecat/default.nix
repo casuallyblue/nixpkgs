@@ -1,15 +1,16 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pytestCheckHook
-, pythonOlder
-, setuptools-scm
-, wrapt
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pytestCheckHook,
+  pythonOlder,
+  setuptools-scm,
+  wrapt,
 }:
 
 buildPythonPackage rec {
   pname = "deprecat";
-  version = "2.1.2";
+  version = "2.1.3";
   pyproject = true;
 
   disabled = pythonOlder "3.7";
@@ -17,25 +18,17 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "mjhajharia";
     repo = "deprecat";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-uAabZAtZDhcX6TfiM0LnrAzxxS64ys+vdodmxO//0x8=";
+    tag = "v${version}";
+    hash = "sha256-CvW4SQ78FG8GqBs6/a0yHWfTAn64sH54GVSETooMa6A=";
   };
 
-  build-system = [
-    setuptools-scm
-  ];
+  build-system = [ setuptools-scm ];
 
-  dependencies = [
-    wrapt
-  ];
+  dependencies = [ wrapt ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
-  pythonImportsCheck = [
-    "deprecat"
-  ];
+  pythonImportsCheck = [ "deprecat" ];
 
   disabledTestPaths = [
     # https://github.com/mjhajharia/deprecat/issues/13

@@ -1,42 +1,44 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, setuptools
-, curl-impersonate-chrome
-, cffi
-, certifi
+{
+  stdenv,
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  setuptools,
+  curl-impersonate-chrome,
+  cffi,
+  certifi,
+  typing-extensions,
 }:
 
 buildPythonPackage rec {
   pname = "curl-cffi";
-  version = "0.6.4";
+  version = "0.7.4";
+  pyproject = true;
 
   src = fetchFromGitHub {
-    owner = "yifeikong";
+    owner = "lexiforest";
     repo = "curl_cffi";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-bNBpZAIdfub2osByo827RBw/gouCmNt8uVN0y1KdcUk=";
+    tag = "v${version}";
+    hash = "sha256-Q1VppzQ1Go+ia1D1BemTf40o9wV0miWyoGy/tY+95qE==";
   };
 
-  patches = [
-    ./use-system-libs.patch
-  ];
-  buildInputs = [
-    curl-impersonate-chrome
-  ];
+  patches = [ ./use-system-libs.patch ];
+  buildInputs = [ curl-impersonate-chrome ];
 
-  format = "pyproject";
   build-system = [
+    cffi
     setuptools
   ];
 
-  nativeBuildInputs = [
-    cffi
-  ];
-  propagatedBuildInputs = [
+  dependencies = [
     cffi
     certifi
+    typing-extensions
   ];
+
+  env = lib.optionalAttrs stdenv.cc.isGNU {
+    NIX_CFLAGS_COMPILE = "-Wno-error=incompatible-pointer-types";
+  };
 
   pythonImportsCheck = [ "curl_cffi" ];
 

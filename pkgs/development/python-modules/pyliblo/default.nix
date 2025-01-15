@@ -1,10 +1,10 @@
-{ lib
-, buildPythonPackage
-, fetchurl
-, isPyPy
-, pythonAtLeast
-, liblo
-, cython_0
+{
+  lib,
+  buildPythonPackage,
+  fetchurl,
+  isPyPy,
+  liblo,
+  cython_0,
 }:
 
 buildPythonPackage rec {
@@ -23,6 +23,11 @@ buildPythonPackage rec {
       url = "https://git.alpinelinux.org/aports/plain/community/py3-pyliblo/py3.11.patch?id=a7e1eca5533657ddd7e37c43e67e8126e3447258";
       hash = "sha256-4yCWNQaE/9FHGTVuvNEimBNuViWZ9aSJMcpTOP0fnM0=";
     })
+    # Fix compile error due to  incompatible pointer type 'lo_blob_dataptr'
+    (fetchurl {
+      url = "https://github.com/dsacre/pyliblo/commit/ebbb255d6a73384ec2560047eab236660d4589db.patch?full_index=1";
+      hash = "sha256-ZBAmBxSUT2xgoDVqSjq8TxW2jz3xR/pdCf2O3wMKvls=";
+    })
   ];
 
   build-system = [ cython_0 ];
@@ -34,5 +39,4 @@ buildPythonPackage rec {
     description = "Python wrapper for the liblo OSC library";
     license = licenses.lgpl21Only;
   };
-
 }

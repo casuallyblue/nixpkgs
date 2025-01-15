@@ -1,7 +1,11 @@
-{ lib, buildGoModule, fetchFromGitHub, nix-update-script
+{
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
+  nix-update-script,
 }:
 let
-  version = "0.0.44";
+  version = "0.0.46";
 in
 buildGoModule {
 
@@ -13,14 +17,14 @@ buildGoModule {
     repo = "mcap";
     owner = "foxglove";
     rev = "releases/mcap-cli/v${version}";
-    hash = "sha256-OAL2z28FhMXlyVzgmLCzHNCpCeK7hIkQB6jd7v3WHHA=";
+    hash = "sha256-UdR5A2ZtCcnQIjPxlwcntZb78CXzJBvRy73GJUqvjuM=";
   };
 
   vendorHash = "sha256-ofJYarmnOHONu2lZ76GvSua0ViP1gr6968xAuQ/VRNk=";
 
   modRoot = "go/cli/mcap";
 
-  env.GOWORK="off";
+  env.GOWORK = "off";
 
   # copy the local versions of the workspace modules
   postConfigure = ''
@@ -43,7 +47,10 @@ buildGoModule {
     description = "MCAP CLI tool to inspect and fix MCAP files";
     homepage = "https://github.com/foxglove/mcap";
     license = with licenses; [ mit ];
-    maintainers = with maintainers; [ squalus therishidesai ];
+    maintainers = with maintainers; [
+      squalus
+      therishidesai
+    ];
     mainProgram = "mcap";
   };
 

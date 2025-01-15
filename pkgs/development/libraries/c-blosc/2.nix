@@ -1,25 +1,26 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, cmake
-, testers
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  cmake,
+  testers,
 
-, static ? stdenv.hostPlatform.isStatic
+  static ? stdenv.hostPlatform.isStatic,
 
-, lz4
-, zlib-ng
-, zstd
+  lz4,
+  zlib-ng,
+  zstd,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "c-blosc2";
-  version = "2.14.3";
+  version = "2.15.2";
 
   src = fetchFromGitHub {
     owner = "Blosc";
     repo = "c-blosc2";
     rev = "v${finalAttrs.version}";
-    sha256 = "sha256-0rizBygyNW9Sr7qnQZoN/Wv2ZIAYuJTQ5tkW6iwIw7Y=";
+    sha256 = "sha256-Xac0meyaHfdCIu0ut2ioPDFYtAGpOBRb/G8ZK/jmeJ4=";
   };
 
   # https://github.com/NixOS/nixpkgs/issues/144170
@@ -58,7 +59,7 @@ stdenv.mkDerivation (finalAttrs: {
   passthru.tests.pkg-config = testers.testMetaPkgConfig finalAttrs.finalPackage;
 
   meta = with lib; {
-    description = "A fast, compressed, persistent binary data store library for C";
+    description = "Fast, compressed, persistent binary data store library for C";
     homepage = "https://www.blosc.org";
     changelog = "https://github.com/Blosc/c-blosc2/releases/tag/v${finalAttrs.version}";
     pkgConfigModules = [

@@ -1,32 +1,33 @@
-{ stdenv
-, lib
-, fetchFromGitHub
-, libGLU
-, qtbase
-, qtscript
-, qtxmlpatterns
-, lib3ds
-, bzip2
-, muparser
-, eigen
-, glew
-, gmp
-, levmar
-, qhull
-, cmake
-, cgal
-, boost
-, mpfr
-, xercesc
-, tbb
-, embree
-, vcg
-, libigl
-, corto
-, openctm
-, structuresynth
-, wrapQtAppsHook
-, python3Packages
+{
+  stdenv,
+  lib,
+  fetchFromGitHub,
+  libGLU,
+  qtbase,
+  qtscript,
+  qtxmlpatterns,
+  lib3ds,
+  bzip2,
+  muparser,
+  eigen,
+  glew,
+  gmp,
+  levmar,
+  qhull,
+  cmake,
+  cgal,
+  boost,
+  mpfr,
+  xercesc,
+  tbb,
+  embree,
+  vcg,
+  libigl,
+  corto,
+  openctm,
+  structuresynth,
+  wrapQtAppsHook,
+  python3Packages,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -88,17 +89,15 @@ stdenv.mkDerivation (finalAttrs: {
     substituteInPlace src/meshlab/src/external/ssynth.cmake \
       --replace-fail '$'{SSYNTH_LINK} ${structuresynth.src} \
       --replace-warn "MD5 ''${SSYNTH_MD5}" ""
-    export cmakeFlags="cmakeFlags
-      -DCMAKE_INSTALL_PREFIX=$out/${python3Packages.python.sitePackages}/pymeshlab
-    "
   '';
 
   cmakeFlags = [
+    "-DCMAKE_INSTALL_PREFIX=${placeholder "out"}/${python3Packages.python.sitePackages}/pymeshlab"
     "-DVCGDIR=${vcg.src}"
   ];
 
   meta = {
-    description = "The open source mesh processing python library";
+    description = "Open source mesh processing python library";
     homepage = "https://github.com/cnr-isti-vclab/PyMeshLab";
     license = lib.licenses.gpl3Only;
     maintainers = with lib.maintainers; [ nim65s ];

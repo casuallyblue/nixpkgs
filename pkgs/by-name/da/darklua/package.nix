@@ -8,18 +8,20 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "darklua";
-  version = "0.13.0";
+  version = "0.15.0";
 
   src = fetchFromGitHub {
     owner = "seaofvoices";
     repo = "darklua";
     rev = "v${version}";
-    hash = "sha256-FF0UEvylHFrGYgE3ASs0IwnYrh7gIClZUREtXjyVsPM=";
+    hash = "sha256-OLx3J8E9PYXgWbQncWoezyptrbFYcw3xmXzYAn7IUFw=";
   };
 
-  cargoHash = "sha256-XrWhOosQM+BaqViIju7urCi1B8+6kq8Taxe5T8LFzVE=";
+  cargoHash = "sha256-bG5bjtA5a1gSabH9nqfYg/gdt2jfddlbPY3P6HEhQ2s=";
 
-  buildInputs = lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.CoreServices ];
+  buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
+    darwin.apple_sdk.frameworks.CoreServices
+  ];
 
   # error: linker `aarch64-linux-gnu-gcc` not found
   postPatch = ''
@@ -27,7 +29,7 @@ rustPlatform.buildRustPackage rec {
   '';
 
   meta = with lib; {
-    description = "A command line tool that transforms Lua code";
+    description = "Command line tool that transforms Lua code";
     mainProgram = "darklua";
     homepage = "https://darklua.com";
     changelog = "https://github.com/seaofvoices/darklua/blob/${src.rev}/CHANGELOG.md";

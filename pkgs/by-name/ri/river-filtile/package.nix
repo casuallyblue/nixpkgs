@@ -1,7 +1,8 @@
-{ lib
-, rustPlatform
-, fetchFromGitHub
-, pkg-config
+{
+  lib,
+  rustPlatform,
+  fetchFromGitHub,
+  pkg-config,
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -22,7 +23,7 @@ rustPlatform.buildRustPackage rec {
   ];
 
   meta = with lib; {
-    description = "A layout manager for the River window manager";
+    description = "Layout manager for the River window manager";
     homepage = "https://github.com/pkulak/filtile";
     license = licenses.gpl3Only;
     maintainers = with lib.maintainers; [ pkulak ];

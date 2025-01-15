@@ -1,39 +1,38 @@
-{ lib
-, buildDunePackage
-, fetchurl
-, mirage-crypto
-, mirage-clock
-, x509
-, logs
-, fmt
-, bos
-, astring
-, cmdliner
-, alcotest
+{
+  lib,
+  buildDunePackage,
+  fetchurl,
+  digestif,
+  mirage-clock,
+  x509,
+  logs,
+  fmt,
+  bos,
+  cmdliner,
+  alcotest,
 }:
 
 buildDunePackage rec {
   pname = "ca-certs-nss";
-  version = "3.98";
+  version = "3.107";
 
-  minimalOCamlVersion = "4.08";
+  minimalOCamlVersion = "4.13";
 
   src = fetchurl {
     url = "https://github.com/mirage/ca-certs-nss/releases/download/v${version}/ca-certs-nss-${version}.tbz";
-    hash = "sha256-N1/cz8e3KB3pBd5+ZV/JbuW6FaaVijNhok7QyMB7ppc=";
+    hash = "sha256-VIT5cIa+MWpQlTLtywPp6Qx5jgCyNEyHRQcQWvXw/GA=";
   };
 
   propagatedBuildInputs = [
-    mirage-crypto
     mirage-clock
     x509
+    digestif
   ];
 
   buildInputs = [
     logs
     fmt
     bos
-    astring
     cmdliner
   ];
 

@@ -1,13 +1,14 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, makeWrapper
-, perl
-, perlPackages
-, tayga
-, iproute2
-, iptables
-, nixosTests
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  makeWrapper,
+  perl,
+  perlPackages,
+  tayga,
+  iproute2,
+  iptables,
+  nixosTests,
 }:
 
 stdenv.mkDerivation rec {
@@ -56,7 +57,7 @@ stdenv.mkDerivation rec {
   passthru.tests.clatd = nixosTests.clatd;
 
   meta = with lib; {
-    description = "A 464XLAT CLAT implementation for Linux";
+    description = "464XLAT CLAT implementation for Linux";
     homepage = "https://github.com/toreanderson/clatd";
     license = licenses.mit;
     maintainers = with maintainers; [ jmbaur ];

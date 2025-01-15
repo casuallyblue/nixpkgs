@@ -8,6 +8,7 @@
   libmamba,
   pybind11,
   setuptools,
+  scikit-build,
   fmt,
   spdlog,
   tl-expected,
@@ -20,36 +21,41 @@
   bzip2,
   wheel,
 }:
+
 buildPythonPackage rec {
   pname = "libmambapy";
-  version = "1.5.7";
   pyproject = true;
 
-  src = fetchFromGitHub {
-    owner = "mamba-org";
-    repo = "mamba";
-    rev = "${pname}-${version}";
-    hash = "sha256-HfmvLi9IBWlaGAn2Ej4Bnm4b3l19jEXwNl5IUkdVxi0=";
-  };
+  inherit (libmamba) version src;
 
   nativeBuildInputs = [
     cmake
     ninja
   ];
 
+  env = {
+    NIX_CFLAGS_COMPILE = toString [
+      "-Wno-error=deprecated-declarations"
+    ];
+  };
+
   buildInputs = [
     (libmamba.override { python3Packages = pythonPackages; })
-    pybind11
-    fmt
+    curl
+    zstd
+    bzip2
     spdlog
+    fmt
     tl-expected
     nlohmann_json
     yaml-cpp
     reproc
     libsolv
-    curl
-    zstd
-    bzip2
+  ];
+
+  dependencies = [
+    scikit-build
+    pybind11
   ];
 
   build-system = [
@@ -77,15 +83,13 @@ buildPythonPackage rec {
     pypaBuildPhase
   '';
 
-  pythonRemoveDeps = [ "scikit-build" ];
-
   pythonImportsCheck = [
     "libmambapy"
     "libmambapy.bindings"
   ];
 
   meta = {
-    description = "The python library for the fast Cross-Platform Package Manager";
+    description = "Python library for the fast Cross-Platform Package Manager";
     homepage = "https://github.com/mamba-org/mamba";
     license = lib.licenses.bsd3;
     maintainers = [ lib.maintainers.ericthemagician ];

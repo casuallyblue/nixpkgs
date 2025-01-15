@@ -1,16 +1,17 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, appstream-glib
-, autoreconfHook
-, dbus
-, pango
-, pcre2
-, pkg-config
-, tmux
-, vte
-, wrapGAppsHook3
-, nixosTests
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  appstream-glib,
+  autoreconfHook,
+  dbus,
+  pango,
+  pcre2,
+  pkg-config,
+  tmux,
+  vte,
+  wrapGAppsHook3,
+  nixosTests,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -55,7 +56,7 @@ stdenv.mkDerivation (finalAttrs: {
   passthru.tests.test = nixosTests.terminal-emulators.germinal;
 
   meta = {
-    description = "A minimal terminal emulator";
+    description = "Minimal terminal emulator";
     homepage = "https://github.com/Keruspe/Germinal";
     license = lib.licenses.gpl3Plus;
     mainProgram = "germinal";

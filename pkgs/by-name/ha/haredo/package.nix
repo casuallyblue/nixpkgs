@@ -2,7 +2,7 @@
   stdenv,
   lib,
   fetchFromSourcehut,
-  hare,
+  hareHook,
   scdoc,
   nix-update-script,
   makeWrapper,
@@ -34,27 +34,24 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   nativeBuildInputs = [
-    hare
+    hareHook
     makeWrapper
     scdoc
   ];
 
   enableParallelChecking = true;
 
-  doCheck = true;
+  env.PREFIX = builtins.placeholder "out";
+
+  doCheck = stdenv.buildPlatform.canExecute stdenv.hostPlatform;
 
   dontConfigure = true;
-
-  preBuild = ''
-    HARECACHE="$(mktemp -d --tmpdir harecache.XXXXXXXX)"
-    export HARECACHE
-    export PREFIX=${builtins.placeholder "out"}
-  '';
 
   buildPhase = ''
     runHook preBuild
 
-    ./bootstrap.sh
+    hare build -o bin/haredo ./src
+    scdoc <doc/haredo.1.scd >doc/haredo.1
 
     runHook postBuild
   '';
@@ -70,7 +67,10 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    ./bootstrap.sh install
+    mkdir -p $out/bin
+    mkdir -p $out/share/man/man1
+    cp ./bin/haredo $out/bin
+    cp ./doc/haredo.1 $out/share/man/man1
 
     runHook postInstall
   '';
@@ -80,11 +80,11 @@ stdenv.mkDerivation (finalAttrs: {
   passthru.updateScript = nix-update-script { };
 
   meta = {
-    description = "A simple and unix-idiomatic build automator";
+    description = "Simple and unix-idiomatic build automator";
     homepage = "https://sr.ht/~autumnull/haredo/";
     license = lib.licenses.wtfpl;
     maintainers = with lib.maintainers; [ onemoresuza ];
     mainProgram = "haredo";
-    inherit (hare.meta) platforms badPlatforms;
+    inherit (hareHook.meta) platforms badPlatforms;
   };
 })

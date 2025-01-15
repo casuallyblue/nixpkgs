@@ -8,15 +8,18 @@
   rustPlatform,
 
   cups,
+  ffmpeg,
   firefox-unwrapped,
   libcanberra-gtk3,
   libglvnd,
   libnotify,
+  libpulseaudio,
   libva,
-  mesa,
+  libgbm,
   nixosTests,
   openssl,
   pciutils,
+  pipewire,
   pkg-config,
   stdenv,
   udev,
@@ -25,25 +28,20 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "firefoxpwa";
-  version = "2.12.0";
+  version = "2.13.2";
 
   src = fetchFromGitHub {
     owner = "filips123";
     repo = "PWAsForFirefox";
     rev = "v${version}";
-    hash = "sha256-T2X+41ScE8FDZGJdgAjZCp1MQX51UACuNsWFk+6cR3A=";
+    hash = "sha256-0VHuS507uQXaRRYjaJ9uPh1bhPrxA6PQa/x5o4IE78U=";
   };
 
   sourceRoot = "${src.name}/native";
   buildFeatures = [ "immutable-runtime" ];
 
-  cargoLock = {
-    lockFile = ./Cargo.lock;
-    outputHashes = {
-      "mime-0.4.0-a.0" = "sha256-LjM7LH6rL3moCKxVsA+RUL9lfnvY31IrqHa9pDIAZNE=";
-      "web_app_manifest-0.0.0" = "sha256-G+kRN8AEmAY1TxykhLmgoX8TG8y2lrv7SCRJlNy0QzA=";
-    };
-  };
+  useFetchCargoVendor = true;
+  cargoHash = "sha256-UxUXXF13YyS+ViEsjjfuNinq7n4W28J+fZsy/WeV6Dc=";
 
   preConfigure = ''
     sed -i 's;version = "0.0.0";version = "${version}";' Cargo.toml
@@ -66,13 +64,16 @@ rustPlatform.buildRustPackage rec {
   libs =
     let
       libs =
-        lib.optionals stdenv.isLinux [
+        lib.optionals stdenv.hostPlatform.isLinux [
           cups
+          ffmpeg
           libglvnd
           libnotify
+          libpulseaudio
           libva
-          mesa
+          libgbm
           pciutils
+          pipewire
           udev
           xorg.libXScrnSaver
         ]
@@ -120,7 +121,7 @@ rustPlatform.buildRustPackage rec {
   passthru.tests.firefoxpwa = nixosTests.firefoxpwa;
 
   meta = {
-    description = "A tool to install, manage and use Progressive Web Apps (PWAs) in Mozilla Firefox (native component)";
+    description = "Tool to install, manage and use Progressive Web Apps (PWAs) in Mozilla Firefox (native component)";
     longDescription = ''
       Progressive Web Apps (PWAs) are web apps that use web APIs and features along
       with progressive enhancement strategy to bring a native app-like user experience
@@ -152,7 +153,6 @@ rustPlatform.buildRustPackage rec {
     license = lib.licenses.mpl20;
     platforms = lib.platforms.unix;
     maintainers = with lib.maintainers; [
-      adamcstephens
       camillemndn
       pasqui23
     ];

@@ -1,20 +1,21 @@
-{ lib
-, buildPythonPackage
-, cython
-, fetchFromGitHub
-, fetchurl
-, matplotlib
-, pillow
-, pytest-mock
-, pytestCheckHook
-, pythonOlder
-, pywavelets
-, scikit-learn
-, setuptools
-, torch
-, torchvision
-, tqdm
-, fetchpatch
+{
+  lib,
+  buildPythonPackage,
+  cython,
+  fetchFromGitHub,
+  fetchurl,
+  matplotlib,
+  pillow,
+  pytest-mock,
+  pytestCheckHook,
+  pythonOlder,
+  pywavelets,
+  scikit-learn,
+  setuptools,
+  torch,
+  torchvision,
+  tqdm,
+  fetchpatch,
 }:
 let
   MobileNetV3 = fetchurl {
@@ -40,7 +41,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "idealo";
     repo = "imagededup";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-B2IuNMTZnzBi6IxrHBoMDsmIcqGQpznd/2f1XKo1Oa4=";
   };
 
@@ -74,9 +75,7 @@ buildPythonPackage rec {
     ln -s ${EfficientNet} $HOME/.cache/torch/hub/checkpoints/${EfficientNet.name}
   '';
 
-  pythonImportsCheck = [
-    "imagededup"
-  ];
+  pythonImportsCheck = [ "imagededup" ];
 
   patches = [
     # https://github.com/idealo/imagededup/pull/217
@@ -89,7 +88,7 @@ buildPythonPackage rec {
 
   meta = with lib; {
     homepage = "https://idealo.github.io/imagededup/";
-    changelog = "https://github.com/idealo/imagededup/releases/tag/${src.rev}";
+    changelog = "https://github.com/idealo/imagededup/releases/tag/v${version}";
     description = "Finding duplicate images made easy";
     license = licenses.asl20;
     maintainers = with maintainers; [ stunkymonkey ];

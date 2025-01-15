@@ -1,15 +1,15 @@
-{ lib
-, stdenv
-, buildPythonPackage
-, fetchFromGitHub
-, pythonOlder
-, future
-, numpy
-, scipy
-, matplotlib
-, scikit-learn
-, torch
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonOlder,
+  future,
+  numpy,
+  scipy,
+  matplotlib,
+  scikit-learn,
+  torch,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -22,7 +22,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "mathLab";
     repo = "EZyRB";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-nu75Geyeu1nTLoGaohXB9pmbUWKgdgch9Z5OJqz9xKQ=";
   };
 
@@ -35,13 +35,9 @@ buildPythonPackage rec {
     torch
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
-  pythonImportsCheck = [
-    "ezyrb"
-  ];
+  pythonImportsCheck = [ "ezyrb" ];
 
   disabledTestPaths = [
     # Exclude long tests

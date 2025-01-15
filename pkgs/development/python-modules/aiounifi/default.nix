@@ -7,6 +7,7 @@
   orjson,
   pytest-aiohttp,
   pytest-asyncio,
+  pytest-cov-stub,
   pytestCheckHook,
   pythonOlder,
   segno,
@@ -16,7 +17,7 @@
 
 buildPythonPackage rec {
   pname = "aiounifi";
-  version = "78";
+  version = "81";
   pyproject = true;
 
   disabled = pythonOlder "3.11";
@@ -24,16 +25,14 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "Kane610";
     repo = "aiounifi";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-fY3VsXJfs/uqqQjR6Sp03XlkCOk+8GvXq476dgagJQ8=";
+    tag = "v${version}";
+    hash = "sha256-QuECmv/xWTNsC42JmPlYwN710Pu6L9jNbtOPJsUdM9k=";
   };
 
   postPatch = ''
     substituteInPlace pyproject.toml \
-      --replace-fail "setuptools==" "setuptools>=" \
+      --replace-fail "setuptools==75.6.0" "setuptools" \
       --replace-fail "wheel==" "wheel>="
-
-    sed -i '/--cov=/d' pyproject.toml
   '';
 
   build-system = [ setuptools ];
@@ -48,6 +47,7 @@ buildPythonPackage rec {
     aioresponses
     pytest-aiohttp
     pytest-asyncio
+    pytest-cov-stub
     pytestCheckHook
     trustme
   ];
@@ -61,7 +61,7 @@ buildPythonPackage rec {
     homepage = "https://github.com/Kane610/aiounifi";
     changelog = "https://github.com/Kane610/aiounifi/releases/tag/v${version}";
     license = licenses.mit;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
     mainProgram = "aiounifi";
   };
 }

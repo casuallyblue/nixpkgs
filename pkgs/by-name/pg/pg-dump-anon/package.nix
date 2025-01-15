@@ -1,20 +1,27 @@
-{ lib, fetchFromGitLab, buildGoModule, nixosTests, postgresql, makeWrapper }:
+{
+  lib,
+  fetchFromGitLab,
+  buildGoModule,
+  nixosTests,
+  postgresql,
+  makeWrapper,
+}:
 
 buildGoModule rec {
   pname = "pg-dump-anon";
-  version = "1.3.1";
+  version = "1.3.2";
   src = fetchFromGitLab {
     owner = "dalibo";
     repo = "postgresql_anonymizer";
     rev = version;
-    hash = "sha256-Z5Oz/cIYDxFUZwQijRk4xAOUdOK0LWR+px8WOcs+Rs0=";
+    hash = "sha256-MGdGvd4P1fFKdd6wnS2V5Tdly6hJlAmSA4TspnO/6Tk=";
   };
 
   sourceRoot = "${src.name}/pg_dump_anon";
 
   vendorHash = "sha256-CwU1zoIayxvfnGL9kPdummPJiV+ECfSz4+q6gZGb8pw=";
 
-  passthru.tests = { inherit (nixosTests) pg_anonymizer; };
+  passthru.tests = { inherit (nixosTests.postgresql) anonymizer; };
 
   nativeBuildInputs = [ makeWrapper ];
   postInstall = ''

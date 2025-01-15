@@ -1,16 +1,17 @@
-{ lib
-, attrs
-, buildPythonPackage
-, cryptography
-, fetchFromGitHub
-, hatch-fancy-pypi-readme
-, hatch-vcs
-, hatchling
-, idna
-, pyasn1
-, pyasn1-modules
-, pytestCheckHook
-, pythonOlder
+{
+  lib,
+  attrs,
+  buildPythonPackage,
+  cryptography,
+  fetchFromGitHub,
+  hatch-fancy-pypi-readme,
+  hatch-vcs,
+  hatchling,
+  idna,
+  pyasn1,
+  pyasn1-modules,
+  pytestCheckHook,
+  pythonOlder,
 }:
 
 buildPythonPackage rec {
@@ -23,7 +24,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "pyca";
     repo = pname;
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-ibi9hls/VnVePv4fF2CyxI22P1RX6QpCwyeENWVPkx4=";
   };
 
@@ -41,13 +42,9 @@ buildPythonPackage rec {
     pyasn1-modules
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
-  pythonImportsCheck = [
-    "service_identity"
-  ];
+  pythonImportsCheck = [ "service_identity" ];
 
   meta = with lib; {
     description = "Service identity verification for pyOpenSSL";

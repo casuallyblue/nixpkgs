@@ -1,14 +1,19 @@
-{ lib, fetchFromGitHub, buildGoModule, nixosTests }:
+{
+  lib,
+  fetchFromGitHub,
+  buildGoModule,
+  nixosTests,
+}:
 
 buildGoModule rec {
   pname = "cni-plugins";
-  version = "1.4.1";
+  version = "1.6.1";
 
   src = fetchFromGitHub {
     owner = "containernetworking";
     repo = "plugins";
     rev = "v${version}";
-    hash = "sha256-co4jThsUR070aJh1hgXHT6QKW22d8UCmogtZYc4nzlA=";
+    hash = "sha256-thtN7po5SToM0ZFYIbycaPJTafLvk9hFV4XFGOpWmpg=";
   };
 
   vendorHash = null;

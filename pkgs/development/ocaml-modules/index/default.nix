@@ -1,7 +1,21 @@
-{ lib, fetchurl, buildDunePackage
-, repr, ppx_repr, fmt, logs, mtime, stdlib-shims
-, cmdliner, progress, semaphore-compat, optint
-, alcotest, crowbar, re, lru
+{
+  lib,
+  fetchurl,
+  buildDunePackage,
+  repr,
+  ppx_repr,
+  fmt,
+  logs,
+  mtime,
+  stdlib-shims,
+  cmdliner,
+  progress,
+  semaphore-compat,
+  optint,
+  alcotest,
+  crowbar,
+  re,
+  lru,
 }:
 
 buildDunePackage rec {
@@ -39,7 +53,7 @@ buildDunePackage rec {
   doCheck = true;
 
   meta = with lib; {
-    description = "A platform-agnostic multi-level index";
+    description = "Platform-agnostic multi-level index";
     homepage = "https://github.com/mirage/index";
     license = licenses.mit;
     maintainers = with maintainers; [ vbgl ];

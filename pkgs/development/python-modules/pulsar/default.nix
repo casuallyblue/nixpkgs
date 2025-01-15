@@ -1,12 +1,13 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonOlder
-, cmake
-, pkg-config
-, libpulsar
-, pybind11
-, certifi
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonOlder,
+  cmake,
+  pkg-config,
+  libpulsar,
+  pybind11,
+  certifi,
 }:
 
 buildPythonPackage rec {
@@ -17,7 +18,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "apache";
     repo = "pulsar-client-python";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-2Ahv0lfeHuBhGIYhiTjKegEKsJqHkpK3Qu6xBnjsanI=";
   };
 
@@ -39,16 +40,12 @@ buildPythonPackage rec {
     cd ..
   '';
 
-  propagatedBuildInputs = [
-    certifi
-  ];
+  propagatedBuildInputs = [ certifi ];
 
   # Requires to setup a cluster
   doCheck = false;
 
-  pythonImportsCheck = [
-    "pulsar"
-  ];
+  pythonImportsCheck = [ "pulsar" ];
 
   meta = with lib; {
     description = "Apache Pulsar Python client library";

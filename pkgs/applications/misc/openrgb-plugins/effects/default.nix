@@ -1,13 +1,14 @@
-{ lib
-, stdenv
-, fetchFromGitLab
-, qtbase
-, openrgb
-, glib
-, openal
-, qmake
-, pkg-config
-, wrapQtAppsHook
+{
+  lib,
+  stdenv,
+  fetchFromGitLab,
+  qtbase,
+  openrgb,
+  glib,
+  openal,
+  qmake,
+  pkg-config,
+  wrapQtAppsHook,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -42,7 +43,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   meta = with lib; {
     homepage = "https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin";
-    description = "An effects plugin for OpenRGB";
+    description = "Effects plugin for OpenRGB";
     license = licenses.gpl2Plus;
     maintainers = with maintainers; [ fgaz ];
     platforms = platforms.linux;

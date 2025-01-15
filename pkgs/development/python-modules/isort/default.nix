@@ -1,12 +1,13 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, colorama
-, hypothesis
-, poetry-core
-, setuptools
-, pylama
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  colorama,
+  hypothesis,
+  poetry-core,
+  setuptools,
+  pylama,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -17,7 +18,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "PyCQA";
     repo = "isort";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-/1iKYmtNRw9u59zzJDwV7b9+EPxFJDHvhjTioGt5LLU=";
   };
 
@@ -77,7 +78,7 @@ buildPythonPackage rec {
   ];
 
   meta = with lib; {
-    description = "A Python utility / library to sort Python imports";
+    description = "Python utility / library to sort Python imports";
     homepage = "https://github.com/PyCQA/isort";
     license = licenses.mit;
     maintainers = with maintainers; [ couchemar ];

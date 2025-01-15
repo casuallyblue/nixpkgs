@@ -1,43 +1,40 @@
-{ lib
-, aiohttp
-, aioresponses
-, buildPythonPackage
-, fetchFromGitHub
-, orjson
-, pytest-aiohttp
-, pytestCheckHook
-, pythonOlder
-, setuptools
-, wheel
+{
+  lib,
+  aiohttp,
+  aioresponses,
+  buildPythonPackage,
+  fetchFromGitHub,
+  orjson,
+  pytest-aiohttp,
+  pytest-cov-stub,
+  pytestCheckHook,
+  pythonOlder,
+  setuptools,
 }:
 
 buildPythonPackage rec {
   pname = "pydeconz";
-  version = "115";
+  version = "119";
   pyproject = true;
 
-  disabled = pythonOlder "3.11";
+  disabled = pythonOlder "3.12";
 
   src = fetchFromGitHub {
     owner = "Kane610";
     repo = "deconz";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-NjzONVSJ4GEaIeC5ytnTi8JpZY1yIq3LN8vbMy3n0vs=";
+    tag = "v${version}";
+    hash = "sha256-5138YzxutjyFsYyLGLTzeyCISuY8kV4WA0FLML+VeZQ=";
   };
 
   postPatch = ''
     substituteInPlace pyproject.toml \
-      --replace "--cov=pydeconz --cov-report term-missing" "" \
-      --replace "setuptools==" "setuptools>=" \
-      --replace "wheel==" "wheel>="
+      --replace-fail "setuptools==75.6.0" "setuptools" \
+      --replace-fail "wheel==" "wheel>="
   '';
 
-  nativeBuildInputs = [
-    setuptools
-    wheel
-  ];
+  build-system = [ setuptools ];
 
-  propagatedBuildInputs = [
+  dependencies = [
     aiohttp
     orjson
   ];
@@ -45,19 +42,18 @@ buildPythonPackage rec {
   nativeCheckInputs = [
     aioresponses
     pytest-aiohttp
+    pytest-cov-stub
     pytestCheckHook
   ];
 
-  pythonImportsCheck = [
-    "pydeconz"
-  ];
+  pythonImportsCheck = [ "pydeconz" ];
 
   meta = with lib; {
     description = "Python library wrapping the Deconz REST API";
-    mainProgram = "pydeconz";
     homepage = "https://github.com/Kane610/deconz";
     changelog = "https://github.com/Kane610/deconz/releases/tag/v${version}";
-    license = with licenses; [ mit ];
+    license = licenses.mit;
     maintainers = with maintainers; [ fab ];
+    mainProgram = "pydeconz";
   };
 }

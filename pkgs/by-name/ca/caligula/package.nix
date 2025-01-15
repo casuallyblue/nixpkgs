@@ -1,42 +1,37 @@
-{ lib
-, rustPlatform
-, fetchFromGitHub
-, stdenv
-, darwin
+{
+  lib,
+  rustPlatform,
+  fetchFromGitHub,
 }:
 
 rustPlatform.buildRustPackage rec {
   pname = "caligula";
-  version = "0.4.5";
+  version = "0.4.8";
 
   src = fetchFromGitHub {
     owner = "ifd3f";
     repo = "caligula";
     rev = "v${version}";
-    hash = "sha256-9+aLpxmMP76CsLFFmr1mhKgbaT7Zz0lx4D2jQCUA9VY=";
+    hash = "sha256-VwbVDfiGiVFefsxoQ1FBDHyYLp0sOKnnVZctklyO+Tw=";
   };
 
-  cargoHash = "sha256-VwtmU5jTQPn3hpNuLckPQl6joEFPfuax1gRVG0/nceg=";
+  cargoHash = "sha256-2/6RoDsVf+yI/X22hUV68U1VBrRkd5i9BsFMIMGnZXg=";
 
-  buildInputs = lib.optionals stdenv.isDarwin (
-    with darwin.apple_sdk.frameworks; [
-      Cocoa
-      IOKit
-      Foundation
-      DiskArbitration
-    ]
-  );
+  nativeBuildInputs = [
+    rustPlatform.bindgenHook
+  ];
 
   RUSTFLAGS = "--cfg tracing_unstable";
 
   meta = with lib; {
-    description = "A user-friendly, lightweight TUI for disk imaging";
+    description = "User-friendly, lightweight TUI for disk imaging";
     homepage = "https://github.com/ifd3f/caligula/";
     license = licenses.gpl3Only;
-    maintainers = with maintainers; [ sodiboo ];
+    maintainers = with maintainers; [
+      ifd3f
+      sodiboo
+    ];
     platforms = platforms.linux ++ platforms.darwin;
-    # https://github.com/ifd3f/caligula/issues/105
-    broken = stdenv.hostPlatform.isDarwin;
     mainProgram = "caligula";
   };
 }

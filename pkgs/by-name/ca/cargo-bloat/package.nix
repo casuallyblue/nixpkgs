@@ -1,4 +1,8 @@
-{ lib, rustPlatform, fetchFromGitHub }:
+{
+  lib,
+  rustPlatform,
+  fetchFromGitHub,
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-bloat";
@@ -14,11 +18,14 @@ rustPlatform.buildRustPackage rec {
   cargoHash = "sha256-BBFLyMx1OPT2XAM6pofs2kV/3n3FrNu0Jkyr/Y3smnI=";
 
   meta = with lib; {
-    description = "A tool and Cargo subcommand that helps you find out what takes most of the space in your executable";
+    description = "Tool and Cargo subcommand that helps you find out what takes most of the space in your executable";
     homepage = "https://github.com/RazrFalcon/cargo-bloat";
     license = licenses.mit;
     platforms = platforms.unix;
-    maintainers = with maintainers; [ xrelkd matthiasbeyer ];
+    maintainers = with maintainers; [
+      xrelkd
+      matthiasbeyer
+    ];
     mainProgram = "cargo-bloat";
   };
 }

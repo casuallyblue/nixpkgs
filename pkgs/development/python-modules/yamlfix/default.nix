@@ -1,16 +1,16 @@
-{ lib
-, buildPythonPackage
-, click
-, fetchFromGitHub
-, maison
-, pdm-backend
-, pytest-freezegun
-, pytest-xdist
-, pytest
-, pytestCheckHook
-, pythonOlder
-, ruyaml
-, setuptools
+{
+  lib,
+  buildPythonPackage,
+  click,
+  fetchFromGitHub,
+  maison,
+  pdm-backend,
+  pytest-freezegun,
+  pytest-xdist,
+  pytestCheckHook,
+  pythonOlder,
+  ruyaml,
+  setuptools,
 }:
 
 buildPythonPackage rec {
@@ -23,7 +23,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "lyz-code";
     repo = "yamlfix";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-nadyBIzXHbWm0QvympRaYU38tuPJ3TPJg8EbvVv+4L0=";
   };
 
@@ -48,9 +48,7 @@ buildPythonPackage rec {
     export HOME=$(mktemp -d)
   '';
 
-  pythonImportsCheck = [
-    "yamlfix"
-  ];
+  pythonImportsCheck = [ "yamlfix" ];
 
   pytestFlagsArray = [
     "-W"

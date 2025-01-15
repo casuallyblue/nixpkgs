@@ -12,20 +12,21 @@
   pythonOlder,
   setuptools,
   syrupy,
+  tenacity,
 }:
 
 buildPythonPackage rec {
   pname = "nettigo-air-monitor";
-  version = "3.0.1";
+  version = "4.0.0";
   pyproject = true;
 
-  disabled = pythonOlder "3.11";
+  disabled = pythonOlder "3.12";
 
   src = fetchFromGitHub {
     owner = "bieniu";
     repo = "nettigo-air-monitor";
-    rev = "refs/tags/${version}";
-    hash = "sha256-Ysvyg2cj09Bb+xpNPapYAQSBDKfGsYZcHj9xxIR8KGw=";
+    tag = version;
+    hash = "sha256-aYlnaFim4ezZ/nOAf1m6iIfE4NGswtEmPsslfrTd5tI=";
   };
 
   build-system = [ setuptools ];
@@ -34,6 +35,7 @@ buildPythonPackage rec {
     aiohttp
     aqipy-atmotech
     dacite
+    tenacity
   ];
 
   nativeCheckInputs = [
@@ -42,6 +44,12 @@ buildPythonPackage rec {
     pytest-error-for-skips
     pytestCheckHook
     syrupy
+  ];
+
+  disabledTests = [
+    # stuck in epoll
+    "test_retry_fail"
+    "test_retry_success"
   ];
 
   pythonImportsCheck = [ "nettigo_air_monitor" ];

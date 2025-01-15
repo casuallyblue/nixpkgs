@@ -1,13 +1,14 @@
-{ lib
-, beautifulsoup4
-, buildPythonPackage
-, fetchFromGitHub
-, html5lib
-, lxml
-, pytestCheckHook
-, pythonOlder
-, regex
-, setuptools
+{
+  lib,
+  beautifulsoup4,
+  buildPythonPackage,
+  fetchFromGitHub,
+  html5lib,
+  lxml,
+  pytestCheckHook,
+  pythonOlder,
+  regex,
+  setuptools,
 }:
 
 buildPythonPackage rec {
@@ -20,13 +21,11 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "alan-turing-institute";
     repo = "ReadabiliPy";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-XrmdQjLFYdadWeO5DoKAQeEdta+6T6BqfvGlDkzLMyM=";
   };
 
-  nativeBuildInputs = [
-    setuptools
-  ];
+  nativeBuildInputs = [ setuptools ];
 
   propagatedBuildInputs = [
     beautifulsoup4
@@ -35,13 +34,9 @@ buildPythonPackage rec {
     regex
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
-  pythonImportsCheck = [
-    "readabilipy"
-  ];
+  pythonImportsCheck = [ "readabilipy" ];
 
   disabledTests = [
     # AssertionError

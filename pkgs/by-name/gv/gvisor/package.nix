@@ -6,6 +6,7 @@
 , iptables
 , makeWrapper
 , procps
+, glibc
 }:
 
 buildGoModule {
@@ -23,11 +24,17 @@ buildGoModule {
     hash = "sha256-idgUEbYAfnm/HphVs12Sj1FwG+jmL2BBr0PJnG9BC3A=";
   };
 
+    # Replace the placeholder with the actual path to ldconfig
+  postPatch = ''
+    substituteInPlace runsc/container/container.go \
+      --replace-fail '"/sbin/ldconfig"' '"${glibc}/bin/ldconfig"'
+  '';
+
   vendorHash = "sha256-jbMXeNXzvjfJcIfHjvf8I3ePjm6KFTXJ94ia4T2hUs4=";
 
   nativeBuildInputs = [ makeWrapper ];
 
-  CGO_ENABLED = 0;
+  env.CGO_ENABLED = 0;
 
   ldflags = [ "-s" "-w" ];
 

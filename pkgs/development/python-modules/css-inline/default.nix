@@ -1,31 +1,32 @@
-{ lib
-, stdenv
-, buildPythonPackage
-, fetchFromGitHub
+{
+  lib,
+  stdenv,
+  buildPythonPackage,
+  fetchFromGitHub,
 
-# build-system
-, rustPlatform
+  # build-system
+  rustPlatform,
 
-# native darwin dependencies
-, libiconv
-, Security
-, SystemConfiguration
+  # native darwin dependencies
+  libiconv,
+  Security,
+  SystemConfiguration,
 
-# tests
-, pytestCheckHook
-, hypothesis
+  # tests
+  pytestCheckHook,
+  hypothesis,
 }:
 
 buildPythonPackage rec {
   pname = "css-inline";
-  version = "0.14.1";
+  version = "0.14.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "Stranger6667";
     repo = "css-inline";
     rev = "python-v${version}";
-    hash = "sha256-+hX05y+ii2/wAbcc3SPK3ns4slUKFGqHURb3Z08yhVw=";
+    hash = "sha256-2C+UbndhGQxIsPVaJOMu/WdLHcA2H1uuJrNMhafybmU=";
   };
 
   postPatch = ''
@@ -42,7 +43,7 @@ buildPythonPackage rec {
       ln -s ${./Cargo.lock} Cargo.lock
     '';
     name = "${pname}-${version}";
-    hash = "sha256-ogzj8JxiFX2VWEeEnKACycd2Bud9VUpLuF4h35eUls0=";
+    hash = "sha256-FvkVwd681EhEHRJ8ip97moEkRE3VcuIPbi+F1SjXz8E=";
   };
 
   nativeBuildInputs = [
@@ -50,29 +51,29 @@ buildPythonPackage rec {
     rustPlatform.maturinBuildHook
   ];
 
-  buildInputs = lib.optionals stdenv.isDarwin [
+  buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
     libiconv
     Security
     SystemConfiguration
   ];
 
-  pythonImportsCheck = [
-    "css_inline"
-  ];
+  pythonImportsCheck = [ "css_inline" ];
 
   nativeCheckInputs = [
     hypothesis
     pytestCheckHook
   ];
 
-  disabledTests = [
-    # fails to connect to local server
-    "test_cache"
-    "test_remote_stylesheet"
-  ] ++ lib.optionals (stdenv.isDarwin) [
-    # pyo3_runtime.PanicException: event loop thread panicked
-    "test_invalid_href"
-  ];
+  disabledTests =
+    [
+      # fails to connect to local server
+      "test_cache"
+      "test_remote_stylesheet"
+    ]
+    ++ lib.optionals (stdenv.hostPlatform.isDarwin) [
+      # pyo3_runtime.PanicException: event loop thread panicked
+      "test_invalid_href"
+    ];
 
   meta = with lib; {
     description = "Inline CSS into style attributes";

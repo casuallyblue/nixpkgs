@@ -17,7 +17,7 @@ buildGoModule rec {
 
   vendorHash = "sha256-unIyU60IrbiKDIjUf9F2pqqGNIA4gFp5XyQlvx6+xxQ=";
 
-  CGO_ENABLED = 0;
+  env.CGO_ENABLED = 0;
 
   ldflags = [ "-s" "-w" ];
 
@@ -26,7 +26,7 @@ buildGoModule rec {
   };
 
   meta = with lib; {
-    description = "An implementation of endlessh exporting Prometheus metrics";
+    description = "Implementation of endlessh exporting Prometheus metrics";
     homepage = "https://github.com/shizunge/endlessh-go";
     changelog = "https://github.com/shizunge/endlessh-go/releases/tag/${version}";
     license = licenses.gpl3Plus;

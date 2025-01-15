@@ -1,4 +1,12 @@
-{ lib, stdenv, fetchFromGitHub, fetchzip, pkg-config, wine64, enableJackAssWine64 ? false }:
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  fetchzip,
+  pkg-config,
+  wine64,
+  enableJackAssWine64 ? false,
+}:
 
 let
   # equal to vst-sdk in ../oxefmsynth/default.nix
@@ -52,7 +60,7 @@ stdenv.mkDerivation (finalAttrs: {
   enableParallelBuilding = true;
 
   meta = with lib; {
-    description = "JackAss is a VST plugin that provides JACK-MIDI support for VST hosts.";
+    description = "JackAss is a VST plugin that provides JACK-MIDI support for VST hosts";
     longDescription = ''
       Simply load the plugin in your favourite host to get a JACK-MIDI port.
       Optionally includes a special Wine build for running in Wine
@@ -60,7 +68,10 @@ stdenv.mkDerivation (finalAttrs: {
     '';
     homepage = "https://github.com/falkTX/JackAss";
     maintainers = with maintainers; [ PowerUser64 ];
-    license = with licenses; [ mit unfree ];
+    license = with licenses; [
+      mit
+      unfree
+    ];
     platforms = platforms.linux;
   };
 })

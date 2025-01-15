@@ -1,19 +1,20 @@
-{ lib
-, buildPythonPackage
-, cmake
-, fetchFromGitHub
-, joblib
-, matplotlib
-, ninja
-, numpy
-, pandas
-, pathspec
-, pyproject-metadata
-, pybind11
-, pytestCheckHook
-, pythonOlder
-, scikit-build-core
-, scipy
+{
+  lib,
+  buildPythonPackage,
+  cmake,
+  fetchFromGitHub,
+  joblib,
+  matplotlib,
+  ninja,
+  numpy,
+  pandas,
+  pathspec,
+  pyproject-metadata,
+  pybind11,
+  pytestCheckHook,
+  pythonOlder,
+  scikit-build-core,
+  scipy,
 }:
 
 buildPythonPackage rec {
@@ -26,7 +27,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "KaveIO";
     repo = "PhiK";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-YsH7vVn6gzejunUjUY/RIcvWtaQ/W1gbciJWKi5LDTk=";
   };
 
@@ -47,16 +48,12 @@ buildPythonPackage rec {
     scipy
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
   # Uses scikit-build-core to drive build process
   dontUseCmakeConfigure = true;
 
-  pythonImportsCheck = [
-    "phik"
-  ];
+  pythonImportsCheck = [ "phik" ];
 
   preCheck = ''
     # import from $out

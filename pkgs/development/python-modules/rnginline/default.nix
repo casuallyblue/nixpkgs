@@ -1,15 +1,15 @@
-{ lib
-, fetchPypi
-, buildPythonPackage
-, poetry-core
-, pythonRelaxDepsHook
-, lxml
-, docopt-ng
-, typing-extensions
-, importlib-metadata
-, importlib-resources
-, pytestCheckHook
-, mock
+{
+  lib,
+  fetchPypi,
+  buildPythonPackage,
+  poetry-core,
+  lxml,
+  docopt-ng,
+  typing-extensions,
+  importlib-metadata,
+  importlib-resources,
+  pytestCheckHook,
+  mock,
 }:
 
 buildPythonPackage rec {
@@ -28,13 +28,7 @@ buildPythonPackage rec {
     "lxml"
   ];
 
-  build-system = [
-    poetry-core
-  ];
-
-  nativeBuildInputs = [
-    pythonRelaxDepsHook
-  ];
+  build-system = [ poetry-core ];
 
   dependencies = [
     docopt-ng
@@ -52,7 +46,7 @@ buildPythonPackage rec {
   pythonImportsCheck = [ "rnginline" ];
 
   meta = with lib; {
-    description = "A Python library and command-line tool for loading multi-file RELAX NG schemas from arbitary URLs, and flattening them into a single RELAX NG schema";
+    description = "Python library and command-line tool for loading multi-file RELAX NG schemas from arbitary URLs, and flattening them into a single RELAX NG schema";
     homepage = "https://github.com/h4l/rnginline";
     changelog = "https://github.com/h4l/rnginline/blob/${version}/CHANGELOG.md";
     license = licenses.asl20;

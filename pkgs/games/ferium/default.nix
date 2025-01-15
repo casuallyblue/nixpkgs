@@ -1,26 +1,30 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, rustPlatform
-, Security
-, SystemConfiguration
-, installShellFiles
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  rustPlatform,
+  Security,
+  SystemConfiguration,
+  installShellFiles,
 }:
 
 rustPlatform.buildRustPackage rec {
   pname = "ferium";
-  version = "4.5.2";
+  version = "4.7.1";
 
   src = fetchFromGitHub {
     owner = "gorilla-devs";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-tYRs6HfFTdUZqWal9pLZ0uUNCPr3+zQz5JV2ohOLIP8=";
+    hash = "sha256-eeQjezB6pRdnPADLgDLo8b+bUSP12gfBhFNt/uYCwHU=";
   };
 
-  buildInputs = lib.optionals stdenv.isDarwin [ Security SystemConfiguration ];
+  buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
+    Security
+    SystemConfiguration
+  ];
 
-  cargoHash = "sha256-5ClBS42hWw3ULEG1Qn+fiM6dvJ+xS4Dusy3BCj5Cvbg=";
+  cargoHash = "sha256-yBi6zyljkYEIUvSH4nXMw8fjPnt4kjqiuZ/QLT5IbqQ=";
 
   # Disable the GUI file picker so that GTK/XDG dependencies aren't used
   buildNoDefaultFeatures = true;
@@ -42,6 +46,9 @@ rustPlatform.buildRustPackage rec {
     mainProgram = "ferium";
     homepage = "https://github.com/gorilla-devs/ferium";
     license = licenses.mpl20;
-    maintainers = with maintainers; [ leo60228 soupglasses ];
+    maintainers = with maintainers; [
+      leo60228
+      soupglasses
+    ];
   };
 }

@@ -2,16 +2,13 @@
   fetchFromGitHub,
   gfold,
   lib,
-  libiconv,
   rustPlatform,
-  Security,
-  stdenv,
   testers,
 }:
 
 let
   pname = "gfold";
-  version = "4.4.1";
+  version = "4.6.0";
 in
 rustPlatform.buildRustPackage {
   inherit pname version;
@@ -20,15 +17,10 @@ rustPlatform.buildRustPackage {
     owner = "nickgerace";
     repo = pname;
     rev = version;
-    sha256 = "sha256-KKuWPitm7oD2mXPSu2rbOyzwJ9JJ23LBQIIkkPHm1w4=";
+    hash = "sha256-z5E+YS2zO4zgsW7mZbVN0z4HOurqoXwXn8hQc++9tks=";
   };
 
-  cargoHash = "sha256-wDUOYK9e0i600UnJ0w0FPI2GhTa/QTq/2+ICiDWrmEU=";
-
-  buildInputs = lib.optionals stdenv.isDarwin [
-    libiconv
-    Security
-  ];
+  cargoHash = "sha256-mSqqtHZDm1ySu48DdI2sF7i7A8rDkFS/4/9uB30JOI8=";
 
   passthru.tests.version = testers.testVersion {
     package = gfold;

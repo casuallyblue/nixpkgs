@@ -2,18 +2,16 @@
   lib,
   buildPythonPackage,
   clarifai-grpc,
+  clarifai-protocol,
+  click,
   fetchFromGitHub,
+  fsspec,
   inquirerpy,
-  llama-index-core,
   numpy,
-  opencv4,
-  pandas,
   pillow,
   pycocotools,
-  pypdf,
   pytestCheckHook,
   pythonOlder,
-  pythonRelaxDepsHook,
   pyyaml,
   rich,
   schema,
@@ -25,7 +23,7 @@
 
 buildPythonPackage rec {
   pname = "clarifai";
-  version = "10.3.3";
+  version = "11.0.0";
   pyproject = true;
 
   disabled = pythonOlder "3.8";
@@ -33,27 +31,25 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "Clarifai";
     repo = "clarifai-python";
-    rev = "refs/tags/${version}";
-    hash = "sha256-M0OrBqjNjrpxVM/A7NVqarcP8S+VqunYGI4C+Wis6UI=";
+    tag = version;
+    hash = "sha256-TJXgcoa8s22fEyXER1C+MxFrvDt5DzY/k5T5fKE4Rec=";
   };
 
-  pythonRelaxDeps = [ "clarifai-grpc" ];
-
-  pythonRemoveDeps = [ "opencv-python" ];
+  pythonRelaxDeps = [
+    "fsspec"
+    "schema"
+  ];
 
   build-system = [ setuptools ];
 
-  nativeBuildInputs = [ pythonRelaxDepsHook ];
-
   dependencies = [
     clarifai-grpc
+    clarifai-protocol
+    click
+    fsspec
     inquirerpy
-    llama-index-core
     numpy
-    opencv4
-    pandas
     pillow
-    pypdf
     pyyaml
     rich
     schema
@@ -62,7 +58,7 @@ buildPythonPackage rec {
     tritonclient
   ];
 
-  passthru.optional-dependencies = {
+  optional-dependencies = {
     all = [ pycocotools ];
   };
 
@@ -75,20 +71,25 @@ buildPythonPackage rec {
   disabledTests = [
     # Test requires network access and API key
     "test_export_workflow_general"
+    "test_validate_invalid_id"
+    "test_validate_invalid_hex_id"
   ];
 
   disabledTestPaths = [
     # Tests require network access and API key
+    "tests/cli/test_compute_orchestration.py"
+    "tests/runners/test_anymodel.py"
+    "tests/runners/test_textmodel.py"
+    "tests/runners/test_url_fetcher.py"
     "tests/test_app.py"
     "tests/test_data_upload.py"
     "tests/test_eval.py"
     "tests/test_model_predict.py"
     "tests/test_model_train.py"
+    "tests/test_rag.py"
     "tests/test_search.py"
     "tests/workflow/test_create_delete.py"
     "tests/workflow/test_predict.py"
-    "tests/test_rag.py"
-    "clarifai/models/model_serving/repo_build/static_files/base_test.py"
   ];
 
   pythonImportsCheck = [ "clarifai" ];

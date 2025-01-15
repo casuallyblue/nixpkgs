@@ -1,15 +1,16 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, httpx
-, pyjwt
-, pytest-asyncio
-, pytest-httpx
-, pytestCheckHook
-, pythonOlder
-, setuptools
-, setuptools-scm
-, time-machine
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  httpx,
+  pyjwt,
+  pytest-asyncio,
+  pytest-httpx,
+  pytestCheckHook,
+  pythonOlder,
+  setuptools,
+  setuptools-scm,
+  time-machine,
 }:
 
 buildPythonPackage rec {
@@ -22,7 +23,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "Colin-b";
     repo = "httpx_auth";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-7azPyep+R55CdRwbdo20y4YNV47c8CwXgOj4q4t25oc=";
   };
 
@@ -31,9 +32,7 @@ buildPythonPackage rec {
     setuptools-scm
   ];
 
-  propagatedBuildInputs = [
-    httpx
-  ];
+  propagatedBuildInputs = [ httpx ];
 
   nativeCheckInputs = [
     pyjwt
@@ -43,9 +42,7 @@ buildPythonPackage rec {
     time-machine
   ];
 
-  pythonImportsCheck = [
-    "httpx_auth"
-  ];
+  pythonImportsCheck = [ "httpx_auth" ];
 
   __darwinAllowLocalNetworking = true;
 

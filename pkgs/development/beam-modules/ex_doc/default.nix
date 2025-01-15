@@ -1,14 +1,14 @@
-{ lib, elixir, fetchFromGitHub, fetchMixDeps, mixRelease, nix-update-script }:
+{ lib, elixir, fetchFromGitHub, fetchMixDeps, mixRelease }:
 # Based on ../elixir-ls/default.nix
 
 let
   pname = "ex_doc";
-  version = "0.32.1";
+  version = "0.34.1";
   src = fetchFromGitHub {
     owner = "elixir-lang";
     repo = "${pname}";
     rev = "v${version}";
-    hash = "sha256-nNUSx2Ywj04vgT/7BQEwoNtTl1NGmbvuIS4KbvUFYzs=";
+    hash = "sha256-OXIRippEDYAKD222XzNJkkZdXbUkDUauv5amr4oAU7c=";
   };
 in
 mixRelease {
@@ -19,7 +19,7 @@ mixRelease {
   mixFodDeps = fetchMixDeps {
     pname = "mix-deps-${pname}";
     inherit src version elixir;
-    hash = "sha256-e0lU4TXLY2geO6MI1h0kpdwsGbEyXjIRe0W43337mHk=";
+    hash = "sha256-fYINsATbw3M3r+IVoYS14aVEsg9OBuH6mNUqzQJuDQo=";
   };
 
   configurePhase = ''
@@ -51,5 +51,4 @@ mixRelease {
     mainProgram = "ex_doc";
     maintainers = with maintainers; [chiroptical];
   };
-  passthru.updateScript = nix-update-script { };
 }

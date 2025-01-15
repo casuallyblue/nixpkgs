@@ -1,16 +1,18 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonOlder,
 
-# dependencies
-, django
-, persisting-theory
-, six
+  # dependencies
+  django,
+  persisting-theory,
+  six,
 
-# tests
-, djangorestframework
-, pytest-django
-, pytestCheckHook
+  # tests
+  djangorestframework,
+  pytest-django,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -21,13 +23,11 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "agateblue";
     repo = "django-dynamic-preferences";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-S0PAlSrMOQ68mX548pZzARfau/lytXWC4S5uVO1rUmo=";
   };
 
-  buildInputs = [
-    django
-  ];
+  buildInputs = [ django ];
 
   propagatedBuildInputs = [
     six
@@ -39,6 +39,11 @@ buildPythonPackage rec {
     pytestCheckHook
     pytest-django
   ];
+
+  pythonImportsCheck = [ "dynamic_preferences" ];
+
+  # Remove once https://github.com/agateblue/django-dynamic-preferences/issues/309 is fixed
+  doCheck = pythonOlder "3.12";
 
   env.DJANGO_SETTINGS = "tests.settings";
 

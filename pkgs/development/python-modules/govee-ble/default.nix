@@ -6,6 +6,7 @@
   fetchFromGitHub,
   home-assistant-bluetooth,
   poetry-core,
+  pytest-cov-stub,
   pytestCheckHook,
   pythonOlder,
   sensor-state-data,
@@ -13,7 +14,7 @@
 
 buildPythonPackage rec {
   pname = "govee-ble";
-  version = "0.31.2";
+  version = "0.40.0";
   pyproject = true;
 
   disabled = pythonOlder "3.9";
@@ -21,14 +22,9 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "Bluetooth-Devices";
     repo = "govee-ble";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-aWSf80WmVopkvqCzQKHEw9McrfepZcN+fhrUP90gf5U=";
+    tag = "v${version}";
+    hash = "sha256-w21paR1VTV/ZFnl9SKkJmFFDZMPgA3d7P6blceVvnVk=";
   };
-
-  postPatch = ''
-    substituteInPlace pyproject.toml \
-      --replace-fail " --cov=govee_ble --cov-report=term-missing:skip-covered" ""
-  '';
 
   build-system = [ poetry-core ];
 
@@ -39,7 +35,10 @@ buildPythonPackage rec {
     sensor-state-data
   ];
 
-  nativeCheckInputs = [ pytestCheckHook ];
+  nativeCheckInputs = [
+    pytest-cov-stub
+    pytestCheckHook
+  ];
 
   pythonImportsCheck = [ "govee_ble" ];
 

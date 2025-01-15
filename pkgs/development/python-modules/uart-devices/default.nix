@@ -1,10 +1,11 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, poetry-core
-, pytest-asyncio
-, pythonOlder
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  poetry-core,
+  pytest-asyncio,
+  pythonOlder,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -17,7 +18,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "bdraco";
     repo = "uart-devices";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-rmOWyTdOwnlr8Rwsvd2oeZq79LuGVJDAkIW2/9gGrKQ=";
   };
 
@@ -26,9 +27,7 @@ buildPythonPackage rec {
       --replace-fail "-Wdefault --cov=uart_devices --cov-report=term-missing:skip-covered" ""
   '';
 
-  nativeBuildInputs = [
-    poetry-core
-  ];
+  nativeBuildInputs = [ poetry-core ];
 
   nativeCheckInputs = [
     pytest-asyncio

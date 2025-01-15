@@ -6,8 +6,18 @@
 }:
 
 let
-  inherit (lib) mkEnableOption mkPackageOption mkOption maintainers;
-  inherit (lib.types) bool str;
+  inherit (lib)
+    mkEnableOption
+    mkPackageOption
+    mkOption
+    maintainers
+    ;
+  inherit (lib.types)
+    bool
+    port
+    str
+    submodule
+    ;
   cfg = config.services.navidrome;
   settingsFormat = pkgs.formats.json { };
 in
@@ -20,11 +30,30 @@ in
       package = mkPackageOption pkgs "navidrome" { };
 
       settings = mkOption {
-        type = settingsFormat.type;
-        default = {
-          Address = "127.0.0.1";
-          Port = 4533;
+        type = submodule {
+          freeformType = settingsFormat.type;
+
+          options = {
+            Address = mkOption {
+              default = "127.0.0.1";
+              description = "Address to run Navidrome on.";
+              type = str;
+            };
+
+            Port = mkOption {
+              default = 4533;
+              description = "Port to run Navidrome on.";
+              type = port;
+            };
+
+            EnableInsightsCollector = mkOption {
+              default = false;
+              description = "Enable anonymous usage data collection, see <https://www.navidrome.org/docs/getting-started/insights/> for details.";
+              type = bool;
+            };
+          };
         };
+        default = { };
         example = {
           MusicFolder = "/mnt/music";
         };
@@ -86,14 +115,20 @@ in
             BindPaths =
               optional (cfg.settings ? DataFolder) cfg.settings.DataFolder
               ++ optional (cfg.settings ? CacheFolder) cfg.settings.CacheFolder;
-            BindReadOnlyPaths = [
-              # navidrome uses online services to download additional album metadata / covers
-              "${
-                config.environment.etc."ssl/certs/ca-certificates.crt".source
-              }:/etc/ssl/certs/ca-certificates.crt"
-              builtins.storeDir
-              "/etc"
-            ] ++ optional (cfg.settings ? MusicFolder) cfg.settings.MusicFolder;
+            BindReadOnlyPaths =
+              [
+                # navidrome uses online services to download additional album metadata / covers
+                "${
+                  config.environment.etc."ssl/certs/ca-certificates.crt".source
+                }:/etc/ssl/certs/ca-certificates.crt"
+                builtins.storeDir
+                "/etc"
+              ]
+              ++ optional (cfg.settings ? MusicFolder) cfg.settings.MusicFolder
+              ++ lib.optionals config.services.resolved.enable [
+                "/run/systemd/resolve/stub-resolv.conf"
+                "/run/systemd/resolve/resolv.conf"
+              ];
             CapabilityBoundingSet = "";
             RestrictAddressFamilies = [
               "AF_UNIX"
@@ -134,5 +169,5 @@ in
 
       networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.settings.Port ];
     };
-    meta.maintainers = with maintainers; [ nu-nu-ko ];
+  meta.maintainers = with maintainers; [ fsnkty ];
 }

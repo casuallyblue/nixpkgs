@@ -1,10 +1,11 @@
-{ lib
-, buildPythonPackage
-, pythonOlder
-, fetchFromGitHub
-, poetry-core
-, pillow
-, vacuum-map-parser-base
+{
+  lib,
+  buildPythonPackage,
+  pythonOlder,
+  fetchFromGitHub,
+  poetry-core,
+  pillow,
+  vacuum-map-parser-base,
 }:
 
 buildPythonPackage rec {
@@ -17,7 +18,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "PiotrMachowski";
     repo = "Python-package-${pname}";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-y7Q8C7ZvOn/KSUMJ7A/oH+HZMVBpuPitsXqsqHvvYHE=";
   };
 

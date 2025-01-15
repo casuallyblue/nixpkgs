@@ -1,12 +1,13 @@
-{ lib
-, symlinkJoin
-, fira-mono
-, fira-sans
+{
+  lib,
+  symlinkJoin,
+  fira-mono,
+  fira-sans,
 }:
 
 symlinkJoin rec {
   pname = "fira";
-  inherit (fira-mono) version;
+  inherit (fira-sans) version;
   name = "${pname}-${version}";
 
   paths = [
@@ -16,7 +17,7 @@ symlinkJoin rec {
 
   meta = {
     description = "Fira font family including Fira Sans and Fira Mono";
-    homepage = "https://mozilla.github.io/Fira/";
+    homepage = "https://bboxtype.com/fira/";
     license = lib.licenses.ofl;
     platforms = lib.platforms.all;
   };

@@ -4,18 +4,18 @@
   buildPythonPackage,
   fetchFromGitHub,
   isodate,
+  poetry-core,
+  poetry-dynamic-versioning,
   pytestCheckHook,
   pythonOlder,
   pyyaml,
   requests,
   responses,
-  poetry-core,
-  pythonRelaxDepsHook,
 }:
 
 buildPythonPackage rec {
   pname = "pysolcast";
-  version = "2.0.2";
+  version = "2.0.6";
   pyproject = true;
 
   disabled = pythonOlder "3.9";
@@ -23,15 +23,16 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "mcaulifn";
     repo = "solcast";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-DXJkbAlkxBjUEbziFNdr8SilB2GRUoAwvrr0HY56Deg=";
+    tag = "v${version}";
+    hash = "sha256-x91QVCDPjfC8rCVam/mrc8HP84ONa2/mJtSV64hrilc=";
   };
 
   pythonRelaxDeps = [ "responses" ];
 
-  build-system = [ poetry-core ];
-
-  nativeBuildInputs = [ pythonRelaxDepsHook ];
+  build-system = [
+    poetry-core
+    poetry-dynamic-versioning
+  ];
 
   dependencies = [
     anyconfig

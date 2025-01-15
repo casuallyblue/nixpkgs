@@ -1,20 +1,18 @@
-{ lib
-, stdenvNoCC
-, fetchurl
-, undmg
-, writeShellApplication
-, curl
-, jq
-, common-updater-scripts
+{
+  lib,
+  stdenvNoCC,
+  fetchurl,
+  undmg,
+  nix-update-script,
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "stats";
-  version = "2.10.13";
+  version = "2.11.23";
 
   src = fetchurl {
     url = "https://github.com/exelban/stats/releases/download/v${finalAttrs.version}/Stats.dmg";
-    hash = "sha256-AzH1rZFqEH8sovZZfJykvsEmCedEZWigQFHWHl6/PdE=";
+    hash = "sha256-tlKiRvLTIt0lKc/fOQBj07lFjgOSkKNE4iNlNwxfTCU=";
   };
 
   sourceRoot = ".";
@@ -24,29 +22,23 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/Applications
-    cp -r *.app $out/Applications
+    mkdir -p "$out/Applications"
+    cp -r *.app "$out/Applications"
 
     runHook postInstall
   '';
 
-  passthru.updateScript = lib.getExe (writeShellApplication {
-    name = "stats-update-script";
-    runtimeInputs = [ curl jq common-updater-scripts ];
-    text = ''
-      set -euo pipefail
-      url="$(curl --silent "https://api.github.com/repos/exelban/stats/tags?per_page=1")"
-      version="$(echo "$url" | jq -r '.[0].name' | cut -c 2-)"
-      update-source-version stats "$version" --file=./pkgs/by-name/st/stats/package.nix
-    '';
-  });
+  passthru.updateScript = nix-update-script { };
 
-  meta = with lib; {
+  meta = {
     description = "macOS system monitor in your menu bar";
     homepage = "https://github.com/exelban/stats";
-    license = licenses.mit;
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [
+      donteatoreo
+      emilytrau
+    ];
+    platforms = lib.platforms.darwin;
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
-    maintainers = with maintainers; [ emilytrau Enzime donteatoreo ];
-    platforms = platforms.darwin;
   };
 })

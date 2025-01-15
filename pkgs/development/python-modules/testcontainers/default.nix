@@ -1,44 +1,43 @@
-{ lib
-, buildPythonPackage
-, pythonOlder
-, fetchFromGitHub
-, poetry-core
-, deprecation
-, docker
-, wrapt
-, typing-extensions
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+
+  # build-system
+  poetry-core,
+
+  # dependencies
+  docker,
+  python-dotenv,
+  typing-extensions,
+  urllib3,
+  wrapt,
 }:
 
 buildPythonPackage rec {
   pname = "testcontainers";
-  version = "4.4.1";
-  disabled = pythonOlder "3.9";
-
+  version = "4.9.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "testcontainers";
     repo = "testcontainers-python";
-    rev = "refs/tags/testcontainers-v${version}";
-    hash = "sha256-osWppbptWpBSHcrHlAqNpn6j2n/qQ7iCobH3TVqB2bc=";
+    tag = "testcontainers-v${version}";
+    hash = "sha256-E0g0A3RJY2l/0N6t+/OSXB+Xm2O/9y7FkscXfGm/nKw=";
   };
 
   postPatch = ''
     echo "${version}" > VERSION
   '';
 
-  build-system = [
-    poetry-core
-  ];
-
-  buildInputs = [
-    deprecation
-    docker
-    wrapt
-  ];
+  build-system = [ poetry-core ];
 
   dependencies = [
+    docker
     typing-extensions
+    python-dotenv
+    urllib3
+    wrapt
   ];
 
   # Tests require various container and database services running
@@ -46,14 +45,14 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [
     "testcontainers"
+    "testcontainers.core.container"
   ];
 
-  meta = with lib; {
-    description = ''
-      Allows using docker containers for functional and integration testing
-    '';
+  meta = {
+    description = "Allows using docker containers for functional and integration testing";
     homepage = "https://github.com/testcontainers/testcontainers-python";
-    license = licenses.asl20;
-    maintainers = with maintainers; [ onny ];
+    changelog = "https://github.com/testcontainers/testcontainers-python/releases/tag/testcontainers-v${version}";
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [ onny ];
   };
 }

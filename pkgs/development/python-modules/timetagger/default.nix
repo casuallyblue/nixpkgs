@@ -1,25 +1,25 @@
-{ lib
-, stdenv
-, asgineer
-, bcrypt
-, buildPythonPackage
-, fetchFromGitHub
-, iptools
-, itemdb
-, jinja2
-, markdown
-, nodejs
-, pscript
-, pyjwt
-, pytestCheckHook
-, pythonOlder
-, requests
-, uvicorn
+{
+  lib,
+  asgineer,
+  bcrypt,
+  buildPythonPackage,
+  fetchFromGitHub,
+  iptools,
+  itemdb,
+  jinja2,
+  markdown,
+  nodejs,
+  pscript,
+  pyjwt,
+  pytestCheckHook,
+  pythonOlder,
+  requests,
+  uvicorn,
 }:
 
 buildPythonPackage rec {
   pname = "timetagger";
-  version = "24.4.1";
+  version = "24.12.2";
   format = "setuptools";
 
   disabled = pythonOlder "3.6";
@@ -27,8 +27,8 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "almarklein";
     repo = pname;
-    rev = "refs/tags/v${version}";
-    hash = "sha256-Qt6VKExigzMaEb5ZEEPHCe5DSYdx5KPIfVC0khx7pP4=";
+    tag = "v${version}";
+    hash = "sha256-YzMVjIsi7MGIwt828xE3FYobrh9CUz5FqCIogXjmOcM=";
   };
 
   propagatedBuildInputs = [

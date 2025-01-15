@@ -1,16 +1,17 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pyserial-asyncio-fast
-, pytestCheckHook
-, pythonOlder
-, pytz
-, poetry-core
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pyserial-asyncio-fast,
+  pytestCheckHook,
+  pythonOlder,
+  pytz,
+  poetry-core,
 }:
 
 buildPythonPackage rec {
   pname = "upb-lib";
-  version = "0.5.6";
+  version = "0.5.9";
   pyproject = true;
 
   disabled = pythonOlder "3.11";
@@ -18,22 +19,18 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "gwww";
     repo = "upb-lib";
-    rev = "refs/tags/${version}";
-    hash = "sha256-e8LYywKA5lNZ4UYFZTwcfePDWB4cTNz38Tiy4xzOxOs=";
+    tag = version;
+    hash = "sha256-GnNzKU4mqBu2pUOju+4+HMLsTupd8s+nAAieixkBCDk=";
   };
 
-  build-system = [
-    poetry-core
-  ];
+  build-system = [ poetry-core ];
 
   dependencies = [
     pyserial-asyncio-fast
     pytz
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
   pythonImportsCheck = [ "upb_lib" ];
 

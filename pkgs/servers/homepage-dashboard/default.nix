@@ -1,21 +1,22 @@
-{ buildNpmPackage
-, fetchFromGitHub
-, nodePackages
-, python3
-, stdenv
-, cctools
-, IOKit
-, lib
-, nixosTests
-, enableLocalIcons ? false
-, nix-update-script
+{
+  buildNpmPackage,
+  fetchFromGitHub,
+  nodePackages,
+  python3,
+  stdenv,
+  cctools,
+  IOKit,
+  lib,
+  nixosTests,
+  enableLocalIcons ? false,
+  nix-update-script,
 }:
 let
   dashboardIcons = fetchFromGitHub {
-    owner = "walkxcode";
+    owner = "homarr-labs";
     repo = "dashboard-icons";
-    rev = "a02a5999fe56948671721da8b0830cdd5b609ed7"; # Until 2024-02-25
-    hash = "sha256-s0Doh4j6CH66fZoQKMt4yc7aLStNFGMVoDp5dvs7+pk=";
+    rev = "51a2ae7b101c520bcfb5b44e5ddc99e658bc1e21"; # Until 2025-01-06
+    hash = "sha256-rKXeMAhHV0Ax7mVFyn6hIZXm5RFkbGakjugU0DG0jLM=";
   };
 
   installLocalIcons = ''
@@ -27,16 +28,16 @@ let
 in
 buildNpmPackage rec {
   pname = "homepage-dashboard";
-  version = "0.8.13";
+  version = "0.10.9";
 
   src = fetchFromGitHub {
     owner = "gethomepage";
     repo = "homepage";
     rev = "v${version}";
-    hash = "sha256-5AGtNfeFI5fkeXg1PK9ylifHzp9P6XW80XQQFY1YGj8=";
+    hash = "sha256-q8+uoikHMQVuTrVSH8tPsoI5655ZStMc/7tmoAfoZIY=";
   };
 
-  npmDepsHash = "sha256-UrRpjbFGziPNN03Fj9T+K+kav0LhaAFp/o+SXja6Jxk=";
+  npmDepsHash = "sha256-N39gwct2U4UxlIL5ceDzzU7HpA6xh2WksrZNxGz04PU=";
 
   preBuild = ''
     mkdir -p config
@@ -48,15 +49,11 @@ buildNpmPackage rec {
     patchShebangs .next/standalone/server.js
   '';
 
-  nativeBuildInputs = lib.optionals stdenv.isDarwin [
-    cctools
-  ];
+  nativeBuildInputs = lib.optionals stdenv.hostPlatform.isDarwin [ cctools ];
 
   buildInputs = [
     nodePackages.node-gyp-build
-  ] ++ lib.optionals stdenv.isDarwin [
-    IOKit
-  ];
+  ] ++ lib.optionals stdenv.hostPlatform.isDarwin [ IOKit ];
 
   env.PYTHON = "${python3}/bin/python";
 
@@ -73,9 +70,19 @@ buildNpmPackage rec {
 
     chmod +x $out/share/homepage/server.js
 
+    # This patch must be applied here, as it's patching the `dist` directory
+    # of NextJS. Without this, homepage-dashboard errors when trying to
+    # write its prerender cache.
+    #
+    # This patch ensures that the cache implementation respects the env
+    # variable `NIXPKGS_HOMEPAGE_CACHE_DIR`, which is set by default in the
+    # wrapper below.
+    (cd "$out" && patch -p1 <${./prerender_cache_path.patch})
+
     makeWrapper $out/share/homepage/server.js $out/bin/homepage \
       --set-default PORT 3000 \
-      --set-default HOMEPAGE_CONFIG_DIR /var/lib/homepage-dashboard
+      --set-default HOMEPAGE_CONFIG_DIR /var/lib/homepage-dashboard \
+      --set-default NIXPKGS_HOMEPAGE_CACHE_DIR /var/cache/homepage-dashboard
 
     ${if enableLocalIcons then installLocalIcons else ""}
 
@@ -92,13 +99,13 @@ buildNpmPackage rec {
   };
 
   meta = {
-    description = "A highly customisable dashboard with Docker and service API integrations";
+    description = "Highly customisable dashboard with Docker and service API integrations";
     changelog = "https://github.com/gethomepage/homepage/releases/tag/v${version}";
     mainProgram = "homepage";
     homepage = "https://gethomepage.dev";
     license = lib.licenses.gpl3;
     maintainers = with lib.maintainers; [ jnsgruk ];
     platforms = lib.platforms.all;
-    broken = stdenv.isDarwin;
+    broken = stdenv.hostPlatform.isDarwin;
   };
 }

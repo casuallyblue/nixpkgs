@@ -1,25 +1,26 @@
-{ lib
-, attrs
-, botocore
-, buildPythonPackage
-, click
-, fetchFromGitHub
-, hypothesis
-, inquirer
-, jmespath
-, mock
-, mypy-extensions
-, pip
-, pytest7CheckHook
-, pythonOlder
-, pyyaml
-, requests
-, setuptools
-, six
-, typing-extensions
-, watchdog
-, websocket-client
-, wheel
+{
+  lib,
+  attrs,
+  botocore,
+  buildPythonPackage,
+  click,
+  fetchFromGitHub,
+  hypothesis,
+  inquirer,
+  jmespath,
+  mock,
+  mypy-extensions,
+  pip,
+  pytest7CheckHook,
+  pythonOlder,
+  pyyaml,
+  requests,
+  setuptools,
+  six,
+  typing-extensions,
+  watchdog,
+  websocket-client,
+  wheel,
 }:
 
 buildPythonPackage rec {
@@ -32,7 +33,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "aws";
     repo = pname;
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-m3pSD4fahBW6Yt/w07Co4fTZD7k6as5cPwoK5QSry6M=";
   };
 
@@ -96,9 +97,7 @@ buildPythonPackage rec {
     "test_both_tar_bz2"
   ];
 
-  pythonImportsCheck = [
-    "chalice"
-  ];
+  pythonImportsCheck = [ "chalice" ];
 
   meta = with lib; {
     description = "Python Serverless Microframework for AWS";
@@ -106,6 +105,6 @@ buildPythonPackage rec {
     homepage = "https://github.com/aws/chalice";
     changelog = "https://github.com/aws/chalice/blob/${version}/CHANGELOG.rst";
     license = licenses.asl20;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
   };
 }

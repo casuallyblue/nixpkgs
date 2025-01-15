@@ -1,25 +1,26 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, dbus
-, fpc
-, getopt
-, glib
-, lazarus
-, libX11
-, libqt5pas
-, wrapQtAppsHook
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  dbus,
+  fpc,
+  getopt,
+  glib,
+  lazarus,
+  libX11,
+  libqtpas,
+  wrapQtAppsHook,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "doublecmd";
-  version = "1.1.14";
+  version = "1.1.21";
 
   src = fetchFromGitHub {
     owner = "doublecmd";
     repo = "doublecmd";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-2ZFLQoz25q3uwjQkogSyuLxSNJQ6Gh553Yj4zl70jno=";
+    hash = "sha256-NsjsjCSPbo7zwejmOjFRuQpcMyGZEY67hyStjtMrIGk=";
   };
 
   nativeBuildInputs = [
@@ -33,7 +34,7 @@ stdenv.mkDerivation (finalAttrs: {
     dbus
     glib
     libX11
-    libqt5pas
+    libqtpas
   ];
 
   env.NIX_LDFLAGS = "--as-needed -rpath ${lib.makeLibraryPath finalAttrs.buildInputs}";

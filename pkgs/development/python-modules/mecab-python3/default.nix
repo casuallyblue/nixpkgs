@@ -1,15 +1,16 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, mecab
-, swig
-, setuptools-scm
-, pythonOlder
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  mecab,
+  swig,
+  setuptools-scm,
+  pythonOlder,
 }:
 
 buildPythonPackage rec {
   pname = "mecab-python3";
-  version = "1.0.9";
+  version = "1.0.10";
   format = "setuptools";
 
   disabled = pythonOlder "3.7";
@@ -17,7 +18,7 @@ buildPythonPackage rec {
   src = fetchPypi {
     pname = "mecab_python3";
     inherit version;
-    hash = "sha256-LYkfSgEZ+3Zvp5bijYgaVXk6DDVE5EbP9k3JRq1yJ8w=";
+    hash = "sha256-Ic1EFgQ+mpk/z7mG3ek+Q2agdUPdlYSbXvLlDJqa/M4=";
   };
 
   nativeBuildInputs = [
@@ -26,20 +27,20 @@ buildPythonPackage rec {
     setuptools-scm
   ];
 
-  buildInputs = [
-    mecab
-  ];
+  buildInputs = [ mecab ];
 
   doCheck = false;
 
-  pythonImportsCheck = [
-    "MeCab"
-  ];
+  pythonImportsCheck = [ "MeCab" ];
 
   meta = with lib; {
-    description = "A python wrapper for mecab: Morphological Analysis engine";
-    homepage =  "https://github.com/SamuraiT/mecab-python3";
+    description = "Python wrapper for mecab: Morphological Analysis engine";
+    homepage = "https://github.com/SamuraiT/mecab-python3";
     changelog = "https://github.com/SamuraiT/mecab-python3/releases/tag/v${version}";
-    license = with licenses; [ gpl2 lgpl21 bsd3 ]; # any of the three
+    license = with licenses; [
+      gpl2
+      lgpl21
+      bsd3
+    ]; # any of the three
   };
 }

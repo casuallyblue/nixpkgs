@@ -1,14 +1,15 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, SDL2
-, cmake
-, libpng
-, libzip
-, openal
-, pkg-config
-, yaml-cpp
-, fmt
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  SDL2,
+  cmake,
+  libpng,
+  libzip,
+  openal,
+  pkg-config,
+  yaml-cpp,
+  fmt,
 }:
 
 stdenv.mkDerivation rec {
@@ -48,7 +49,7 @@ stdenv.mkDerivation rec {
   ];
 
   meta = {
-    description = "An open source re-implementation of Chris Sawyer's Locomotion";
+    description = "Open source re-implementation of Chris Sawyer's Locomotion";
     homepage = "https://github.com/OpenLoco/OpenLoco";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;

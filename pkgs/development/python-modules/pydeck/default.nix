@@ -1,17 +1,18 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, ipykernel
-, ipywidgets
-, jinja2
-, jupyter
-, numpy
-, pandas
-, pytestCheckHook
-, pythonOlder
-, setuptools
-, traitlets
-, wheel
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  ipykernel,
+  ipywidgets,
+  jinja2,
+  jupyter,
+  numpy,
+  pandas,
+  pytestCheckHook,
+  pythonOlder,
+  setuptools,
+  traitlets,
+  wheel,
 }:
 
 buildPythonPackage rec {
@@ -44,7 +45,7 @@ buildPythonPackage rec {
     numpy
   ];
 
-  passthru.optional-dependencies = {
+  optional-dependencies = {
     carto = [
       # pydeck-carto
     ];
@@ -60,7 +61,7 @@ buildPythonPackage rec {
   nativeCheckInputs = [
     pytestCheckHook
     pandas
-  ] ++ passthru.optional-dependencies.jupyter;
+  ] ++ optional-dependencies.jupyter;
 
   # tries to start a jupyter server
   disabledTests = [ "test_nbconvert" ];

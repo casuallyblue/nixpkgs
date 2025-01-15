@@ -1,13 +1,14 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, meson
-, ninja
-, vala
-, pkg-config
-, wrapGAppsHook3
-, pantheon
-, gtksourceview5
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  meson,
+  ninja,
+  vala,
+  pkg-config,
+  wrapGAppsHook3,
+  pantheon,
+  gtksourceview5,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -43,7 +44,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   meta = with lib; {
     homepage = "https://github.com/ryonakano/konbucase";
-    description = "A case converting app suitable for coding or typing";
+    description = "Case converting app suitable for coding or typing";
     license = licenses.gpl3Only;
     maintainers = with maintainers; [ galaxy ];
     platforms = platforms.linux;

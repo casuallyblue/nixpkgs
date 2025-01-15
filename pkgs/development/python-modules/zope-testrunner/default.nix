@@ -1,31 +1,36 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, zope-interface
-, zope-exceptions
-, zope-testing
-, six
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  zope-interface,
+  zope-exceptions,
+  zope-testing,
+  six,
 }:
-
 
 buildPythonPackage rec {
   pname = "zope.testrunner";
-  version = "6.4";
+  version = "6.6";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-C4Wfx01vK2xd2K353uTsdAX3PykOyrJXCsY2+DYSKMg=";
+    hash = "sha256-sReX6XWocHseM7ZUTKz5A3KHiG7leA7P7UvxiZ1CFe8=";
   };
 
-  propagatedBuildInputs = [ zope-interface zope-exceptions zope-testing six ];
+  propagatedBuildInputs = [
+    zope-interface
+    zope-exceptions
+    zope-testing
+    six
+  ];
 
   doCheck = false; # custom test modifies sys.path
 
   meta = with lib; {
-    description = "A flexible test runner with layer support";
+    description = "Flexible test runner with layer support";
     mainProgram = "zope-testrunner";
     homepage = "https://pypi.python.org/pypi/zope.testrunner";
     license = licenses.zpl20;
-    maintainers = [ maintainers.goibhniu ];
+    maintainers = [ ];
   };
 }

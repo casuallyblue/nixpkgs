@@ -1,36 +1,33 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, setuptools
-, wheel
-, matplotlib
-, numpy
-, pandas
-, scipy
-, seaborn
-, statsmodels
-, pytestCheckHook
-, seaborn-data
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  setuptools,
+  matplotlib,
+  numpy,
+  pandas,
+  scipy,
+  seaborn,
+  statsmodels,
+  pytestCheckHook,
+  seaborn-data,
 }:
 
 buildPythonPackage rec {
   pname = "scikit-posthocs";
-  version = "0.9.0";
+  version = "0.11.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "maximtrp";
     repo = "scikit-posthocs";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-sRop5DKakrZEBswzTvumn68wKqU15zM5aCLfZ/PdsFg=";
+    tag = "v${version}";
+    hash = "sha256-ChYBjT7xeAiKJFRI9ov4vOGucy0aK0j/0dndNs4ewBo=";
   };
 
-  nativeBuildInputs = [
-    setuptools
-    wheel
-  ];
+  build-system = [ setuptools ];
 
-  propagatedBuildInputs = [
+  dependencies = [
     matplotlib
     numpy
     pandas
@@ -43,9 +40,7 @@ buildPythonPackage rec {
     # tests require to write to home directory
     export SEABORN_DATA=${seaborn-data.exercise}
   '';
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
   pythonImportsCheck = [ "scikit_posthocs" ];
 
   meta = with lib; {

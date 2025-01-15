@@ -18,7 +18,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "ags-slc";
     repo = "localzone";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-quAo5w4Oxu9Hu96inu3vuiQ9GZMLpq0M8Vj67IPYcbE=";
   };
 
@@ -31,7 +31,7 @@ buildPythonPackage rec {
   pythonImportsCheck = [ "localzone" ];
 
   meta = with lib; {
-    description = "A simple DNS library for managing zone files";
+    description = "Simple DNS library for managing zone files";
     homepage = "https://localzone.iomaestro.com";
     changelog = "https://github.com/ags-slc/localzone/blob/v${version}/CHANGELOG.rst";
     license = licenses.bsd3;

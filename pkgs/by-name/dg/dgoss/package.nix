@@ -1,22 +1,17 @@
-{ lib
-, fetchFromGitHub
-, resholve
-, bash
-, coreutils
-, goss
-, which
+{
+  bash,
+  coreutils,
+  gnused,
+  goss,
+  lib,
+  resholve,
+  which,
 }:
 
 resholve.mkDerivation rec {
   pname = "dgoss";
-  version = "0.4.6";
-
-  src = fetchFromGitHub {
-    owner = "goss-org";
-    repo = "goss";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-4LJD70Y6nxRWdcaPe074iP2MVUMDgoTOwWbC1JecVcI=";
-  };
+  version = goss.version;
+  src = goss.src;
 
   dontConfigure = true;
   dontBuild = true;
@@ -30,7 +25,11 @@ resholve.mkDerivation rec {
     default = {
       scripts = [ "bin/dgoss" ];
       interpreter = "${bash}/bin/bash";
-      inputs = [ coreutils which ];
+      inputs = [
+        coreutils
+        gnused
+        which
+      ];
       keep = {
         "$CONTAINER_RUNTIME" = true;
       };
@@ -43,7 +42,10 @@ resholve.mkDerivation rec {
     description = "Convenience wrapper around goss that aims to bring the simplicity of goss to docker containers";
     license = licenses.asl20;
     platforms = platforms.linux;
-    maintainers = with maintainers; [ hyzual anthonyroussel ];
+    maintainers = with maintainers; [
+      hyzual
+      anthonyroussel
+    ];
     mainProgram = "dgoss";
   };
 }

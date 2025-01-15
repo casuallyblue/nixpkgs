@@ -1,18 +1,19 @@
-{ lib
-, mkXfceDerivation
-, glib
-, gtk3
-, libxfce4ui
-, libxfce4util
-, xfce4-panel
+{
+  lib,
+  mkXfceDerivation,
+  glib,
+  gtk3,
+  libxfce4ui,
+  libxfce4util,
+  xfce4-panel,
 }:
 
 mkXfceDerivation {
   category = "apps";
   pname = "xfce4-dict";
-  version = "0.8.6";
+  version = "0.8.8";
 
-  sha256 = "sha256-a7St9iH+jzwq/llrMJkuqwgQrDFEjqebs/N6Lxa3dkI=";
+  sha256 = "sha256-nVpEeOSSfXCIxuIj0qie+oi8FVRiVUmDMPZZwIZ9L/k=";
 
   buildInputs = [
     glib
@@ -23,7 +24,7 @@ mkXfceDerivation {
   ];
 
   meta = with lib; {
-    description = "A Dictionary Client for the Xfce desktop environment";
+    description = "Dictionary Client for the Xfce desktop environment";
     mainProgram = "xfce4-dict";
     maintainers = with maintainers; [ ] ++ teams.xfce.members;
   };

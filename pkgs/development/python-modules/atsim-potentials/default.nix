@@ -1,18 +1,19 @@
-{ lib
-, buildPythonPackage
-, pythonAtLeast
-, fetchFromGitHub
-, setuptools
-, configparser
-, pyparsing
-, pytestCheckHook
-, future
-, openpyxl
-, wrapt
-, scipy
-, cexprtk
-, deepdiff
-, sympy
+{
+  lib,
+  buildPythonPackage,
+  pythonAtLeast,
+  fetchFromGitHub,
+  setuptools,
+  configparser,
+  pyparsing,
+  pytestCheckHook,
+  future,
+  openpyxl,
+  wrapt,
+  scipy,
+  cexprtk,
+  deepdiff,
+  sympy,
 }:
 
 buildPythonPackage rec {
@@ -23,13 +24,11 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "mjdrushton";
     repo = "atsim-potentials";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-G7lNqwEUwAT0f7M2nUTCxpXOAl6FWKlh7tcsvbur1eM=";
   };
 
-  build-system = [
-    setuptools
-  ];
+  build-system = [ setuptools ];
 
   dependencies = [
     cexprtk

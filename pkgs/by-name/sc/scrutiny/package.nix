@@ -12,7 +12,7 @@ let
   src = fetchFromGitHub {
     owner = "AnalogJ";
     repo = "scrutiny";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-WoU5rdsIEhZQ+kPoXcestrGXC76rFPvhxa0msXjFsNg=";
   };
 
@@ -47,7 +47,7 @@ buildGoModule rec {
 
   vendorHash = "sha256-SiQw6pq0Fyy8Ia39S/Vgp9Mlfog2drtVn43g+GXiQuI=";
 
-  CGO_ENABLED = 0;
+  env.CGO_ENABLED = 0;
 
   ldflags = [ "-extldflags=-static" ];
 
@@ -62,7 +62,7 @@ buildGoModule rec {
   passthru.updatescript = nix-update-script { };
 
   meta = {
-    description = "Hard Drive S.M.A.R.T Monitoring, Historical Trends & Real World Failure Thresholds.";
+    description = "Hard Drive S.M.A.R.T Monitoring, Historical Trends & Real World Failure Thresholds";
     homepage = "https://github.com/AnalogJ/scrutiny";
     changelog = "https://github.com/AnalogJ/scrutiny/releases/tag/v${version}";
     license = lib.licenses.mit;

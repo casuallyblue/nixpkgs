@@ -4,20 +4,19 @@
   fetchFromGitHub,
   unstableGitUpdater,
   nodejs,
-  bash,
   asar,
   unzip,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "openasar";
-  version = "0-unstable-2024-01-13";
+  version = "0-unstable-2025-01-10";
 
   src = fetchFromGitHub {
     owner = "GooseMod";
     repo = "OpenAsar";
-    rev = "4f264d860a5a6a32e1862ce26178b9cf6402335d";
-    hash = "sha256-NPUUDqntsMxnT/RN5M9DtLDwJXDyjOED4GlXa1oU8l8=";
+    rev = "4ed9e52d42501927b60354fcc456da50ed41cde2";
+    hash = "sha256-3b31iEmNUlBLc47Cw7EtMMgc+oPr1V6oqNTKRemXJfA=";
   };
 
   postPatch = ''
@@ -55,7 +54,7 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   meta = with lib; {
-    description = "Open-source alternative of Discord desktop's \"app.asar\".";
+    description = "Open-source alternative of Discord desktop's \"app.asar\"";
     homepage = "https://openasar.dev";
     license = licenses.agpl3Only;
     maintainers = with maintainers; [

@@ -6,40 +6,19 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "prowler";
-  version = "3.15.0";
+  version = "5.0.5";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "prowler-cloud";
     repo = "prowler";
-    rev = "refs/tags/${version}";
-    hash = "sha256-7aWWaGdHTveFwXsFNj4+tjX5g83/nD77jLAOrDOw8JE=";
+    tag = version;
+    hash = "sha256-rjx0s+qUnpGQoUlvsEqwlJWZbC8Gb72s9MF0lRvJKZU=";
   };
 
-  pythonRelaxDeps = [
-    "azure-identity"
-    "azure-keyvault-keys"
-    "azure-mgmt-compute"
-    "azure-mgmt-containerservice"
-    "azure-mgmt-network"
-    "azure-mgmt-security"
-    "azure-storage-blob"
-    "boto3"
-    "botocore"
-    "google-api-python-client"
-    "jsonschema"
-    "pydantic"
-    "pydantic"
-    "slack-sdk"
-  ];
+  pythonRelaxDeps = true;
 
-  nativeBuildInputs = with python3.pkgs; [
-    pythonRelaxDepsHook
-  ];
-
-  build-system = with python3.pkgs; [
-    poetry-core
-  ];
+  build-system = with python3.pkgs; [ poetry-core ];
 
   dependencies = with python3.pkgs; [
     alive-progress
@@ -49,6 +28,7 @@ python3.pkgs.buildPythonApplication rec {
     azure-mgmt-applicationinsights
     azure-mgmt-authorization
     azure-mgmt-compute
+    azure-mgmt-containerregistry
     azure-mgmt-containerservice
     azure-mgmt-cosmosdb
     azure-mgmt-keyvault
@@ -57,6 +37,7 @@ python3.pkgs.buildPythonApplication rec {
     azure-mgmt-rdbms
     azure-mgmt-resource
     azure-mgmt-security
+    azure-mgmt-search
     azure-mgmt-sql
     azure-mgmt-storage
     azure-mgmt-subscription
@@ -65,17 +46,27 @@ python3.pkgs.buildPythonApplication rec {
     boto3
     botocore
     colorama
+    cryptography
+    dash
+    dash-bootstrap-components
     detect-secrets
     google-api-python-client
     google-auth-httplib2
     jsonschema
+    kubernetes
+    microsoft-kiota-abstractions
     msgraph-sdk
-    msrestazure
-    pydantic_1
+    numpy
+    pandas
+    py-ocsf-models
+    pydantic
+    python-dateutil
+    pytz
     schema
     shodan
     slack-sdk
     tabulate
+    tzlocal
   ];
 
   pythonImportsCheck = [ "prowler" ];

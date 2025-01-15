@@ -1,14 +1,15 @@
-{ lib
-, asyncio-dgram
-, buildPythonPackage
-, dnspython
-, fetchFromGitHub
-, poetry-core
-, poetry-dynamic-versioning
-, pytest-asyncio
-, pytest-rerunfailures
-, pytestCheckHook
-, pythonOlder
+{
+  lib,
+  asyncio-dgram,
+  buildPythonPackage,
+  dnspython,
+  fetchFromGitHub,
+  poetry-core,
+  poetry-dynamic-versioning,
+  pytest-asyncio,
+  pytest-rerunfailures,
+  pytestCheckHook,
+  pythonOlder,
 }:
 
 buildPythonPackage rec {
@@ -21,7 +22,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "py-mine";
     repo = pname;
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-P8Su5P/ztyoXZBVvm5uCMDn4ezeg11oRSQ0QCyIJbVw=";
   };
 
@@ -48,9 +49,7 @@ buildPythonPackage rec {
     pytestCheckHook
   ];
 
-  pythonImportsCheck = [
-    "mcstatus"
-  ];
+  pythonImportsCheck = [ "mcstatus" ];
 
   disabledTests = [
     # DNS features are limited in the sandbox

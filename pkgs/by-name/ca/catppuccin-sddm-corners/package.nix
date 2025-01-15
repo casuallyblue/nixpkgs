@@ -1,8 +1,9 @@
-{ lib
-, stdenvNoCC
-, fetchFromGitHub
-, libsForQt5
-, unstableGitUpdater
+{
+  lib,
+  stdenvNoCC,
+  fetchFromGitHub,
+  libsForQt5,
+  unstableGitUpdater,
 }:
 
 stdenvNoCC.mkDerivation {
@@ -45,7 +46,7 @@ stdenvNoCC.mkDerivation {
   passthru.updateScript = unstableGitUpdater { };
 
   meta = {
-    description = "Soothing pastel theme for SDDM based on corners theme.";
+    description = "Soothing pastel theme for SDDM based on corners theme";
     homepage = "https://github.com/khaneliman/sddm-catppuccin-corners";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ khaneliman ];

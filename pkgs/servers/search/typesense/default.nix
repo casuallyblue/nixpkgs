@@ -1,8 +1,9 @@
-{ lib
-, stdenv
-, fetchurl
-, autoPatchelfHook
-, nixosTests
+{
+  lib,
+  stdenv,
+  fetchurl,
+  autoPatchelfHook,
+  nixosTests,
 }:
 let
   inherit (stdenv.hostPlatform) system;
@@ -21,7 +22,7 @@ stdenv.mkDerivation {
     inherit hash;
   };
 
-  nativeBuildInputs = lib.optionals stdenv.isLinux [
+  nativeBuildInputs = lib.optionals stdenv.hostPlatform.isLinux [
     autoPatchelfHook
   ];
 
@@ -40,7 +41,7 @@ stdenv.mkDerivation {
 
   meta = with lib; {
     homepage = "https://typesense.org";
-    description = "Typesense is a fast, typo-tolerant search engine for building delightful search experiences.";
+    description = "Typesense is a fast, typo-tolerant search engine for building delightful search experiences";
     mainProgram = "typesense-server";
     license = licenses.gpl3;
     # There has been an attempt at building this from source, which were deemed

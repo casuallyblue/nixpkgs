@@ -1,25 +1,27 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, sip
-, pyqt-builder
-, qt6Packages
-, pythonOlder
-, pyqt6
-, python
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  sip,
+  pyqt-builder,
+  qt6Packages,
+  pythonOlder,
+  pyqt6,
+  python,
+  mesa,
 }:
 
 buildPythonPackage rec {
   pname = "pyqt6-charts";
-  version = "6.7.0";
-  format = "pyproject";
+  version = "6.8.0";
+  pyproject = true;
 
-  disabled = pythonOlder "3.6";
+  disabled = pythonOlder "3.9";
 
   src = fetchPypi {
     pname = "PyQt6_Charts";
     inherit version;
-    sha256 = "sha256-xPfPNpko978DLk4z9xjTuP5m2hdtSVn+MHNalw2G81w=";
+    hash = "sha256-+GcFuHQOMEFmfOIRrqogW3UOtrr0yQj04/bcjHINEPE=";
   };
 
   # fix include path and increase verbosity
@@ -44,35 +46,34 @@ buildPythonPackage rec {
 
   dontWrapQtApps = true;
 
-  nativeBuildInputs = with qt6Packages; [
-    qtcharts
+  build-system = [
     sip
-    qmake
     pyqt-builder
   ];
 
-  buildInputs = with qt6Packages; [
-    qtcharts
-  ];
-
-  propagatedBuildInputs = [
+  dependencies = [
     pyqt6
   ];
+
+  nativeBuildInputs = with qt6Packages; [
+    qtcharts
+    qmake
+  ];
+
+  buildInputs = with qt6Packages; [ qtcharts ];
 
   dontConfigure = true;
 
   # has no tests
   doCheck = false;
 
-  pythonImportsCheck = [
-    "PyQt6.QtCharts"
-  ];
+  pythonImportsCheck = [ "PyQt6.QtCharts" ];
 
-  meta = with lib; {
+  meta = {
     description = "Python bindings for Qt6 QtCharts";
     homepage = "https://riverbankcomputing.com/";
-    license = licenses.gpl3Only;
-    platforms = platforms.mesaPlatforms;
-    maintainers = with maintainers; [ dandellion ];
+    license = lib.licenses.gpl3Only;
+    inherit (mesa.meta) platforms;
+    maintainers = with lib.maintainers; [ dandellion ];
   };
 }

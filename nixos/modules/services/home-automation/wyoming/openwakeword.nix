@@ -1,7 +1,8 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 
 let
@@ -27,7 +28,12 @@ in
 
 {
   imports = [
-    (mkRemovedOptionModule [ "services" "wyoming" "openwakeword" "models" ] "Configuring models has been removed, they are now dynamically discovered and loaded at runtime")
+    (mkRemovedOptionModule [
+      "services"
+      "wyoming"
+      "openwakeword"
+      "models"
+    ] "Configuring models has been removed, they are now dynamically discovered and loaded at runtime")
   ];
 
   meta.buildDocsInSandbox = false;
@@ -48,7 +54,7 @@ in
 
     customModelsDirectories = mkOption {
       type = listOf types.path;
-      default = [];
+      default = [ ];
       description = ''
         Paths to directories with custom wake word models (*.tflite model files).
       '';
@@ -108,6 +114,9 @@ in
   config = mkIf cfg.enable {
     systemd.services."wyoming-openwakeword" = {
       description = "Wyoming openWakeWord server";
+      wants = [
+        "network-online.target"
+      ];
       after = [
         "network-online.target"
       ];

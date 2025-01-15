@@ -1,20 +1,20 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, fetchpatch
-, ldc
-, curl
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  ldc,
+  curl,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "dtools";
-  version = "2.108.0";
+  version = "2.109.1";
 
   src = fetchFromGitHub {
     owner = "dlang";
     repo = "tools";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-YEBUgJPG/+WN4MnQUNAVftZM0ULxZZzpHoOozXua46U=";
+    hash = "sha256-Pfj8Kwf5AlcrHhLs5A/0vIFWLZaNR3ro+esbs7oWN9I=";
     name = "dtools";
   };
 

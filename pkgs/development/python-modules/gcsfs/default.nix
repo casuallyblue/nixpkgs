@@ -1,20 +1,21 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pytestCheckHook
-, pythonOlder
-, google-auth
-, google-auth-oauthlib
-, google-cloud-storage
-, requests
-, decorator
-, fsspec
-, ujson
-, aiohttp
-, crcmod
-, pytest-timeout
-, pytest-vcr
-, vcrpy
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pytestCheckHook,
+  pythonOlder,
+  google-auth,
+  google-auth-oauthlib,
+  google-cloud-storage,
+  requests,
+  decorator,
+  fsspec,
+  ujson,
+  aiohttp,
+  crcmod,
+  pytest-timeout,
+  pytest-vcr,
+  vcrpy,
 }:
 
 buildPythonPackage rec {
@@ -27,7 +28,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "fsspec";
     repo = pname;
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-6O09lP2cWLzeMTBathb3O/tVGZPEHSqujfUPWZIBUJI=";
   };
 
@@ -50,7 +51,7 @@ buildPythonPackage rec {
     vcrpy
   ];
 
-  disabledTests =[
+  disabledTests = [
     # Cannot connect to host storage.googleapis.com:443
     "test_credentials_from_raw_token"
   ];
@@ -64,13 +65,9 @@ buildPythonPackage rec {
     "gcsfs/tests/test_inventory_report_listing.py"
   ];
 
-  pytestFlagsArray = [
-    "-x"
-  ];
+  pytestFlagsArray = [ "-x" ];
 
-  pythonImportsCheck = [
-    "gcsfs"
-  ];
+  pythonImportsCheck = [ "gcsfs" ];
 
   meta = with lib; {
     description = "Convenient Filesystem interface over GCS";

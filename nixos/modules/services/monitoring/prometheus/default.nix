@@ -29,9 +29,10 @@ let
   # a wrapper that verifies that the configuration is valid
   promtoolCheck = what: name: file:
     if checkConfigEnabled then
-      pkgs.runCommandLocal
-        "${name}-${replaceStrings [" "] [""] what}-checked"
-        { nativeBuildInputs = [ cfg.package.cli ]; } ''
+      pkgs.runCommand "${name}-${replaceStrings [" "] [""] what}-checked" {
+        preferLocalBuild = true;
+        nativeBuildInputs = [ cfg.package.cli ];
+      } ''
         ln -s ${file} $out
         promtool ${what} $out
       '' else file;
@@ -181,6 +182,10 @@ let
         communicating with external systems (federation, remote
         storage, Alertmanager).
       '';
+
+      query_log_file = mkOpt types.str ''
+        Path to the file prometheus should write its query log to.
+      '';
     };
   };
 
@@ -194,6 +199,26 @@ let
       };
       password = mkOpt types.str "HTTP password";
       password_file = mkOpt types.str "HTTP password file";
+    };
+  };
+
+  promTypes.sigv4 = types.submodule {
+    options = {
+      region = mkOpt types.str ''
+        The AWS region.
+      '';
+      access_key = mkOpt types.str ''
+        The Access Key ID.
+      '';
+      secret_key = mkOpt types.str ''
+        The Secret Access Key.
+      '';
+      profile = mkOpt types.str ''
+        The named AWS profile used to authenticate.
+      '';
+      role_arn = mkOpt types.str ''
+        The AWS role ARN.
+      '';
     };
   };
 
@@ -250,6 +275,7 @@ let
     };
   };
 
+  # https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config
   promTypes.scrape_config = types.submodule {
     options = {
       authorization = mkOption {
@@ -273,6 +299,15 @@ let
       scrape_timeout = mkOpt types.str ''
         Per-target timeout when scraping this job. Defaults to the
         globally configured default.
+      '';
+
+      scrape_protocols = mkOpt (types.listOf types.str) ''
+        The protocols to negotiate during a scrape with the client.
+      '';
+
+      fallback_scrape_protocol = mkOpt types.str ''
+        Fallback protocol to use if a scrape returns blank, unparseable, or otherwise
+        invalid Content-Type.
       '';
 
       metrics_path = mkDefOpt types.str "/metrics" ''
@@ -1460,6 +1495,9 @@ let
         Sets the `Authorization` header on every remote write request with the bearer token
         read from the configured file. It is mutually exclusive with `bearer_token`.
       '';
+      sigv4 = mkOpt promTypes.sigv4 ''
+        Configures AWS Signature Version 4 settings.
+      '';
       tls_config = mkOpt promTypes.tls_config ''
         Configures the remote write request's TLS settings.
       '';
@@ -1807,8 +1845,6 @@ in
         StateDirectory = cfg.stateDir;
         StateDirectoryMode = "0700";
         # Hardening
-        AmbientCapabilities = lib.mkIf (cfg.port < 1024) [ "CAP_NET_BIND_SERVICE" ];
-        CapabilityBoundingSet = if (cfg.port < 1024) then [ "CAP_NET_BIND_SERVICE" ] else [ "" ];
         DeviceAllow = [ "/dev/null rw" ];
         DevicePolicy = "strict";
         LockPersonality = true;

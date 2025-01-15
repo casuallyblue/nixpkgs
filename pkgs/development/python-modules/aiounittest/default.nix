@@ -1,11 +1,10 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonAtLeast
-, setuptools
-, pynose
-, coverage
-, wrapt
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  setuptools,
+  pytestCheckHook,
+  wrapt,
 }:
 
 buildPythonPackage rec {
@@ -16,26 +15,15 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "kwarunek";
     repo = pname;
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-7lDOI1SHPpRZLTHRTmfbKlZH18T73poJdFyVmb+HKms=";
   };
 
-  nativeBuildInputs = [
-    setuptools
-  ];
+  nativeBuildInputs = [ setuptools ];
 
-  propagatedBuildInputs = [
-    wrapt
-  ];
+  propagatedBuildInputs = [ wrapt ];
 
-  nativeCheckInputs = [
-    pynose
-    coverage
-  ];
-
-  checkPhase = ''
-    nosetests -e test_specific_test
-  '';
+  nativeCheckInputs = [ pytestCheckHook ];
 
   pythonImportsCheck = [ "aiounittest" ];
 

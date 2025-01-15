@@ -11,18 +11,18 @@
 
 buildGoModule rec {
   pname = "fzf";
-  version = "0.52.1";
+  version = "0.57.0";
 
   src = fetchFromGitHub {
     owner = "junegunn";
     repo = "fzf";
-    rev = version;
-    hash = "sha256-cnLPn1AKq1BaWwXsWwQfC/lnejdyd1WdH1qIJRcfdks=";
+    rev = "v${version}";
+    hash = "sha256-WEdCa6Krj+VicB1vxWzyY1rCHvmaL4t2njhhjq0Bppw=";
   };
 
-  vendorHash = "sha256-Kc/bYzakx9c/bF42LYyE1t8JCUqBsJQFtczrFocx/Ps=";
+  vendorHash = "sha256-utHQzXjtdnshUsYDQEQY2qoQGZsnfXXPj3A9VsDj0vQ=";
 
-  CGO_ENABLED = 0;
+  env.CGO_ENABLED = 0;
 
   outputs = [ "out" "man" ];
 
@@ -45,7 +45,7 @@ buildGoModule rec {
 
     # fzf-tmux depends on bc
     substituteInPlace bin/fzf-tmux \
-      --replace "bc" "${bc}/bin/bc"
+      --replace-fail "bc" "${lib.getExe bc}"
   '';
 
   postInstall = ''
@@ -53,9 +53,9 @@ buildGoModule rec {
 
     installManPage man/man1/fzf.1 man/man1/fzf-tmux.1
 
-    install -D plugin/* -t $out/share/vim-plugins/${pname}/plugin
+    install -D plugin/* -t $out/share/vim-plugins/fzf/plugin
     mkdir -p $out/share/nvim
-    ln -s $out/share/vim-plugins/${pname} $out/share/nvim/site
+    ln -s $out/share/vim-plugins/fzf $out/share/nvim/site
 
     # Install shell integrations
     install -D shell/* -t $out/share/fzf/
@@ -80,7 +80,7 @@ buildGoModule rec {
   };
 
   meta = {
-    changelog = "https://github.com/junegunn/fzf/blob/${version}/CHANGELOG.md";
+    changelog = "https://github.com/junegunn/fzf/blob/${src.rev}/CHANGELOG.md";
     description = "Command-line fuzzy finder written in Go";
     homepage = "https://github.com/junegunn/fzf";
     license = lib.licenses.mit;

@@ -1,18 +1,19 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
 
-, pytestCheckHook
+  pytestCheckHook,
 
-, pythonOlder
+  pythonOlder,
 
-, setuptools
-, setuptools-scm
-, wheel
+  setuptools,
+  setuptools-scm,
+  wheel,
 
-, numpy
+  numpy,
 
-, typing-extensions
+  typing-extensions,
 }:
 
 buildPythonPackage rec {
@@ -25,7 +26,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "hashberg-io";
     repo = "typing-validation";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-0scXoAPkx/VBIbNRMtFoRRbmGpC2RzNRmQG4mRXSxrs=";
   };
 
@@ -35,21 +36,17 @@ buildPythonPackage rec {
     wheel
   ];
 
-  dependencies = [
-    typing-extensions
-  ];
+  dependencies = [ typing-extensions ];
 
   nativeCheckInputs = [
     pytestCheckHook
     numpy
   ];
 
-  pythonImportsCheck = [
-    "typing_validation"
-  ];
+  pythonImportsCheck = [ "typing_validation" ];
 
   meta = with lib; {
-    description = "A simple library for runtime type-checking";
+    description = "Simple library for runtime type-checking";
     homepage = "https://github.com/hashberg-io/typing-validation";
     changelog = "https://github.com/hashberg-io/typing-validation/releases/tag/v${version}";
     license = licenses.mit;

@@ -1,18 +1,19 @@
-{ lib
-, fetchFromGitHub
-, python3Packages
-, gnome-menus
-, gtk3
-, intltool
-, gobject-introspection
-, wrapGAppsHook3
-, nix-update-script
-, testers
-, menulibre
+{
+  lib,
+  fetchFromGitHub,
+  python3Packages,
+  gnome-menus,
+  gtk3,
+  intltool,
+  gobject-introspection,
+  wrapGAppsHook3,
+  nix-update-script,
+  testers,
+  menulibre,
 }:
 
 python3Packages.buildPythonApplication rec {
-  name = "menulibre";
+  pname = "menulibre";
   version = "2.4.0";
 
   src = fetchFromGitHub {
@@ -55,7 +56,7 @@ python3Packages.buildPythonApplication rec {
   };
 
   meta = with lib; {
-    description = "An advanced menu editor with an easy-to-use interface";
+    description = "Advanced menu editor with an easy-to-use interface";
     homepage = "https://bluesabre.org/projects/menulibre";
     license = licenses.gpl3Plus;
     maintainers = with maintainers; [ lelgenio ];

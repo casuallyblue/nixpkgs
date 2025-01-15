@@ -1,48 +1,61 @@
-{ lib
-, stdenv
-, buildGoModule
-, fetchFromGitHub
-, go-md2man
-, installShellFiles
-, pkg-config
-, gpgme
-, lvm2
-, btrfs-progs
-, libapparmor
-, libselinux
-, libseccomp
-, testers
-, buildah
+{
+  lib,
+  stdenv,
+  buildGoModule,
+  fetchFromGitHub,
+  go-md2man,
+  installShellFiles,
+  pkg-config,
+  gpgme,
+  lvm2,
+  btrfs-progs,
+  libapparmor,
+  libselinux,
+  libseccomp,
+  testers,
+  buildah,
 }:
 
 buildGoModule rec {
   pname = "buildah";
-  version = "1.35.4";
+  version = "1.38.0";
 
   src = fetchFromGitHub {
     owner = "containers";
     repo = "buildah";
     rev = "v${version}";
-    hash = "sha256-lcB23yU7Wn+aILGFLDBnFg30NRDQgJt3J61FmGuQtRo=";
+    hash = "sha256-avQdK7+kMrPc8rp/2nTiUC/ZTW8nUem9v3u0xsE0oGM=";
   };
 
-  outputs = [ "out" "man" ];
+  outputs = [
+    "out"
+    "man"
+  ];
 
   vendorHash = null;
 
   doCheck = false;
 
-  nativeBuildInputs = [ go-md2man installShellFiles pkg-config ];
+  # /nix/store/.../bin/ld: internal/mkcw/embed/entrypoint_amd64.o: relocation R_X86_64_32S against `.rodata.1' can not be used when making a PIE object; recompile with -fPIE
+  hardeningDisable = [ "pie" ];
 
-  buildInputs = [
-    gpgme
-  ] ++ lib.optionals stdenv.isLinux [
-    btrfs-progs
-    libapparmor
-    libseccomp
-    libselinux
-    lvm2
+  nativeBuildInputs = [
+    go-md2man
+    installShellFiles
+    pkg-config
   ];
+
+  buildInputs =
+    [
+      gpgme
+    ]
+    ++ lib.optionals stdenv.hostPlatform.isLinux [
+      btrfs-progs
+      libapparmor
+      libseccomp
+      libselinux
+      lvm2
+    ];
 
   buildPhase = ''
     runHook preBuild
@@ -69,7 +82,7 @@ buildGoModule rec {
   };
 
   meta = with lib; {
-    description = "A tool which facilitates building OCI images";
+    description = "Tool which facilitates building OCI images";
     mainProgram = "buildah";
     homepage = "https://buildah.io/";
     changelog = "https://github.com/containers/buildah/releases/tag/v${version}";
@@ -77,4 +90,3 @@ buildGoModule rec {
     maintainers = with maintainers; [ ] ++ teams.podman.members;
   };
 }
-

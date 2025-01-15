@@ -1,17 +1,18 @@
-{ lib
-, antlr4
-, antlr4-python3-runtime
-, attrs
-, buildPythonPackage
-, fetchFromGitHub
-, setuptools
-, jre_minimal
-, pydevd
-, pytest-mock
-, pytestCheckHook
-, pythonOlder
-, pyyaml
-, substituteAll
+{
+  lib,
+  antlr4,
+  antlr4-python3-runtime,
+  attrs,
+  buildPythonPackage,
+  fetchFromGitHub,
+  setuptools,
+  jre_minimal,
+  pydevd,
+  pytest-mock,
+  pytestCheckHook,
+  pythonOlder,
+  pyyaml,
+  substituteAll,
 }:
 
 buildPythonPackage rec {
@@ -24,7 +25,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "omry";
     repo = "omegaconf";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-Qxa4uIiX5TAyQ5rFkizdev60S4iVAJ08ES6FpNqf8zI=";
   };
 
@@ -46,13 +47,9 @@ buildPythonPackage rec {
     sed -i 's/antlr4-python3-runtime==.*/antlr4-python3-runtime/' requirements/base.txt
   '';
 
-  build-system = [
-    setuptools
-  ];
+  build-system = [ setuptools ];
 
-  nativeBuildInputs = [
-    jre_minimal
-  ];
+  nativeBuildInputs = [ jre_minimal ];
 
   dependencies = [
     antlr4-python3-runtime
@@ -66,18 +63,14 @@ buildPythonPackage rec {
     pytestCheckHook
   ];
 
-  pythonImportsCheck = [
-    "omegaconf"
-  ];
+  pythonImportsCheck = [ "omegaconf" ];
 
   pytestFlagsArray = [
     "-W"
     "ignore::DeprecationWarning"
   ];
 
-  disabledTests = [
-    "test_eq"
-  ];
+  disabledTests = [ "test_eq" ];
 
   meta = with lib; {
     description = "Framework for configuring complex applications";

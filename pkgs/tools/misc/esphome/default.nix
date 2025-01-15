@@ -1,17 +1,20 @@
-{ lib
-, callPackage
-, python3Packages
-, fetchFromGitHub
-, installShellFiles
-, platformio
-, esptool
-, git
-, inetutils
-, stdenv
+{
+  lib,
+  callPackage,
+  python3Packages,
+  fetchFromGitHub,
+  installShellFiles,
+  platformio,
+  esptool,
+  git,
+  inetutils,
+  stdenv,
+  nixosTests,
 }:
 
 let
   python = python3Packages.python.override {
+    self = python;
     packageOverrides = self: super: {
       esphome-dashboard = self.callPackage ./dashboard.nix { };
     };
@@ -19,46 +22,49 @@ let
 in
 python.pkgs.buildPythonApplication rec {
   pname = "esphome";
-  version = "2024.4.2";
+  version = "2024.12.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = pname;
     repo = pname;
-    rev = "refs/tags/${version}";
-    hash = "sha256-q4SVsfd5PJjeqt6UJJG6vuyxTA/bqDDl6e5dxhWIfYM=";
+    tag = version;
+    hash = "sha256-VW9p3VNVJOw5vkjCU4fujG0ie4N2D2QLidBANPV512U=";
   };
 
-  nativeBuildInputs = with python.pkgs; [
+  build-systems = with python.pkgs; [
     setuptools
     argcomplete
+  ];
+
+  nativeBuildInputs = [
     installShellFiles
-    pythonRelaxDepsHook
   ];
 
   pythonRelaxDeps = true;
 
+  pythonRemoveDeps = [
+    "esptool"
+    "platformio"
+  ];
+
   postPatch = ''
-    # drop coverage testing
-    sed -i '/--cov/d' pytest.ini
+    substituteInPlace pyproject.toml \
+      --replace-fail "setuptools==" "setuptools>=" \
+      --replace-fail "wheel~=" "wheel>="
 
     # ensure component dependencies are available
     cat requirements_optional.txt >> requirements.txt
-    # relax strict runtime version check
-    substituteInPlace esphome/components/font/__init__.py \
-      --replace-fail "10.2.0" "${python.pkgs.pillow.version}"
   '';
 
   # Remove esptool and platformio from requirements
-  ESPHOME_USE_SUBPROCESS = "";
+  env.ESPHOME_USE_SUBPROCESS = "";
 
   # esphome has optional dependencies it does not declare, they are
-  # loaded when certain config blocks are used, like `font`, `image`
-  # or `animation`.
+  # loaded when certain config blocks are used.
   # They have validation functions like:
-  # - validate_cryptography_installed
-  # - validate_pillow_installed
-  propagatedBuildInputs = with python.pkgs; [
+  # - validate_cryptography_installed for the wifi component
+  dependencies = with python.pkgs; [
     aioesphomeapi
     argcomplete
     cairosvg
@@ -66,16 +72,18 @@ python.pkgs.buildPythonApplication rec {
     colorama
     cryptography
     esphome-dashboard
+    freetype-py
     icmplib
+    glyphsets
     kconfiglib
     packaging
     paho-mqtt
     pillow
     platformio
     protobuf
+    puremagic
     pyparsing
     pyserial
-    python-magic
     pyyaml
     requests
     ruamel-yaml
@@ -90,10 +98,19 @@ python.pkgs.buildPythonApplication rec {
     # esptool is used in esphome/__main__.py
     # git is used in esphome/writer.py
     # inetutils is used in esphome/dashboard/status/ping.py
-    "--prefix PATH : ${lib.makeBinPath [ platformio esptool git inetutils ]}"
-    "--prefix PYTHONPATH : ${python.pkgs.makePythonPath propagatedBuildInputs}" # will show better error messages
-    "--prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ stdenv.cc.cc.lib ]}"
+    "--prefix PATH : ${
+      lib.makeBinPath [
+        platformio
+        esptool
+        git
+        inetutils
+      ]
+    }"
+    "--prefix PYTHONPATH : ${python.pkgs.makePythonPath dependencies}" # will show better error messages
+    "--prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ stdenv.cc.cc ]}"
     "--set ESPHOME_USE_SUBPROCESS ''"
+    # https://github.com/NixOS/nixpkgs/issues/362193
+    "--set PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION 'python'"
   ];
 
   # Needed for tests
@@ -103,6 +120,7 @@ python.pkgs.buildPythonApplication rec {
     hypothesis
     mock
     pytest-asyncio
+    pytest-cov-stub
     pytest-mock
     pytestCheckHook
   ];
@@ -125,6 +143,7 @@ python.pkgs.buildPythonApplication rec {
   passthru = {
     dashboard = python.pkgs.esphome-dashboard;
     updateScript = callPackage ./update.nix { };
+    tests = { inherit (nixosTests) esphome; };
   };
 
   meta = with lib; {
@@ -135,7 +154,10 @@ python.pkgs.buildPythonApplication rec {
       mit # The C++/runtime codebase of the ESPHome project (file extensions .c, .cpp, .h, .hpp, .tcc, .ino)
       gpl3Only # The python codebase and all other parts of this codebase
     ];
-    maintainers = with maintainers; [ globin hexa ];
+    maintainers = with maintainers; [
+      globin
+      hexa
+    ];
     mainProgram = "esphome";
   };
 }

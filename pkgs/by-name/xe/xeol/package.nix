@@ -1,24 +1,25 @@
-{ lib
-, buildGoModule
-, fetchFromGitHub
+{
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
 }:
 
 buildGoModule rec {
   pname = "xeol";
-  version = "0.9.15";
+  version = "0.10.2";
 
   src = fetchFromGitHub {
     owner = "xeol-io";
     repo = "xeol";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-/DWBDc8m5XYM5UBX5/GWuPRR3YktRar/LbENx2d5bc4=";
+    tag = "v${version}";
+    hash = "sha256-4+3/k46HvNZ+hl6oYAWaRewzz4sPEfO5Tb/vCZyXGkI=";
   };
 
-  vendorHash = "sha256-9zDzwiVEVsfgVzSrouNtLYpjumoWGlfSDpGWbj+zCGQ=";
+  vendorHash = "sha256-OsUsWd5AvNjAJzrC68Ed4+ZAnMY0JLB0d43eUI0Eivg=";
 
-  subPackages = [
-    "cmd/xeol/"
-  ];
+  proxyVendor = true;
+
+  subPackages = [ "cmd/xeol/" ];
 
   ldflags = [
     "-w"

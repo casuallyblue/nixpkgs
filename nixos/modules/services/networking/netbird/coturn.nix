@@ -60,6 +60,7 @@ in
       default = null;
       description = ''
         The password of the user used by netbird to connect to the coturn server.
+        Be advised this will be world readable in the nix store.
       '';
     };
 
@@ -130,8 +131,8 @@ in
               ${getExe pkgs.replace-secret} @password@ ${cfg.passwordFile} /run/coturn/turnserver.cfg
             '')
             + (optionalString cfg.useAcmeCertificates ''
-              ${getExe pkgs.replace-secret} @cert@ "$CREDENTIALS_DIRECTORY/cert.pem" /run/coturn/turnserver.cfg
-              ${getExe pkgs.replace-secret} @pkey@ "$CREDENTIALS_DIRECTORY/pkey.pem" /run/coturn/turnserver.cfg
+              ${getExe pkgs.replace-secret} @cert@ <(echo -n "$CREDENTIALS_DIRECTORY/cert.pem") /run/coturn/turnserver.cfg
+              ${getExe pkgs.replace-secret} @pkey@ <(echo -n "$CREDENTIALS_DIRECTORY/pkey.pem") /run/coturn/turnserver.cfg
             '');
         in
         (optionalAttrs (preStart' != "") { preStart = mkAfter preStart'; })
@@ -142,7 +143,11 @@ in
           ];
         });
 
-      security.acme.certs.${cfg.domain}.postRun = optionalString cfg.useAcmeCertificates "systemctl restart coturn.service";
+      security.acme.certs = mkIf cfg.useAcmeCertificates {
+        ${cfg.domain}.postRun = ''
+          systemctl restart coturn.service
+        '';
+      };
 
       networking.firewall = {
         allowedUDPPorts = cfg.openPorts;

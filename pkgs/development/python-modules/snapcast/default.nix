@@ -1,11 +1,12 @@
-{ lib
-, buildPythonPackage
-, construct
-, packaging
-, fetchFromGitHub
-, pytestCheckHook
-, pythonOlder
-, setuptools
+{
+  lib,
+  buildPythonPackage,
+  construct,
+  packaging,
+  fetchFromGitHub,
+  pytestCheckHook,
+  pythonOlder,
+  setuptools,
 }:
 
 buildPythonPackage rec {
@@ -18,26 +19,20 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "happyleavesaoc";
     repo = "python-snapcast";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-gn+X0DZnox4mkJwDVgwNXae63iGbiqPIO15UV5pDwuY=";
   };
 
-  nativeBuildInputs = [
-    setuptools
-  ];
+  nativeBuildInputs = [ setuptools ];
 
   propagatedBuildInputs = [
     construct
     packaging
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
-  pythonImportsCheck = [
-    "snapcast"
-  ];
+  pythonImportsCheck = [ "snapcast" ];
 
   disabledTests = [
     # AssertionError and TypeError

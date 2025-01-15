@@ -1,12 +1,13 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonOlder
-, setuptools
-, traitlets
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonOlder,
+  setuptools,
+  traitlets,
 
-# tests
-, ipython
+  # tests
+  ipython,
 }:
 
 buildPythonPackage rec {
@@ -19,17 +20,13 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "ipython";
     repo = "matplotlib-inline";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-y7T8BshNa8NVWzH8oLS4dTAyhG+YmkkYQJFAyMXsJFA=";
   };
 
-  build-system = [
-    setuptools
-  ];
+  build-system = [ setuptools ];
 
-  dependencies = [
-    traitlets
-  ];
+  dependencies = [ traitlets ];
 
   # wants to import ipython, which creates a circular dependency
   doCheck = false;
@@ -40,12 +37,14 @@ buildPythonPackage rec {
     #"matplotlib_inline"
   ];
 
-  passthru.tests = { inherit ipython; };
+  passthru.tests = {
+    inherit ipython;
+  };
 
   meta = with lib; {
     description = "Matplotlib Inline Back-end for IPython and Jupyter";
     homepage = "https://github.com/ipython/matplotlib-inline";
     license = licenses.bsd3;
-    maintainers = with maintainers; [ jonringer ];
+    maintainers = [ ];
   };
 }

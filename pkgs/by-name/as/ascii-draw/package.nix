@@ -1,25 +1,26 @@
-{ lib
-, python3Packages
-, fetchFromGitHub
-, meson
-, ninja
-, pkg-config
-, gobject-introspection
-, wrapGAppsHook4
-, desktop-file-utils
-, libadwaita
+{
+  lib,
+  python3Packages,
+  fetchFromGitHub,
+  meson,
+  ninja,
+  pkg-config,
+  gobject-introspection,
+  wrapGAppsHook4,
+  desktop-file-utils,
+  libadwaita,
 }:
 
 python3Packages.buildPythonApplication rec {
   pname = "ascii-draw";
-  version = "0.3.2";
+  version = "1.0.0";
   pyproject = false;
 
   src = fetchFromGitHub {
     owner = "Nokse22";
     repo = "ascii-draw";
-    rev = "v${version}";
-    hash = "sha256-opjYgLfHfKSbipB1HRxfBkgp+9c4yqIL1fiUOcFmCMc=";
+    tag = "v${version}";
+    hash = "sha256-+K9th1LbESVzAiJqIplWpj2QHt7zDidENs7jHOuJ2S0=";
   };
 
   nativeBuildInputs = [
@@ -48,7 +49,7 @@ python3Packages.buildPythonApplication rec {
   '';
 
   meta = {
-    description = "An app to draw diagrams or anything using only ASCII";
+    description = "Draw diagrams or anything using only ASCII";
     homepage = "https://github.com/Nokse22/ascii-draw";
     license = lib.licenses.gpl3Plus;
     mainProgram = "ascii-draw";

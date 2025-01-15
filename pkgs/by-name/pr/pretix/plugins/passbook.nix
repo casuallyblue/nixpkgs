@@ -1,30 +1,31 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, substituteAll
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  substituteAll,
 
-# build-system
-, pretix-plugin-build
-, setuptools
+  # build-system
+  pretix-plugin-build,
+  setuptools,
 
-# runtime
-, openssl
+  # runtime
+  openssl,
 
-# dependencies
-, googlemaps
-, wallet-py3k
+  # dependencies
+  googlemaps,
+  wallet-py3k,
 }:
 
 buildPythonPackage rec {
   pname = "pretix-passbook";
-  version = "1.13.1";
+  version = "1.13.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "pretix";
     repo = "pretix-passbook";
     rev = "v${version}";
-    hash = "sha256-bp64wCEMon05JhOaDr/cVbqUxc+7ndcsSuSesxJt8GE=";
+    hash = "sha256-rdX93AFoLLsA44a9sSgcQrCJiOlhe3j5WTBO+MHZ/X8=";
   };
 
   patches = [

@@ -1,34 +1,35 @@
-{ bc-ur
-, boost
-, cmake
-, fetchFromGitHub
-, hidapi
-, lib
-, libsodium
-, libusb1
-, openssl
-, pkg-config
-, protobuf
-, python3
-, qrencode
-, qt6
-, readline
-, stdenv
-, testers
-, tor
-, unbound
-, zxing-cpp
+{
+  bc-ur,
+  boost,
+  cmake,
+  fetchFromGitHub,
+  hidapi,
+  lib,
+  libsodium,
+  libusb1,
+  openssl,
+  pkg-config,
+  protobuf,
+  python3,
+  qrencode,
+  qt6,
+  readline,
+  stdenv,
+  testers,
+  tor,
+  unbound,
+  zxing-cpp,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "feather";
-  version = "2.6.7";
+  version = "2.7.0";
 
   src = fetchFromGitHub {
     owner = "feather-wallet";
     repo = "feather";
     rev = finalAttrs.version;
-    hash = "sha256-zXNpNhBOtDvuuxzZ8o2XDLqNSi/XK4I6eYAfWuiCgRI=";
+    hash = "sha256-CwydKX8cCtmrUSLUHNCDOteVmkjzj0zMHgwUyrWrWm8=";
     fetchSubmodules = true;
   };
 
@@ -39,25 +40,27 @@ stdenv.mkDerivation (finalAttrs: {
     qt6.wrapQtAppsHook
   ];
 
-  buildInputs = [
-    bc-ur
-    boost
-    hidapi
-    libsodium
-    libusb1
-    openssl
-    protobuf
-    qrencode
-    unbound
-    zxing-cpp
-  ] ++ (with qt6; [
-    qtbase
-    qtmultimedia
-    qtsvg
-    qttools
-    qtwayland
-    qtwebsockets
-  ]);
+  buildInputs =
+    [
+      bc-ur
+      boost
+      hidapi
+      libsodium
+      libusb1
+      openssl
+      protobuf
+      qrencode
+      unbound
+      zxing-cpp
+    ]
+    ++ (with qt6; [
+      qtbase
+      qtmultimedia
+      qtsvg
+      qttools
+      qtwayland
+      qtwebsockets
+    ]);
 
   cmakeFlags = [
     "-DProtobuf_INCLUDE_DIR=${lib.getDev protobuf}/include"
@@ -77,7 +80,7 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   meta = with lib; {
-    description = "A free Monero desktop wallet";
+    description = "Free Monero desktop wallet";
     homepage = "https://featherwallet.org/";
     changelog = "https://featherwallet.org/changelog/#${finalAttrs.version}%20changelog";
     platforms = platforms.linux;

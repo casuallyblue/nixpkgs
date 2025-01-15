@@ -1,23 +1,24 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, cmake
-, extra-cmake-modules
-, gettext
-, fcitx5
-, libhangul
-, nixosTests
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  cmake,
+  extra-cmake-modules,
+  gettext,
+  fcitx5,
+  libhangul,
+  nixosTests,
 }:
 
 stdenv.mkDerivation rec {
   pname = "fcitx5-hangul";
-  version = "5.1.3";
+  version = "5.1.5";
 
   src = fetchFromGitHub {
     owner = "fcitx";
     repo = pname;
     rev = version;
-    hash = "sha256-eaL+5wEQdEkXchKBxUhIys1qwjKLOL3awRhFgai4l1U=";
+    hash = "sha256-+IXsMT87Dc+Ad4r6/U+NLYo+04j+I58Cqz99v4Yr0uc=";
   };
 
   nativeBuildInputs = [

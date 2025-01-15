@@ -1,4 +1,16 @@
-{ lib, addonDir, buildKodiAddon, fetchFromGitHub, kodi, requests, dateutil, six, kodi-six, signals, websocket }:
+{
+  lib,
+  addonDir,
+  buildKodiAddon,
+  fetchFromGitHub,
+  kodi,
+  requests,
+  dateutil,
+  six,
+  kodi-six,
+  signals,
+  websocket,
+}:
 let
   python = kodi.pythonPackages.python.withPackages (p: with p; [ pyyaml ]);
 in
@@ -29,7 +41,7 @@ buildKodiAddon rec {
   '';
 
   postInstall = ''
-    mv /build/source/addon.xml $out${addonDir}/${namespace}/
+    cp -v addon.xml $out${addonDir}/$namespace/
   '';
 
   propagatedBuildInputs = [
@@ -43,7 +55,7 @@ buildKodiAddon rec {
 
   meta = with lib; {
     homepage = "https://github.com/jellyfin/jellycon";
-    description = "A lightweight Kodi add-on for Jellyfin";
+    description = "Lightweight Kodi add-on for Jellyfin";
     longDescription = ''
       JellyCon is a lightweight Kodi add-on that lets you browse and play media
       files directly from your Jellyfin server within the Kodi interface. It can

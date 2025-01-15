@@ -1,7 +1,9 @@
-{ lib, stdenv
-, fetchFromGitHub
-, rustPlatform
-, Security
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  rustPlatform,
+  Security,
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -17,7 +19,7 @@ rustPlatform.buildRustPackage rec {
 
   cargoHash = "sha256-ZRE1vKgi0/UtSe2bdN0BLdtDfAauTfwcqOcl3y63fAA=";
 
-  buildInputs = lib.optionals stdenv.isDarwin [ Security ];
+  buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [ Security ];
 
   doInstallCheck = true;
   installCheckPhase = ''
@@ -25,11 +27,14 @@ rustPlatform.buildRustPackage rec {
   '';
 
   meta = with lib; {
-    description = "A command-line tool for generating regular expressions from user-provided test cases";
+    description = "Command-line tool for generating regular expressions from user-provided test cases";
     homepage = "https://github.com/pemistahl/grex";
     changelog = "https://github.com/pemistahl/grex/releases/tag/v${version}";
     license = licenses.asl20;
     mainProgram = "grex";
-    maintainers = with maintainers; [ SuperSandro2000 mfrw ];
+    maintainers = with maintainers; [
+      SuperSandro2000
+      mfrw
+    ];
   };
 }

@@ -1,49 +1,66 @@
-{ lib, stdenv, fetchFromGitHub, fetchpatch
-, llvmPackages, elfutils, bcc
-, libbpf, libbfd, libopcodes
-, cereal, asciidoctor
-, cmake, pkg-config, flex, bison
-, util-linux
-, nixosTests
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  llvmPackages,
+  elfutils,
+  bcc,
+  libbpf,
+  libbfd,
+  libopcodes,
+  glibc,
+  cereal,
+  asciidoctor,
+  cmake,
+  pkg-config,
+  flex,
+  bison,
+  util-linux,
+  fetchpatch,
+  nixosTests,
 }:
 
 stdenv.mkDerivation rec {
   pname = "bpftrace";
-  version = "0.20.3";
+  version = "0.21.3";
 
   src = fetchFromGitHub {
-    owner = "iovisor";
-    repo  = "bpftrace";
-    rev   = "v${version}";
-    hash  = "sha256-B4BxoZSPSpDWLUgcYgQEmuhVr2mX04hrFCLu04vp1so=";
+    owner = "bpftrace";
+    repo = "bpftrace";
+    rev = "v${version}";
+    hash = "sha256-cmKm2g1lzl625t4z7ZM04QgqDubBsCMqtibXmg+3y9w=";
   };
 
-
   buildInputs = with llvmPackages; [
-    llvm libclang
-    elfutils bcc
-    libbpf libbfd libopcodes
-    cereal asciidoctor
+    llvm
+    libclang
+    elfutils
+    bcc
+    libbpf
+    libbfd
+    libopcodes
+    cereal
+    asciidoctor
   ];
 
   nativeBuildInputs = [
-    cmake pkg-config flex bison
+    cmake
+    pkg-config
+    flex
+    bison
     llvmPackages.llvm.dev
     util-linux
   ];
 
-  # tests aren't built, due to gtest shenanigans. see:
-  #
-  #     https://github.com/iovisor/bpftrace/issues/161#issuecomment-453606728
-  #     https://github.com/iovisor/bpftrace/pull/363
-  #
   cmakeFlags = [
-    "-DBUILD_TESTING=FALSE"
     "-DLIBBCC_INCLUDE_DIRS=${bcc}/include"
     "-DINSTALL_TOOL_DOCS=OFF"
-    "-DUSE_SYSTEM_BPF_BCC=ON"
+    "-DSYSTEM_INCLUDE_PATHS=${glibc.dev}/include"
   ];
 
+  postPatch = ''
+    substituteInPlace CMakeLists.txt --replace "set(MAX_LLVM_MAJOR 18)" "set(MAX_LLVM_MAJOR 19)"
+  '';
 
   # Pull BPF scripts into $PATH (next to their bcc program equivalents), but do
   # not move them to keep `${pkgs.bpftrace}/share/bpftrace/tools/...` working.
@@ -54,7 +71,10 @@ stdenv.mkDerivation rec {
     sed -i -e "1s:#!/usr/bin/env bpftrace:#!$out/bin/bpftrace:" $out/share/bpftrace/tools/*.bt
   '';
 
-  outputs = [ "out" "man" ];
+  outputs = [
+    "out"
+    "man"
+  ];
 
   passthru.tests = {
     bpf = nixosTests.bpf;
@@ -62,10 +82,17 @@ stdenv.mkDerivation rec {
 
   meta = with lib; {
     description = "High-level tracing language for Linux eBPF";
-    homepage    = "https://github.com/iovisor/bpftrace";
-    changelog   = "https://github.com/iovisor/bpftrace/releases/tag/v${version}";
+    homepage = "https://github.com/bpftrace/bpftrace";
+    changelog = "https://github.com/bpftrace/bpftrace/releases/tag/v${version}";
     mainProgram = "bpftrace";
-    license     = licenses.asl20;
-    maintainers = with maintainers; [ rvl thoughtpolice martinetd mfrw ];
+    license = licenses.asl20;
+    maintainers = with maintainers; [
+      rvl
+      thoughtpolice
+      martinetd
+      mfrw
+      illustris
+    ];
+    platforms = platforms.linux;
   };
 }

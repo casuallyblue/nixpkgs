@@ -1,27 +1,25 @@
-{ lib
-, stdenv
-, fetchurl
-, which
-, libobjc
+{
+  lib,
+  stdenv,
+  fetchurl,
+  which,
+  libobjc,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "gnustep-make";
-  version = "2.9.1";
+  version = "2.9.2";
 
   src = fetchurl {
     url = "ftp://ftp.gnustep.org/pub/gnustep/core/gnustep-make-${finalAttrs.version}.tar.gz";
-    sha256 = "sha256-w9bnDPFWsn59HtJQHFffP5bidIjOLzUbk+R5xYwB6uc=";
+    sha256 = "sha256-9UDfnw4drrPSOwjhSyBLKkbx0KQAXLFxyVMjQTgG5OE=";
   };
 
   configureFlags = [
     "--with-layout=fhs-system"
     "--disable-install-p"
+    "--with-config-file=${placeholder "out"}/etc/GNUstep/GNUstep.conf"
   ];
-
-  preConfigure = ''
-    configureFlags="$configureFlags --with-config-file=$out/etc/GNUstep/GNUstep.conf"
-  '';
 
   makeFlags = [
     "GNUSTEP_INSTALLATION_DOMAIN=SYSTEM"
@@ -35,11 +33,17 @@ stdenv.mkDerivation (finalAttrs: {
   setupHook = ./setup-hook.sh;
 
   meta = {
-    changelog = "https://github.com/gnustep/tools-make/releases/tag/make-${builtins.replaceStrings [ "." ] [ "_" ] finalAttrs.version}";
-    description = "A build manager for GNUstep";
+    changelog = "https://github.com/gnustep/tools-make/releases/tag/make-${
+      builtins.replaceStrings [ "." ] [ "_" ] finalAttrs.version
+    }";
+    description = "Build manager for GNUstep";
     homepage = "https://gnustep.github.io/";
     license = lib.licenses.lgpl2Plus;
-    maintainers = with lib.maintainers; [ ashalkhakov matthewbauer dblsaiko ];
+    maintainers = with lib.maintainers; [
+      ashalkhakov
+      matthewbauer
+      dblsaiko
+    ];
     platforms = lib.platforms.unix;
   };
 })

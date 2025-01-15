@@ -1,6 +1,6 @@
 { lib, stdenv, fetchgit
 , pkg-config, wrapGAppsHook3
-, glib, gcr, glib-networking, gsettings-desktop-schemas, gtk, libsoup, webkitgtk
+, glib, gcr, glib-networking, gsettings-desktop-schemas, gtk, libsoup_2_4, webkitgtk_4_0
 , xorg, dmenu, findutils, gnused, coreutils, gst_all_1
 , patches ? null
 }:
@@ -23,8 +23,8 @@ stdenv.mkDerivation rec {
     glib-networking
     gsettings-desktop-schemas
     gtk
-    libsoup
-    webkitgtk
+    libsoup_2_4
+    webkitgtk_4_0
   ] ++ (with gst_all_1; [
     # Audio & video support for webkitgtk WebView
     gstreamer
@@ -48,7 +48,7 @@ stdenv.mkDerivation rec {
   '';
 
   meta = with lib; {
-    description = "A simple web browser based on WebKitGTK";
+    description = "Simple web browser based on WebKitGTK";
     mainProgram = "surf";
     longDescription = ''
       surf is a simple web browser based on WebKitGTK. It is able to display
@@ -58,7 +58,7 @@ stdenv.mkDerivation rec {
     '';
     homepage = "https://surf.suckless.org";
     license = licenses.mit;
-    platforms = webkitgtk.meta.platforms;
+    platforms = webkitgtk_4_0.meta.platforms;
     maintainers = with maintainers; [ joachifm ];
   };
 }

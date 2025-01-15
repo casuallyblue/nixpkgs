@@ -1,9 +1,10 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, ldap3
-, pythonOlder
-, setuptools
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  ldap3,
+  pythonOlder,
+  setuptools,
 }:
 
 buildPythonPackage rec {
@@ -16,24 +17,18 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "p0dalirius";
     repo = "sectools";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-k3k1/DFmv0resnsNht/C+2Xh6qbSQmk83eN/3vtDU00=";
   };
 
-  nativeBuildInputs = [
-    setuptools
-  ];
+  nativeBuildInputs = [ setuptools ];
 
-  propagatedBuildInputs = [
-    ldap3
-  ];
+  propagatedBuildInputs = [ ldap3 ];
 
   # Module has no tests
   doCheck = false;
 
-  pythonImportsCheck = [
-    "sectools"
-  ];
+  pythonImportsCheck = [ "sectools" ];
 
   meta = with lib; {
     description = "library containing functions to write security tools";

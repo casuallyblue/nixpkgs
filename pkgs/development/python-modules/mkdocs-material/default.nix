@@ -28,7 +28,7 @@
 
 buildPythonPackage rec {
   pname = "mkdocs-material";
-  version = "9.5.18";
+  version = "9.5.49";
   pyproject = true;
 
   disabled = pythonOlder "3.7";
@@ -36,8 +36,8 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "squidfunk";
     repo = "mkdocs-material";
-    rev = "refs/tags/${version}";
-    hash = "sha256-5FCIDAWRY6YfZi4QbcEpJMFfbJ17vudxlUYx4czDxrY=";
+    tag = version;
+    hash = "sha256-jX1Y24FSXZwtuI80GB+BbDbkKvO6uk0dVEmfYjBZOrc=";
   };
 
   nativeBuildInputs = [
@@ -61,7 +61,7 @@ buildPythonPackage rec {
     requests
   ];
 
-  passthru.optional-dependencies = {
+  optional-dependencies = {
     recommended = [
       mkdocs-minify-plugin
       mkdocs-redirects

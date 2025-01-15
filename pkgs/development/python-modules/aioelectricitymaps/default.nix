@@ -1,15 +1,17 @@
-{ lib
-, aiohttp
-, aioresponses
-, buildPythonPackage
-, fetchFromGitHub
-, mashumaro
-, orjson
-, poetry-core
-, pytest-asyncio
-, pytestCheckHook
-, pythonOlder
-, syrupy
+{
+  lib,
+  aiohttp,
+  aioresponses,
+  buildPythonPackage,
+  fetchFromGitHub,
+  mashumaro,
+  orjson,
+  poetry-core,
+  pytest-asyncio,
+  pytest-cov-stub,
+  pytestCheckHook,
+  pythonOlder,
+  syrupy,
 }:
 
 buildPythonPackage rec {
@@ -22,20 +24,18 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "jpbede";
     repo = "aioelectricitymaps";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-l6D5Cr2d89n+Ac5V5geBUY0sOiEO3sci9244K0MI+dc=";
   };
 
   postPatch = ''
     substituteInPlace pyproject.toml \
-      --replace-warn "--cov" ""
+      --replace-fail 'version = "0.0.0"' 'version = "${version}"'
   '';
 
-  nativeBuildInputs = [
-    poetry-core
-  ];
+  build-system = [ poetry-core ];
 
-  propagatedBuildInputs = [
+  dependencies = [
     aiohttp
     mashumaro
     orjson
@@ -44,13 +44,15 @@ buildPythonPackage rec {
   nativeCheckInputs = [
     aioresponses
     pytest-asyncio
+    pytest-cov-stub
     pytestCheckHook
     syrupy
   ];
 
-  pythonImportsCheck = [
-    "aioelectricitymaps"
-  ];
+  pythonImportsCheck = [ "aioelectricitymaps" ];
+
+  # https://github.com/jpbede/aioelectricitymaps/pull/415
+  pytestFlagsArray = [ "--snapshot-update" ];
 
   meta = with lib; {
     description = "Module for interacting with Electricity maps";

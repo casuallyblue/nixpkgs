@@ -8,17 +8,17 @@
 
 buildDotnetModule rec {
   pname = "discordchatexporter-cli";
-  version = "2.43";
+  version = "2.43.3";
 
   src = fetchFromGitHub {
     owner = "tyrrrz";
     repo = "discordchatexporter";
     rev = version;
-    hash = "sha256-FbZ2Kt5lKTINpj0EsJGXWY1aK0qitks16GClBWa/iQ4=";
+    hash = "sha256-r9bvTgqKQY605BoUlysSz4WJMxn2ibNh3EhoMYCfV3c=";
   };
 
   projectFile = "DiscordChatExporter.Cli/DiscordChatExporter.Cli.csproj";
-  nugetDeps = ./deps.nix;
+  nugetDeps = ./deps.json;
   dotnet-sdk = dotnetCorePackages.sdk_8_0;
   dotnet-runtime = dotnetCorePackages.runtime_8_0;
 
@@ -35,12 +35,12 @@ buildDotnetModule rec {
   };
 
   meta = with lib; {
-    description = "A tool to export Discord chat logs to a file";
+    description = "Tool to export Discord chat logs to a file";
     homepage = "https://github.com/Tyrrrz/DiscordChatExporter";
     license = licenses.gpl3Plus;
     changelog = "https://github.com/Tyrrrz/DiscordChatExporter/blob/${version}/Changelog.md";
-    maintainers = with maintainers; [ eclairevoyant ivar ];
-    platforms = [ "x86_64-linux" ];
+    maintainers = with maintainers; [ ];
+    platforms = platforms.unix;
     mainProgram = "discordchatexporter-cli";
   };
 }

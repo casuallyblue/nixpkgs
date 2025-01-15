@@ -1,20 +1,23 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, lxml
-, pyright
-, pytestCheckHook
-, pythonOlder
-, setuptools
-, setuptools-scm
-, typeguard
-, types-beautifulsoup4
-, typing-extensions
+{
+  lib,
+  beautifulsoup4,
+  buildPythonPackage,
+  cssselect,
+  fetchFromGitHub,
+  html5lib,
+  lxml,
+  pdm-backend,
+  pyright,
+  pytestCheckHook,
+  pythonOlder,
+  typeguard,
+  types-beautifulsoup4,
+  typing-extensions,
 }:
 
 buildPythonPackage rec {
   pname = "types-lxml";
-  version = "2024.02.09";
+  version = "2024.09.16";
   pyproject = true;
 
   disabled = pythonOlder "3.8";
@@ -22,30 +25,28 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "abelcheung";
     repo = "types-lxml";
-    rev = "refs/tags/${version}";
-    hash = "sha256-vmRbzfwlGGxd64KX8j4B3O9c7kg7hXSsCEYq3WAFdmk=";
+    tag = version;
+    hash = "sha256-LQqs9wg6kgubY4SygTNQt5YTtF3LsFj7+RkAlcp4SSo=";
   };
 
-  nativeBuildInputs = [
-    setuptools
-    setuptools-scm
-  ];
+  build-system = [ pdm-backend ];
 
-  propagatedBuildInputs = [
+  dependencies = [
+    cssselect
     types-beautifulsoup4
     typing-extensions
   ];
 
   nativeCheckInputs = [
+    beautifulsoup4
+    html5lib
     lxml
     pyright
     pytestCheckHook
     typeguard
   ];
 
-  pythonImportsCheck = [
-    "lxml-stubs"
-  ];
+  pythonImportsCheck = [ "lxml-stubs" ];
 
   disabledTests = [
     # AttributeError: 'bytes' object has no attribute 'find_class'

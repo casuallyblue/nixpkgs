@@ -1,14 +1,15 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, setuptools
-, wheel
-, numpy
-, pip
-, termcolor
-, pytestCheckHook
-, torch
-, pythonAtLeast
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  setuptools,
+  wheel,
+  numpy,
+  pip,
+  termcolor,
+  pytestCheckHook,
+  torch,
+  pythonAtLeast,
 }:
 
 buildPythonPackage rec {
@@ -19,7 +20,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "datamllab";
     repo = "rlcard";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-SWj6DBItQzSM+nioV54a350Li7tbBaVXsQxNAqVgB0k=";
   };
 
@@ -35,9 +36,7 @@ buildPythonPackage rec {
     termcolor
   ];
 
-  pythonImportsCheck = [
-    "rlcard"
-  ];
+  pythonImportsCheck = [ "rlcard" ];
 
   nativeCheckInputs = [
     pytestCheckHook

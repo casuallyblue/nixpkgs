@@ -1,10 +1,11 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, ply
-, pytestCheckHook
-, pythonOlder
-, setuptools
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  ply,
+  pytestCheckHook,
+  pythonOlder,
+  setuptools,
 }:
 
 buildPythonPackage rec {
@@ -17,7 +18,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "h2non";
     repo = pname;
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-0ErTGxGlMn/k2KMwRV26WJpx85yJUfn6Hgp5pU4RZA4=";
   };
 
@@ -26,18 +27,14 @@ buildPythonPackage rec {
     setuptools
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
   disabledTestPaths = [
     # Exclude tests that require oslotest
     "tests/test_jsonpath_rw_ext.py"
   ];
 
-  pythonImportsCheck = [
-    "jsonpath_ng"
-  ];
+  pythonImportsCheck = [ "jsonpath_ng" ];
 
   meta = with lib; {
     description = "JSONPath implementation";

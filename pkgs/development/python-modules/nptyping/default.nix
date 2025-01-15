@@ -1,13 +1,14 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonOlder
-, pytestCheckHook
-, beartype
-, invoke
-, numpy
-, pandas
-, feedparser
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonOlder,
+  pytestCheckHook,
+  beartype,
+  invoke,
+  numpy,
+  pandas,
+  feedparser,
 }:
 
 buildPythonPackage rec {
@@ -20,13 +21,11 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "ramonhagenaars";
     repo = pname;
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-hz4YrcvARCAA7TXapmneIwle/F4pzcIYLPSmiFHC0VQ=";
   };
 
-  propagatedBuildInputs = [
-    numpy
-  ];
+  propagatedBuildInputs = [ numpy ];
 
   nativeCheckInputs = [
     beartype
@@ -55,9 +54,7 @@ buildPythonPackage rec {
     "tests/test_beartype.py"
   ];
 
-  pythonImportsCheck = [
-    "nptyping"
-  ];
+  pythonImportsCheck = [ "nptyping" ];
 
   meta = with lib; {
     description = "Type hints for numpy";

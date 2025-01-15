@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ...}:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.services.mealie;
   pkg = cfg.package;
@@ -23,13 +28,11 @@ in
 
     settings = lib.mkOption {
       type = with lib.types; attrsOf anything;
-      default = {};
+      default = { };
       description = ''
         Configuration of the Mealie service.
 
         See [the mealie documentation](https://nightly.mealie.io/documentation/getting-started/installation/backend-config/) for available options and default values.
-
-        In addition to the official documentation, you can set {env}`MEALIE_LOG_FILE`.
       '';
       example = {
         ALLOW_SIGNUP = "false";
@@ -59,8 +62,8 @@ in
 
       environment = {
         PRODUCTION = "true";
-        ALEMBIC_CONFIG_FILE="${pkg}/config/alembic.ini";
         API_PORT = toString cfg.port;
+        BASE_URL = "http://localhost:${toString cfg.port}";
         DATA_DIR = "/var/lib/mealie";
         CRF_MODEL_PATH = "/var/lib/mealie/model.crfmodel";
       } // (builtins.mapAttrs (_: val: toString val) cfg.settings);
@@ -72,7 +75,7 @@ in
         ExecStart = "${lib.getExe pkg} -b ${cfg.listenAddress}:${builtins.toString cfg.port}";
         EnvironmentFile = lib.mkIf (cfg.credentialsFile != null) cfg.credentialsFile;
         StateDirectory = "mealie";
-        StandardOutput="journal";
+        StandardOutput = "journal";
       };
     };
   };

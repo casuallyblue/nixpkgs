@@ -1,11 +1,11 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonAtLeast
-, setuptools
-, pillow
-, zbar
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  setuptools,
+  pillow,
+  zbar,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -13,13 +13,10 @@ buildPythonPackage rec {
   version = "0.23.93";
   pyproject = true;
 
-  # distutils usage in setup.py
-  disabled = pythonAtLeast "3.12";
-
   src = fetchFromGitHub {
     owner = "mchehab";
     repo = "zbar";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-6gOqMsmlYy6TK+iYPIBsCPAk8tYDliZYMYeTOidl4XQ=";
   };
 
@@ -53,6 +50,6 @@ buildPythonPackage rec {
     description = "Python bindings for zbar";
     homepage = "https://github.com/mchehab/zbar";
     license = licenses.lgpl21Only;
-    maintainers = with maintainers; [ wolfangaukang ];
+    maintainers = [ ];
   };
 }

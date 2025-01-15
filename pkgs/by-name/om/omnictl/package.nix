@@ -1,21 +1,29 @@
-{ lib, buildGoModule, fetchFromGitHub, installShellFiles }:
+{
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
+  installShellFiles,
+}:
 
 buildGoModule rec {
   pname = "omnictl";
-  version = "0.35.0";
+  version = "0.45.1";
 
   src = fetchFromGitHub {
     owner = "siderolabs";
     repo = "omni";
     rev = "v${version}";
-    hash = "sha256-y4kWIj7DDeUs521csW26w1K6esZMgvI4MQtgZAeOtlk=";
+    hash = "sha256-a9lp/XDet4CcMadMHj1ia4tdsK/Y8Sfd2f6/A2j1liQ=";
   };
 
-  vendorHash = "sha256-BYKIAgWR+PDJbDJ72PS6TDvpZx7yRaDJzbq0/b/MIKs=";
+  vendorHash = "sha256-U/cserG37gM1XDN9HcPqnq4hPJSaOaLBoIs5OcsocYw=";
 
-  ldflags = [ "-s" "-w" ];
+  ldflags = [
+    "-s"
+    "-w"
+  ];
 
-  GOWORK = "off";
+  env.GOWORK = "off";
 
   subPackages = [ "cmd/omnictl" ];
 
@@ -31,7 +39,7 @@ buildGoModule rec {
   doCheck = false; # no tests
 
   meta = with lib; {
-    description = "A CLI for the Sidero Omni Kubernetes management platform";
+    description = "CLI for the Sidero Omni Kubernetes management platform";
     mainProgram = "omnictl";
     homepage = "https://omni.siderolabs.com/";
     license = licenses.bsl11;

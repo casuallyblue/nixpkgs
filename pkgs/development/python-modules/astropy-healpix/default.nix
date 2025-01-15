@@ -1,15 +1,16 @@
-{ lib
-, stdenv
-, buildPythonPackage
-, fetchPypi
-, numpy
-, astropy
-, astropy-extension-helpers
-, setuptools
-, setuptools-scm
-, pytestCheckHook
-, pytest-doctestplus
-, hypothesis
+{
+  lib,
+  stdenv,
+  buildPythonPackage,
+  fetchPypi,
+  numpy,
+  astropy,
+  astropy-extension-helpers,
+  setuptools,
+  setuptools-scm,
+  pytestCheckHook,
+  pytest-doctestplus,
+  hypothesis,
 }:
 
 buildPythonPackage rec {
@@ -19,13 +20,9 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit version;
-    pname = lib.replaceStrings ["-"] ["_"] pname;
+    pname = lib.replaceStrings [ "-" ] [ "_" ] pname;
     hash = "sha256-3l0qfsl7FnBFBmlx8loVDR5AYfBxWb4jZJY02zbnl0Y=";
   };
-
-  postPatch = ''
-    substituteInPlace pyproject.toml --replace "numpy>=2.0.0rc1" "numpy"
-  '';
 
   nativeBuildInputs = [
     astropy-extension-helpers

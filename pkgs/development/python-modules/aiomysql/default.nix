@@ -1,12 +1,13 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, fetchpatch
-, pymysql
-, pythonOlder
-, setuptools
-, setuptools-scm
-, wheel
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  fetchpatch,
+  pymysql,
+  pythonOlder,
+  setuptools,
+  setuptools-scm,
+  wheel,
 }:
 
 buildPythonPackage rec {
@@ -19,7 +20,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "aio-libs";
     repo = "aiomysql";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-m/EgoBU3e+s3soXyYtACMDSjJfMLBOk/00qPtgawwQ8=";
   };
 
@@ -39,21 +40,17 @@ buildPythonPackage rec {
     wheel
   ];
 
-  propagatedBuildInputs = [
-    pymysql
-  ];
+  propagatedBuildInputs = [ pymysql ];
 
   # Tests require MySQL database
   doCheck = false;
 
-  pythonImportsCheck = [
-    "aiomysql"
-  ];
+  pythonImportsCheck = [ "aiomysql" ];
 
   meta = with lib; {
     description = "MySQL driver for asyncio";
     homepage = "https://github.com/aio-libs/aiomysql";
     license = licenses.mit;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
   };
 }

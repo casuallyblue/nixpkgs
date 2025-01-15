@@ -6,10 +6,10 @@ alephone.makeWrapper rec {
   version = "20240510";
   icon = alephone.icons + "/marathon.png";
 
+  # nixpkgs-update: no auto update
   zip = fetchurl {
-    url =
-      "https://github.com/Aleph-One-Marathon/alephone/releases/download/release-${version}/Marathon-${version}-Data.zip";
-    sha256 = "sha256-shZ82e7veaaT/petxDQ8Fd7YtJPmTgxSCStf0kGfrFs=";
+    url = "https://github.com/Aleph-One-Marathon/alephone/releases/download/release-${version}/Marathon-${version}-Data.zip";
+    hash = "sha256-shZ82e7veaaT/petxDQ8Fd7YtJPmTgxSCStf0kGfrFs=";
   };
 
   meta = {

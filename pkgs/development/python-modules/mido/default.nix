@@ -1,41 +1,41 @@
-{ stdenv
-, lib
-, buildPythonPackage
-, fetchPypi
-, substituteAll
+{
+  stdenv,
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  substituteAll,
 
-# build-system
-, setuptools
-, setuptools-scm
-, pythonRelaxDepsHook
+  # build-system
+  setuptools,
+  setuptools-scm,
 
-# dependencies
-, packaging
+  # dependencies
+  packaging,
 
-# native dependencies
-, portmidi
+  # native dependencies
+  portmidi,
 
-# optional-dependencies
-, pygame
-, python-rtmidi
-, rtmidi-python
+  # optional-dependencies
+  pygame,
+  python-rtmidi,
+  rtmidi-python,
 
-# tests
-, pytestCheckHook
-, pythonOlder
+  # tests
+  pytestCheckHook,
+  pythonOlder,
 
 }:
 
 buildPythonPackage rec {
   pname = "mido";
-  version = "1.3.2";
+  version = "1.3.3";
   pyproject = true;
 
   disabled = pythonOlder "3.7";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-Ouootu1zD3N9WxLaNXjevp3FAFj6Nw/pzt7ZGJtnw0g=";
+    hash = "sha256-GuyzC38oJATxfkN2jL90pqMb8is7eDvdEXoc6dIst0w=";
   };
 
   patches = [
@@ -48,16 +48,11 @@ buildPythonPackage rec {
   build-system = [
     setuptools
     setuptools-scm
-    pythonRelaxDepsHook
   ];
 
-  pythonRelaxDeps = [
-    "packaging"
-  ];
+  pythonRelaxDeps = [ "packaging" ];
 
-  dependencies = [
-    packaging
-  ];
+  dependencies = [ packaging ];
 
   optional-dependencies = {
     ports-pygame = [ pygame ];
@@ -65,19 +60,15 @@ buildPythonPackage rec {
     ports-rtmidi-python = [ rtmidi-python ];
   };
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
-  pythonImportsCheck = [
-    "mido"
-  ];
+  pythonImportsCheck = [ "mido" ];
 
   meta = with lib; {
     description = "MIDI Objects for Python";
     homepage = "https://mido.readthedocs.io";
     changelog = "https://github.com/mido/mido/releases/tag/${version}";
     license = licenses.mit;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
   };
 }

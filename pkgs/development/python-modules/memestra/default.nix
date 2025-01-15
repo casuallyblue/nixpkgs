@@ -1,12 +1,13 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, beniget
-, frilouz
-, gast
-, nbconvert
-, nbformat
-, pyyaml
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  beniget,
+  frilouz,
+  gast,
+  nbconvert,
+  nbformat,
+  pyyaml,
 }:
 
 buildPythonPackage rec {
@@ -31,12 +32,10 @@ buildPythonPackage rec {
   # Tests are not detected and so the checkPhase fails
   doCheck = false;
 
-  pythonImportsCheck = [
-    "memestra"
-  ];
+  pythonImportsCheck = [ "memestra" ];
 
   meta = with lib; {
-    description = "A linter that tracks reference to deprecated functions.";
+    description = "Linter that tracks reference to deprecated functions";
     homepage = "https://github.com/QuantStack/memestra";
     license = licenses.bsd3;
     maintainers = with maintainers; [ GaetanLepage ];

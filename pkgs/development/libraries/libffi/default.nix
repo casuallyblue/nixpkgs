@@ -1,12 +1,14 @@
-{ lib, stdenv, fetchurl, fetchpatch
-, autoreconfHook
+{
+  lib,
+  stdenv,
+  fetchurl,
 
   # test suite depends on dejagnu which cannot be used during bootstrapping
   # dejagnu also requires tcl which can't be built statically at the moment
-, doCheck ? !(stdenv.hostPlatform.isStatic)
-, dejagnu
-, nix-update-script
-, testers
+  doCheck ? !(stdenv.hostPlatform.isStatic),
+  dejagnu,
+  nix-update-script,
+  testers,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -14,7 +16,9 @@ stdenv.mkDerivation (finalAttrs: {
   version = "3.4.6";
 
   src = fetchurl {
-    url = with finalAttrs; "https://github.com/libffi/libffi/releases/download/v${version}/${pname}-${version}.tar.gz";
+    url =
+      with finalAttrs;
+      "https://github.com/libffi/libffi/releases/download/v${version}/${pname}-${version}.tar.gz";
     hash = "sha256-sN6p3yPIY6elDoJUQPPr/6vWXfFJcQjl1Dd0eEOJWk4=";
   };
 
@@ -23,14 +27,25 @@ stdenv.mkDerivation (finalAttrs: {
   # cgit) that are needed here should be included directly in Nixpkgs as
   # files.
   patches = [
+    # https://github.com/libffi/libffi/pull/857
+    # function label needs to come before .cfi_startproc
+    ./label-before-cfi_startproc.patch
   ];
 
   strictDeps = true;
-  outputs = [ "out" "dev" "man" "info" ];
+  outputs = [
+    "out"
+    "dev"
+    "man"
+    "info"
+  ];
 
   enableParallelBuilding = true;
 
-  configurePlatforms = [ "build" "host" ];
+  configurePlatforms = [
+    "build"
+    "host"
+  ];
 
   configureFlags = [
     "--with-gcc-arch=generic" # no detection of -march= or -mtune=
@@ -59,7 +74,7 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   meta = with lib; {
-    description = "A foreign function call interface library";
+    description = "Foreign function call interface library";
     longDescription = ''
       The libffi library provides a portable, high level programming
       interface to various calling conventions.  This allows a

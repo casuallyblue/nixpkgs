@@ -5,21 +5,22 @@
 , fetchFromGitLab
 , cmake
 , file
-, writeText
 , nixosTests
 , ...
 }:
 beamPackages.mixRelease rec {
   pname = "akkoma";
-  version = "3.13.1";
+  version = "3.13.2";
 
   src = fetchFromGitea {
     domain = "akkoma.dev";
     owner = "AkkomaGang";
     repo = "akkoma";
     rev = "v${version}";
-    hash = "sha256-KRU7uEiwBimPz0HA+SClYt9/ubKNaRCArTGSiWvvVg8=";
+    hash = "sha256-WZAkpJIPzAbqXawNiM3JqE9tJzxrNs/2dGAWVMwLpN4=";
   };
+
+  patches = [ ./0001-fix-tzdata.patch ];
 
   postPatch = ''
     # Remove dependency on OS_Mon
@@ -222,7 +223,7 @@ beamPackages.mixRelease rec {
     description = "ActivityPub microblogging server";
     homepage = "https://akkoma.social";
     license = licenses.agpl3Only;
-    maintainers = with maintainers; [ mvs tcmal ];
+    maintainers = with maintainers; [ mvs ];
     platforms = platforms.unix;
   };
 }

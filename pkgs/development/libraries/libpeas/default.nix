@@ -1,26 +1,31 @@
-{ stdenv
-, lib
-, fetchurl
-, substituteAll
-, meson
-, ninja
-, pkg-config
-, gettext
-, gi-docgen
-, gnome
-, glib
-, gtk3
-, gobject-introspection
-, python3
-, ncurses
-, wrapGAppsHook3
+{
+  stdenv,
+  lib,
+  fetchurl,
+  substituteAll,
+  meson,
+  ninja,
+  pkg-config,
+  gettext,
+  gi-docgen,
+  gnome,
+  glib,
+  gtk3,
+  gobject-introspection,
+  python3,
+  ncurses,
+  wrapGAppsHook3,
 }:
 
 stdenv.mkDerivation rec {
   pname = "libpeas";
   version = "1.36.0";
 
-  outputs = [ "out" "dev" "devdoc" ];
+  outputs = [
+    "out"
+    "dev"
+    "devdoc"
+  ];
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
@@ -82,7 +87,7 @@ stdenv.mkDerivation rec {
   };
 
   meta = with lib; {
-    description = "A GObject-based plugins engine";
+    description = "GObject-based plugins engine";
     mainProgram = "peas-demo";
     homepage = "https://gitlab.gnome.org/GNOME/libpeas";
     license = licenses.gpl2Plus;

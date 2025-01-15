@@ -1,17 +1,20 @@
 {
   lib,
+  bleak,
   buildPythonPackage,
   cryptography,
+  esptool,
   fetchFromGitHub,
   netifaces,
   pyserial,
   pythonOlder,
+  replaceVars,
   setuptools,
 }:
 
 buildPythonPackage rec {
   pname = "rns";
-  version = "0.7.4";
+  version = "0.8.9";
   pyproject = true;
 
   disabled = pythonOlder "3.7";
@@ -19,13 +22,20 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "markqvist";
     repo = "Reticulum";
-    rev = "refs/tags/${version}";
-    hash = "sha256-M6iI554lv6PF5sIdOoaMIlQHP5YU8WM8YxfHMWhLSdE=";
+    tag = version;
+    hash = "sha256-yUn7tDAu4DJZFJAMdsSnEjlvCHxp1y7OO8xR86lus54=";
   };
+
+  patches = [
+    (replaceVars ./unvendor-esptool.patch {
+      esptool = lib.getExe esptool;
+    })
+  ];
 
   build-system = [ setuptools ];
 
   dependencies = [
+    bleak
     cryptography
     netifaces
     pyserial
@@ -41,6 +51,9 @@ buildPythonPackage rec {
     homepage = "https://github.com/markqvist/Reticulum";
     changelog = "https://github.com/markqvist/Reticulum/releases/tag/${version}";
     license = licenses.mit;
-    maintainers = with maintainers; [ fab ];
+    maintainers = with maintainers; [
+      fab
+      qbit
+    ];
   };
 }

@@ -1,4 +1,8 @@
-{ lib, skawarePackages, skalibs }:
+{
+  lib,
+  skawarePackages,
+  skalibs,
+}:
 
 skawarePackages.buildPackage {
   pname = "s6-portable-utils";
@@ -13,9 +17,14 @@ skawarePackages.buildPackage {
     maintainers = [ lib.maintainers.somasis ];
   };
 
-  description = "A set of tiny general Unix utilities optimized for simplicity and small size";
+  description = "Set of tiny general Unix utilities optimized for simplicity and small size";
 
-  outputs = [ "bin" "dev" "doc" "out" ];
+  outputs = [
+    "bin"
+    "dev"
+    "doc"
+    "out"
+  ];
 
   configureFlags = [
     "--bindir=\${bin}/bin"
@@ -33,6 +42,5 @@ skawarePackages.buildPackage {
 
     mv doc $doc/share/doc/s6-portable-utils/html
   '';
-
 
 }

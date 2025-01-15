@@ -1,6 +1,7 @@
-{ lib
-, fetchFromGitHub
-, python3
+{
+  lib,
+  fetchFromGitHub,
+  python3,
 }:
 
 python3.pkgs.buildPythonApplication rec {
@@ -11,16 +12,12 @@ python3.pkgs.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "doyensec";
     repo = "wsrepl";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-Y96p39TjpErGsR5vFS0NxEF/2Tnr2Zk7ULDgNXaXx9o=";
   };
 
   pythonRelaxDeps = [
     "textual"
-  ];
-
-  nativeBuildInputs = with python3.pkgs; [
-    pythonRelaxDepsHook
   ];
 
   build-system = with python3.pkgs; [

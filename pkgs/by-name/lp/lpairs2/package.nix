@@ -1,20 +1,21 @@
-{ lib
-, SDL2
-, SDL2_image
-, SDL2_mixer
-, SDL2_ttf
-, directoryListingUpdater
-, fetchurl
-, stdenv
+{
+  lib,
+  SDL2,
+  SDL2_image,
+  SDL2_mixer,
+  SDL2_ttf,
+  directoryListingUpdater,
+  fetchurl,
+  stdenv,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "lpairs2";
-  version = "2.3";
+  version = "2.3.1";
 
   src = fetchurl {
     url = "mirror://sourceforge/lgames/lpairs2-${finalAttrs.version}.tar.gz";
-    hash = "sha256-gw1BNkcztyTuoXRdx5+TBZNJEJNrLCfEUCQ1JzROogA=";
+    hash = "sha256-ES5RGr817vc8t2DFNeETTqrm0uwk3JuTypSZjXK86Bg=";
   };
 
   buildInputs = [
@@ -37,6 +38,6 @@ stdenv.mkDerivation (finalAttrs: {
     mainProgram = "lpairs2";
     maintainers = with lib.maintainers; [ AndersonTorres ];
     platforms = lib.platforms.unix;
-    broken = stdenv.isDarwin;
+    broken = stdenv.hostPlatform.isDarwin;
   };
 })

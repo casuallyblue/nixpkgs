@@ -1,13 +1,14 @@
-{ lib
-, asttokens
-, buildPythonPackage
-, executing
-, hatchling
-, fetchFromGitHub
-, pygments
-, pytest-mock
-, pytestCheckHook
-, pythonOlder
+{
+  lib,
+  asttokens,
+  buildPythonPackage,
+  executing,
+  hatchling,
+  fetchFromGitHub,
+  pygments,
+  pytest-mock,
+  pytestCheckHook,
+  pythonOlder,
 }:
 
 buildPythonPackage rec {
@@ -20,13 +21,11 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "samuelcolvin";
     repo = "python-${pname}";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-1HFbNswdKa/9cQX0Gf6lLW1V5Kt/N4X6/5kQDdzp1Wo=";
   };
 
-  nativeBuildInputs = [
-    hatchling
-  ];
+  nativeBuildInputs = [ hatchling ];
 
   propagatedBuildInputs = [
     asttokens
@@ -53,9 +52,7 @@ buildPythonPackage rec {
     "tests/test_insert_assert.py"
   ];
 
-  pythonImportsCheck = [
-    "devtools"
-  ];
+  pythonImportsCheck = [ "devtools" ];
 
   meta = with lib; {
     description = "Python's missing debug print command and other development tools";

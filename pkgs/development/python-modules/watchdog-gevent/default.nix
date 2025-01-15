@@ -20,7 +20,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "Bogdanp";
     repo = "watchdog_gevent";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-FESm3fNuLmOg2ilI/x8U9LuAimHLnahcTHYzW/nzOVY=";
   };
 
@@ -51,7 +51,7 @@ buildPythonPackage rec {
   pythonImportsCheck = [ "watchdog_gevent" ];
 
   meta = with lib; {
-    description = "A gevent-based observer for watchdog";
+    description = "Gevent-based observer for watchdog";
     homepage = "https://github.com/Bogdanp/watchdog_gevent";
     license = licenses.asl20;
     maintainers = with maintainers; [ traxys ];

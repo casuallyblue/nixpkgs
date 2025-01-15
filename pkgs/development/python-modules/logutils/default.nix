@@ -1,12 +1,14 @@
-{ lib
-, stdenv
-, buildPythonPackage
-, fetchPypi
-, pytestCheckHook
-, pythonOlder
-, redis
-, redis-server
-, setuptools
+{
+  lib,
+  stdenv,
+  buildPythonPackage,
+  fetchPypi,
+  pytestCheckHook,
+  pythonAtLeast,
+  pythonOlder,
+  redis-server,
+  redis,
+  setuptools,
 }:
 
 buildPythonPackage rec {
@@ -28,9 +30,7 @@ buildPythonPackage rec {
       --replace-fail "'redis-server'" "'${redis-server}/bin/redis-server'"
   '';
 
-  build-system = [
-    setuptools
-  ];
+  build-system = [ setuptools ];
 
   dependencies = [
     pytestCheckHook
@@ -42,19 +42,21 @@ buildPythonPackage rec {
     "test_hashandlers"
   ];
 
-  disabledTestPaths = lib.optionals (stdenv.isDarwin) [
-    # Exception: unable to connect to Redis server
-    "tests/test_redis.py"
-  ];
+  disabledTestPaths =
+    lib.optionals (stdenv.hostPlatform.isDarwin) [
+      # Exception: unable to connect to Redis server
+      "tests/test_redis.py"
+    ]
+    ++ lib.optionals (pythonAtLeast "3.13") [
+      "tests/test_dictconfig.py"
+    ];
 
-  pythonImportsCheck = [
-    "logutils"
-  ];
+  pythonImportsCheck = [ "logutils" ];
 
   meta = with lib; {
     description = "Logging utilities";
     homepage = "https://bitbucket.org/vinay.sajip/logutils/";
     license = licenses.bsd0;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
   };
 }

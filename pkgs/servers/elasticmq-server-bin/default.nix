@@ -1,12 +1,22 @@
-{ lib, stdenv, fetchurl, jdk, jre, makeBinaryWrapper, runCommand, python3Packages, writeText }:
+{
+  lib,
+  stdenv,
+  fetchurl,
+  jdk,
+  jre,
+  makeBinaryWrapper,
+  runCommand,
+  python3Packages,
+  writeText,
+}:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "elasticmq-server";
-  version = "1.6.1";
+  version = "1.6.10";
 
   src = fetchurl {
-    url = "https://s3-eu-west-1.amazonaws.com/softwaremill-public/${finalAttrs.pname}-${finalAttrs.version}.jar";
-    sha256 = "sha256-kO4d7O3jRYUJwJnMleGV+Esx9suFVS0HkNAtGyQORKo=";
+    url = "https://s3-eu-west-1.amazonaws.com/softwaremill-public/elasticmq-server-${finalAttrs.version}.jar";
+    sha256 = "sha256-xOjw1lm2y7Z+bkfTxpaMGx/zkgXNeTmcLzsQrMmySgE=";
   };
 
   # don't do anything?

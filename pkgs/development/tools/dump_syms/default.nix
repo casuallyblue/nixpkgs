@@ -1,23 +1,24 @@
-{ lib
-, stdenv
-, rustPlatform
-, fetchFromGitHub
-, pkg-config
-, openssl
+{
+  lib,
+  stdenv,
+  rustPlatform,
+  fetchFromGitHub,
+  pkg-config,
+  openssl,
 
-# darwin
-, Security
-, SystemConfiguration
+  # darwin
+  Security,
+  SystemConfiguration,
 
-# tests
-, firefox-esr-unwrapped
-, firefox-unwrapped
-, thunderbird-unwrapped
+  # tests
+  firefox-esr-unwrapped,
+  firefox-unwrapped,
+  thunderbird-unwrapped,
 }:
 
 let
   pname = "dump_syms";
-  version = "2.3.1";
+  version = "2.3.4";
 in
 rustPlatform.buildRustPackage {
   inherit pname version;
@@ -26,21 +27,23 @@ rustPlatform.buildRustPackage {
     owner = "mozilla";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-mSup3AMYsPu/Az6QXhdCFSxGcIpel4zNN0g/95gPDS0=";
+    hash = "sha256-6VDuZ5rw2N4z6wOVbaOKO6TNaq8QA5RstsIzmuE3QrI=";
   };
 
-  cargoSha256 = "sha256-INzCyF/tvCp4L6Btrw8AGTBAgdFiBlywzO3+SSE4beI=";
+  cargoHash = "sha256-ndRw5z4CfuX0KNqNgpA4yohG8p/cUR/Op2fIunuO6GM=";
 
   nativeBuildInputs = [
     pkg-config
   ];
 
-  buildInputs = [
-    openssl
-  ] ++ lib.optionals (stdenv.isDarwin) [
-    Security
-    SystemConfiguration
-  ];
+  buildInputs =
+    [
+      openssl
+    ]
+    ++ lib.optionals (stdenv.hostPlatform.isDarwin) [
+      Security
+      SystemConfiguration
+    ];
 
   checkFlags = [
     # Disable tests that require network access
@@ -54,7 +57,7 @@ rustPlatform.buildRustPackage {
   };
 
   meta = with lib; {
-    changelog = "https://github.com/mozilla/dump_syms/releases/tag/v${version}";
+    changelog = "https://github.com/mozilla/dump_syms/blob/v${version}/CHANGELOG.md";
     description = "Command-line utility for parsing the debugging information the compiler provides in ELF or stand-alone PDB files";
     mainProgram = "dump_syms";
     license = licenses.asl20;

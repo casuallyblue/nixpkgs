@@ -1,16 +1,17 @@
-{ lib
-, stdenv
-, buildPythonPackage
-, fetchFromGitHub
-, setuptools
-, future
-, matplotlib
-, numpy
-, pytestCheckHook
-, pytest-mock
-, pythonOlder
-, scipy
-, ezyrb
+{
+  lib,
+  stdenv,
+  buildPythonPackage,
+  fetchFromGitHub,
+  setuptools,
+  future,
+  matplotlib,
+  numpy,
+  pytestCheckHook,
+  pytest-mock,
+  pythonOlder,
+  scipy,
+  ezyrb,
 }:
 
 let
@@ -24,13 +25,11 @@ let
     src = fetchFromGitHub {
       owner = "PyDMD";
       repo = "PyDMD";
-      rev = "refs/tags/v${version}";
+      tag = "v${version}";
       hash = "sha256-vprvq3sl/eNtu4cqg0A4XV96dzUt0nOtPmfwEv0h+PI=";
     };
 
-    build-system = [
-      setuptools
-  ];
+    build-system = [ setuptools ];
 
     propagatedBuildInputs = [
       future
@@ -45,16 +44,12 @@ let
       pytest-mock
     ];
 
-    pytestFlagsArray = [
-      "tests/test_dmdbase.py"
-    ];
+    pytestFlagsArray = [ "tests/test_dmdbase.py" ];
 
-    pythonImportsCheck = [
-      "pydmd"
-    ];
+    pythonImportsCheck = [ "pydmd" ];
 
     passthru.tests = self.overrideAttrs (old: {
-      pytestFlagsArray = [];
+      pytestFlagsArray = [ ];
     });
 
     meta = with lib; {
@@ -63,7 +58,7 @@ let
       changelog = "https://github.com/PyDMD/PyDMD/releases/tag/v${version}";
       license = licenses.mit;
       maintainers = with maintainers; [ yl3dy ];
-      broken = stdenv.hostPlatform.isAarch64;
     };
   };
-in self
+in
+self

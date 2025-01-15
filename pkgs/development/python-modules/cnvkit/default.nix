@@ -1,28 +1,28 @@
-{ lib
-, fetchFromGitHub
-, fetchpatch
-, rPackages
-, buildPythonPackage
-, biopython
-, numpy
-, scipy
-, scikit-learn
-, pandas
-, matplotlib
-, reportlab
-, pysam
-, future
-, pillow
-, pomegranate
-, pyfaidx
-, python
-, pythonOlder
-, R
+{
+  lib,
+  fetchFromGitHub,
+  rPackages,
+  buildPythonPackage,
+  biopython,
+  numpy,
+  scipy,
+  scikit-learn,
+  pandas,
+  matplotlib,
+  reportlab,
+  pysam,
+  future,
+  pillow,
+  pomegranate,
+  pyfaidx,
+  python,
+  pythonOlder,
+  R,
 }:
 
 buildPythonPackage rec {
   pname = "cnvkit";
-  version = "0.9.11";
+  version = "0.9.12";
   format = "setuptools";
 
   disabled = pythonOlder "3.7";
@@ -30,8 +30,8 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "etal";
     repo = "cnvkit";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-tlR1LsR+M1nkzk3CgrkkNcSGP3juv25GXddWDDWJ5ao=";
+    tag = "v${version}";
+    hash = "sha256-ZdE3EUNZpEXRHTRKwVhuj3BWQWczpdFbg4pVr0+AHiQ=";
   };
 
   postPatch = ''
@@ -71,13 +71,11 @@ buildPythonPackage rec {
     popd # test/
   '';
 
-  pythonImportsCheck = [
-    "cnvlib"
-  ];
+  pythonImportsCheck = [ "cnvlib" ];
 
   meta = with lib; {
     homepage = "https://cnvkit.readthedocs.io";
-    description = "A Python library and command-line software toolkit to infer and visualize copy number from high-throughput DNA sequencing data";
+    description = "Python library and command-line software toolkit to infer and visualize copy number from high-throughput DNA sequencing data";
     changelog = "https://github.com/etal/cnvkit/releases/tag/v${version}";
     license = licenses.asl20;
     maintainers = [ maintainers.jbedo ];

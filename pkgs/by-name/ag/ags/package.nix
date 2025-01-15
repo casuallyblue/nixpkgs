@@ -8,7 +8,7 @@
   gobject-introspection,
   gjs,
   glib-networking,
-  gnome,
+  gnome-bluetooth,
   gtk-layer-shell,
   libpulseaudio,
   libsoup_3,
@@ -50,7 +50,7 @@ buildNpmPackage rec {
   buildInputs = [
     gjs
     glib-networking
-    gnome.gnome-bluetooth
+    gnome-bluetooth
     gtk-layer-shell
     libpulseaudio
     libsoup_3
@@ -63,11 +63,11 @@ buildNpmPackage rec {
     chmod u+x ./post_install.sh && patchShebangs ./post_install.sh
   '';
 
-  passthru.updateScript = nix-update-script {};
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     homepage = "https://github.com/Aylur/ags";
-    description = "A EWW-inspired widget system as a GJS library";
+    description = "EWW-inspired widget system as a GJS library";
     changelog = "https://github.com/Aylur/ags/releases/tag/v${version}";
     license = lib.licenses.gpl3Plus;
     maintainers = with lib.maintainers; [

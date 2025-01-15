@@ -1,4 +1,9 @@
-{ lib, buildPythonPackage, fetchPypi, sqlcipher }:
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  sqlcipher,
+}:
 
 buildPythonPackage rec {
   pname = "pysqlcipher3";
@@ -18,6 +23,6 @@ buildPythonPackage rec {
     description = "Python 3 bindings for SQLCipher";
     homepage = "https://github.com/rigglemania/pysqlcipher3/";
     license = licenses.zlib;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
   };
 }

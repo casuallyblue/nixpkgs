@@ -1,14 +1,16 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, gitMinimal
-, numpy
-, packaging
-, pytest
-, pytestCheckHook
-, pythonOlder
-, setuptools
-, setuptools-scm
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  fetchpatch2,
+  gitMinimal,
+  numpy,
+  packaging,
+  pytest,
+  pytestCheckHook,
+  pythonOlder,
+  setuptools,
+  setuptools-scm,
 }:
 
 buildPythonPackage rec {
@@ -23,18 +25,22 @@ buildPythonPackage rec {
     hash = "sha256-JHKoosjOo00vZfZJlUP663SO7LWcWXhS/ZiDm0cwdnk=";
   };
 
+  patches = [
+    (fetchpatch2 {
+      name = "python313-compat.patch";
+      url = "https://github.com/scientific-python/pytest-doctestplus/commit/aee0be27a8e8753ac68adc035f098ccc7a9e3678.patch";
+      hash = "sha256-UOG664zm7rJIjm/OXNu6N6jlINNB6UDZOCSUZxy3HrQ=";
+    })
+  ];
+
   postPatch = ''
     substituteInPlace pytest_doctestplus/plugin.py \
       --replace-fail '"git"' '"${lib.getExe gitMinimal}"'
   '';
 
-  nativeBuildInputs = [
-    setuptools-scm
-  ];
+  nativeBuildInputs = [ setuptools-scm ];
 
-  buildInputs = [
-    pytest
-  ];
+  buildInputs = [ pytest ];
 
   propagatedBuildInputs = [
     packaging
@@ -61,6 +67,6 @@ buildPythonPackage rec {
     description = "Pytest plugin with advanced doctest features";
     homepage = "https://astropy.org";
     license = licenses.bsd3;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
   };
 }

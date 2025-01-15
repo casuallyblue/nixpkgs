@@ -1,18 +1,19 @@
-{ lib
-, stdenv
-, buildPythonPackage
-, pythonOlder
-, fetchFromGitHub
-, substituteAll
-, graphviz-nox
-, xdg-utils
-, makeFontsConf
-, freefont_ttf
-, setuptools
-, mock
-, pytest_7
-, pytest-mock
-, python
+{
+  lib,
+  stdenv,
+  buildPythonPackage,
+  pythonOlder,
+  fetchFromGitHub,
+  substituteAll,
+  graphviz-nox,
+  xdg-utils,
+  makeFontsConf,
+  freefont_ttf,
+  setuptools,
+  mock,
+  pytest_7,
+  pytest-mock,
+  python,
 }:
 
 buildPythonPackage rec {
@@ -26,7 +27,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "xflr6";
     repo = "graphviz";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-IqjqcBEL4BK/VfRjdxJ9t/DkG8OMAoXJxbW5JXpALuw=";
   };
 
@@ -43,13 +44,9 @@ buildPythonPackage rec {
   '';
 
   # Fontconfig error: Cannot load default config file
-  FONTCONFIG_FILE = makeFontsConf {
-    fontDirectories = [ freefont_ttf ];
-  };
+  FONTCONFIG_FILE = makeFontsConf { fontDirectories = [ freefont_ttf ]; };
 
-  build-system = [
-    setuptools
-  ];
+  build-system = [ setuptools ];
 
   nativeCheckInputs = [
     mock
@@ -66,7 +63,7 @@ buildPythonPackage rec {
   '';
 
   # Too many failures due to attempting to connect to com.apple.fonts daemon
-  doCheck = !stdenv.isDarwin;
+  doCheck = !stdenv.hostPlatform.isDarwin;
 
   meta = with lib; {
     description = "Simple Python interface for Graphviz";

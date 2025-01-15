@@ -6,14 +6,14 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "checkov";
-  version = "3.2.92";
+  version = "3.2.352";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "bridgecrewio";
     repo = "checkov";
-    rev = "refs/tags/${version}";
-    hash = "sha256-v1StSo9j0Psr3om3qbcE+Ha9Wz7t6EfGzbyAe34M2qY=";
+    tag = version;
+    hash = "sha256-by1oMAhhN+VbWzv2+OfQRBGQXkUn4EST4OWqyoOhdEQ=";
   };
 
   patches = [ ./flake8-compat-5.x.patch ];
@@ -23,9 +23,11 @@ python3.pkgs.buildPythonApplication rec {
     "bc-python-hcl2"
     "boto3"
     "botocore"
+    "cloudsplaining"
     "cyclonedx-python-lib"
     "dpath"
     "igraph"
+    "importlib-metadata"
     "license-expression"
     "networkx"
     "openai"
@@ -33,7 +35,9 @@ python3.pkgs.buildPythonApplication rec {
     "packaging"
     "pycep-parser"
     "rustworkx"
+    "schema"
     "termcolor"
+    "urllib3"
   ];
 
   pythonRemoveDeps = [
@@ -41,13 +45,7 @@ python3.pkgs.buildPythonApplication rec {
     "pycep-parser"
   ];
 
-  build-system = with python3.pkgs; [
-    setuptools-scm
-  ];
-
-  nativeBuildInputs = with python3.pkgs; [
-    pythonRelaxDepsHook
-  ];
+  build-system = with python3.pkgs; [ setuptools-scm ];
 
   dependencies = with python3.pkgs; [
     aiodns
@@ -94,6 +92,7 @@ python3.pkgs.buildPythonApplication rec {
 
   nativeCheckInputs = with python3.pkgs; [
     aioresponses
+    distutils
     mock
     pytest-asyncio
     pytest-mock
@@ -121,10 +120,13 @@ python3.pkgs.buildPythonApplication rec {
     "console"
     # Assertion error
     "test_runner"
+    "test_same_resources_in_report_and_coordinator"
     # AssertionError: assert ['<?xml versi...
     "test_get_cyclonedx_report"
     # Test fails on Hydra
     "test_sast_js_filtered_files_by_ts"
+    # Timing sensitive
+    "test_non_multiline_pair_time_limit_creating_report"
   ];
 
   disabledTestPaths = [

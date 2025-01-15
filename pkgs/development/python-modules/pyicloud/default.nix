@@ -1,19 +1,17 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonAtLeast
-, setuptools
-, certifi
-, click
-, keyring
-, keyrings-alt
-, pytz
-, requests
-, six
-, tzlocal
-, pytest-mock
-, pytestCheckHook
-, future
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonAtLeast,
+  setuptools,
+  certifi,
+  click,
+  keyring,
+  keyrings-alt,
+  requests,
+  tzlocal,
+  pytest-mock,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -28,19 +26,14 @@ buildPythonPackage rec {
     hash = "sha256-2E1pdHHt8o7CGpdG+u4xy5OyNCueUGVw5CY8oicYd5w=";
   };
 
-  nativeBuildInputs = [
-    setuptools
-  ];
+  nativeBuildInputs = [ setuptools ];
 
   propagatedBuildInputs = [
     certifi
     click
-    future
     keyring
     keyrings-alt
-    pytz
     requests
-    six
     tzlocal
   ];
 
